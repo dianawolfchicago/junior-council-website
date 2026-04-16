@@ -18,19 +18,20 @@ const committees = [
 ]
 
 // Placeholder members — replace with real data
+// oncause: paste each member's OneCause fundraiser URL here when available, or set to null to hide the button
 const members = [
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Events', year: '2024' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Fundraising', year: '2024' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Marketing & Communications', year: '2023' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'DEI', year: '2024' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Sponsorship', year: '2022' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Membership', year: '2024' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Events', year: '2023' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Fundraising', year: '2023' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'DEI', year: '2022' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Marketing & Communications', year: '2024' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Events', year: '2022' },
-  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Sponsorship', year: '2023' },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Events', year: '2024', oncause: 'https://www.onecause.com/juniorcouncil' },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Fundraising', year: '2024', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Marketing & Communications', year: '2023', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'DEI', year: '2024', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Sponsorship', year: '2022', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Membership', year: '2024', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Events', year: '2023', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Fundraising', year: '2023', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'DEI', year: '2022', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Marketing & Communications', year: '2024', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Events', year: '2022', oncause: null },
+  { name: 'Member Name', title: 'Job Title', company: 'Company', committee: 'Sponsorship', year: '2023', oncause: null },
 ]
 
 export default function MembersPage() {
@@ -133,9 +134,22 @@ export default function MembersPage() {
                     <span className="text-jc-red text-xs font-bold uppercase tracking-wide">
                       {member.committee}
                     </span>
-                    <span className="text-white/0 text-xs select-none" aria-hidden="true">·</span>
+                    <span className="text-jc-gray-mid text-xs" aria-hidden="true">·</span>
                     <span className="text-jc-gray-dark text-xs">Since {member.year}</span>
                   </div>
+                  {member.oncause && (
+                    <a
+                      href={member.oncause}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-1.5 bg-jc-red text-white text-xs font-bold uppercase tracking-wide px-3 py-1.5 hover:bg-jc-red-dark transition-colors"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                      Donate to My Page
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
