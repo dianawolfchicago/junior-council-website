@@ -457,6 +457,102 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ─── FUNDRAISING PROGRESS ─────────────────────────────────────── */}
+      {(() => {
+        const raised = 142500   // ← update this number as fundraising progresses
+        const goal   = 250000   // ← update this if the goal changes
+        const pct    = Math.min(Math.round((raised / goal) * 100), 100)
+        const fmt    = (n: number) => '$' + n.toLocaleString()
+        return (
+          <section className="bg-jc-charcoal py-20 lg:py-28" aria-label="Fundraising progress">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Header */}
+              <div className="text-center mb-12">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
+                  <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">
+                    2026 Fundraising Goal
+                  </span>
+                  <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
+                </div>
+                <h2 className="text-white font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight">
+                  Help Us Reach{' '}
+                  <span className="text-jc-red">{fmt(goal)}</span>
+                </h2>
+                <p className="text-white/50 text-sm mt-3 max-w-xl mx-auto">
+                  Every dollar goes directly to the Adolescent HIV program at
+                  Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago.
+                </p>
+              </div>
+
+              {/* Raised vs Goal numbers */}
+              <div className="flex items-end justify-between mb-3">
+                <div>
+                  <div className="text-jc-red font-black text-4xl sm:text-5xl leading-none">
+                    {fmt(raised)}
+                  </div>
+                  <div className="text-white/50 text-sm mt-1 uppercase tracking-wide">
+                    Raised so far
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-white/40 font-black text-2xl sm:text-3xl leading-none">
+                    {fmt(goal)}
+                  </div>
+                  <div className="text-white/30 text-sm mt-1 uppercase tracking-wide">
+                    Goal
+                  </div>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div
+                className="w-full bg-white/10 h-7 relative overflow-hidden"
+                role="progressbar"
+                aria-valuenow={pct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${pct}% of fundraising goal reached`}
+              >
+                <div
+                  className="h-full bg-jc-red"
+                  style={{ width: `${pct}%` }}
+                />
+                <div className="absolute inset-0 flex items-center px-4">
+                  <span className="text-white font-black text-xs tracking-widest uppercase">
+                    {pct}% of goal reached
+                  </span>
+                </div>
+              </div>
+
+              {/* Supporting stats */}
+              <div className="grid grid-cols-3 gap-6 mt-10 pt-10 border-t border-white/10">
+                {[
+                  { value: '160+', label: 'Active Members Fundraising' },
+                  { value: '$3.1M+', label: 'Raised Since Founding' },
+                  { value: '100%', label: 'Goes to Patient Care' },
+                ].map((s, i) => (
+                  <div key={i} className="text-center">
+                    <div className="text-jc-red font-black text-2xl sm:text-3xl">{s.value}</div>
+                    <div className="text-white/40 text-xs mt-1 uppercase tracking-wide">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className="text-center mt-10">
+                <Link
+                  href="/support#donate"
+                  className="inline-flex items-center bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase px-10 py-4 transition-colors"
+                >
+                  Make a Donation
+                </Link>
+              </div>
+            </div>
+          </section>
+        )
+      })()}
+
       {/* ─── DONATE CTA BANNER ────────────────────────────────────────── */}
       <section
         className="bg-jc-red py-20 lg:py-24"

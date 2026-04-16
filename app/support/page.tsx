@@ -145,6 +145,41 @@ export default function SupportPage() {
                 donations are tax-deductible to the extent permitted by law. You
                 will receive a tax receipt for your records.
               </p>
+              {/* Fundraising Progress — compact */}
+              {(() => {
+                const raised = 142500
+                const goal   = 250000
+                const pct    = Math.min(Math.round((raised / goal) * 100), 100)
+                const fmt    = (n: number) => '$' + n.toLocaleString()
+                return (
+                  <div className="bg-jc-gray p-6 mb-8 border-l-4 border-jc-red">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-jc-red font-black text-xs uppercase tracking-widest">
+                        2026 Fundraising Goal
+                      </span>
+                      <span className="text-jc-gray-dark text-xs">{pct}% reached</span>
+                    </div>
+                    <div className="flex items-baseline justify-between mb-3">
+                      <span className="text-jc-black font-black text-2xl">{fmt(raised)}</span>
+                      <span className="text-jc-gray-dark text-sm">of {fmt(goal)}</span>
+                    </div>
+                    <div className="w-full bg-jc-gray-mid h-3 overflow-hidden">
+                      <div
+                        className="h-full bg-jc-red"
+                        style={{ width: `${pct}%` }}
+                        role="progressbar"
+                        aria-valuenow={pct}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                      />
+                    </div>
+                    <p className="text-jc-gray-dark text-xs mt-2">
+                      Every donation goes directly to adolescent HIV care at Lurie Children&apos;s Hospital.
+                    </p>
+                  </div>
+                )
+              })()}
+
               {/* Donation Amount Suggestions */}
               <div className="grid grid-cols-3 gap-3 mb-8">
                 {['$25', '$50', '$100', '$500', '$1,000', 'Custom'].map((amount, i) => (
