@@ -129,13 +129,48 @@ export default function GalaPage() {
               </div>
               <div className="space-y-5">
                 {[
-                  { icon: '🎵', title: 'Live Entertainment', desc: 'Music and performances throughout the evening.' },
-                  { icon: '🏆', title: 'Silent Auction', desc: 'Bid on curated experiences, travel packages, and luxury items.' },
-                  { icon: '🍽️', title: 'Premium Hospitality', desc: 'Top-tier catering and open bar from Chicago\'s best vendors.' },
-                  { icon: '💙', title: 'Mission Moment', desc: 'Hear firsthand from patients and the Lurie care team.' },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                      </svg>
+                    ),
+                    title: 'Live Entertainment',
+                    desc: 'Music and performances throughout the evening.',
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                      </svg>
+                    ),
+                    title: 'Silent Auction',
+                    desc: 'Bid on curated experiences, travel packages, and luxury items.',
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A1.5 1.5 0 013 15.546V8.25A2.25 2.25 0 015.25 6h13.5A2.25 2.25 0 0121 8.25v7.296z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 19.5h18" />
+                      </svg>
+                    ),
+                    title: 'Premium Hospitality',
+                    desc: "Top-tier catering and open bar from Chicago's best vendors.",
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                    ),
+                    title: 'Mission Moment',
+                    desc: 'Hear firsthand from patients and the Lurie care team.',
+                  },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-4">
-                    <span className="text-2xl" aria-hidden="true">{item.icon}</span>
+                    <div className="w-9 h-9 bg-jc-red flex-shrink-0 flex items-center justify-center" aria-hidden="true">
+                      {item.icon}
+                    </div>
                     <div>
                       <div className="text-white font-bold mb-1">{item.title}</div>
                       <div className="text-white/50 text-sm">{item.desc}</div>
