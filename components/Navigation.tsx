@@ -94,14 +94,16 @@ export default function Navigation() {
             className="flex items-center group"
             aria-label="Junior Council — Home"
           >
-            <Image
-              src="/jc-logo.png"
-              alt="Junior Council"
-              width={160}
-              height={48}
-              className="h-10 w-auto brightness-0 invert group-hover:opacity-90 transition-opacity"
-              priority
-            />
+            <div className="bg-white px-3 py-1">
+              <Image
+                src="/jc-logo.png"
+                alt="Junior Council"
+                width={160}
+                height={40}
+                className="h-8 w-auto group-hover:opacity-90 transition-opacity"
+                priority
+              />
+            </div>
           </Link>
 
           {/* Desktop Nav */}
