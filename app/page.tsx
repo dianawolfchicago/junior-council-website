@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 }
 
 const stats = [
-  { value: '20+', label: 'Years of Impact', description: 'Fighting for Chicago youth' },
+  { value: '39+', label: 'Years of Impact', description: 'Fighting for Chicago youth since 1987' },
   { value: '$5M+', label: 'Raised for Lurie', description: 'Funding life-saving care' },
   { value: '1,000+', label: 'Lives Impacted', description: 'Adolescents supported' },
   { value: '40+', label: 'Partners & Sponsors', description: 'Community allies' },
