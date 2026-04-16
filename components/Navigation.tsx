@@ -19,7 +19,7 @@ const navLinks: NavLink[] = [
     dropdown: [
       {
         href: '/membership',
-        label: 'Join & Committees',
+        label: 'Join Junior Council',
         description: 'Why join, life in JC, committees & dues',
       },
       {
