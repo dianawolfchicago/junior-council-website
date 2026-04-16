@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 type DropdownItem = { href: string; label: string; description?: string }
@@ -90,15 +91,17 @@ export default function Navigation() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-0 group"
+            className="flex items-center group"
             aria-label="Junior Council — Home"
           >
-            <span className="text-white font-black text-lg sm:text-xl tracking-widest uppercase group-hover:text-white/90 transition-colors">
-              Junior
-            </span>
-            <span className="text-jc-red font-black text-lg sm:text-xl tracking-widest uppercase ml-2 group-hover:text-jc-red-light transition-colors">
-              Council
-            </span>
+            <Image
+              src="/jc-logo.png"
+              alt="Junior Council"
+              width={160}
+              height={48}
+              className="h-10 w-auto brightness-0 invert group-hover:opacity-90 transition-opacity"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}
