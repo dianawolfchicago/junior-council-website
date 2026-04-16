@@ -81,31 +81,29 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-sm shadow-md shadow-black/10'
-          : 'bg-white'
+          ? 'bg-jc-black/95 backdrop-blur-sm shadow-lg shadow-black/20'
+          : 'bg-jc-black'
       }`}
       aria-label="Main navigation"
     >
-      {/* Red top accent line */}
-      <div className="h-1 w-full bg-jc-red" aria-hidden="true" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-18">
-
           {/* Logo */}
           <Link
             href="/"
             className="flex items-center group"
             aria-label="Junior Council — Home"
           >
-            <Image
-              src="/jc-logo.png"
-              alt="Junior Council"
-              width={160}
-              height={40}
-              className="h-9 w-auto group-hover:opacity-80 transition-opacity"
-              priority
-            />
+            <div className="bg-white px-3 py-1">
+              <Image
+                src="/jc-logo.png"
+                alt="Junior Council"
+                width={160}
+                height={40}
+                className="h-8 w-auto group-hover:opacity-90 transition-opacity"
+                priority
+              />
+            </div>
           </Link>
 
           {/* Desktop Nav */}
@@ -121,7 +119,7 @@ export default function Navigation() {
                 >
                   <button
                     className={`flex items-center gap-1 text-sm font-semibold tracking-wide uppercase transition-colors hover:text-jc-red focus:outline-none ${
-                      isActive(link) ? 'text-jc-red' : 'text-jc-black hover:text-jc-red'
+                      isActive(link) ? 'text-jc-red' : 'text-white/80 hover:text-white'
                     }`}
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === link.href}
@@ -151,6 +149,7 @@ export default function Navigation() {
                     onMouseLeave={handleMouseLeave}
                     role="menu"
                   >
+                    {/* Red top accent */}
                     <div className="h-0.5 w-full bg-jc-red" aria-hidden="true" />
                     {link.dropdown.map((item, i) => (
                       <Link
@@ -183,7 +182,7 @@ export default function Navigation() {
                   key={link.href}
                   href={link.href}
                   className={`text-sm font-semibold tracking-wide uppercase transition-colors hover:text-jc-red ${
-                    pathname === link.href ? 'text-jc-red' : 'text-jc-black hover:text-jc-red'
+                    pathname === link.href ? 'text-jc-red' : 'text-white/80 hover:text-white'
                   }`}
                 >
                   {link.label}
@@ -196,12 +195,12 @@ export default function Navigation() {
           <div className="flex items-center gap-3">
             <Link
               href="/support#donate"
-              className="bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase px-5 py-2.5 transition-colors focus:outline-none focus:ring-2 focus:ring-jc-red focus:ring-offset-2 focus:ring-offset-white"
+              className="bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase px-5 py-2.5 transition-colors focus:outline-none focus:ring-2 focus:ring-jc-red focus:ring-offset-2 focus:ring-offset-jc-black"
             >
               Donate
             </Link>
             <button
-              className="lg:hidden text-jc-black p-1 hover:text-jc-red transition-colors"
+              className="lg:hidden text-white p-1 hover:text-jc-red transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
@@ -224,7 +223,7 @@ export default function Navigation() {
       {/* Mobile Menu */}
       <div
         id="mobile-menu"
-        className={`lg:hidden bg-white border-t border-jc-gray-mid transition-all duration-300 overflow-hidden ${
+        className={`lg:hidden bg-jc-charcoal border-t border-white/10 transition-all duration-300 overflow-hidden ${
           mobileOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}
         aria-hidden={!mobileOpen}
@@ -232,6 +231,7 @@ export default function Navigation() {
         <div className="px-4 pt-3 pb-5 space-y-1">
           {navLinks.map((link) =>
             link.dropdown ? (
+              /* ── Mobile dropdown ── */
               <div key={link.href}>
                 <button
                   onClick={() =>
@@ -239,8 +239,8 @@ export default function Navigation() {
                       mobileDropdownOpen === link.href ? null : link.href
                     )
                   }
-                  className={`w-full flex items-center justify-between px-3 py-3 text-sm font-semibold uppercase tracking-wide border-b border-jc-gray-mid transition-colors ${
-                    isActive(link) ? 'text-jc-red' : 'text-jc-black'
+                  className={`w-full flex items-center justify-between px-3 py-3 text-sm font-semibold uppercase tracking-wide border-b border-white/5 transition-colors ${
+                    isActive(link) ? 'text-jc-red' : 'text-white/80'
                   }`}
                 >
                   {link.label}
@@ -256,6 +256,7 @@ export default function Navigation() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
+                {/* Sub-items */}
                 <div
                   className={`overflow-hidden transition-all duration-200 ${
                     mobileDropdownOpen === link.href ? 'max-h-64' : 'max-h-0'
@@ -265,8 +266,8 @@ export default function Navigation() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`flex items-center gap-2 pl-7 pr-3 py-2.5 text-sm border-b border-jc-gray-mid transition-colors ${
-                        pathname === item.href ? 'text-jc-red' : 'text-jc-gray-dark hover:text-jc-black'
+                      className={`flex items-center gap-2 pl-7 pr-3 py-2.5 text-sm border-b border-white/5 transition-colors ${
+                        pathname === item.href ? 'text-jc-red' : 'text-white/60 hover:text-white'
                       }`}
                     >
                       <div className="w-1 h-1 bg-jc-red flex-shrink-0" aria-hidden="true" />
@@ -276,11 +277,12 @@ export default function Navigation() {
                 </div>
               </div>
             ) : (
+              /* ── Regular mobile link ── */
               <Link
                 key={link.href}
                 href={link.href}
-                className={`block px-3 py-3 text-sm font-semibold uppercase tracking-wide border-b border-jc-gray-mid transition-colors ${
-                  pathname === link.href ? 'text-jc-red' : 'text-jc-black hover:text-jc-red'
+                className={`block px-3 py-3 text-sm font-semibold uppercase tracking-wide border-b border-white/5 transition-colors ${
+                  pathname === link.href ? 'text-jc-red' : 'text-white/80 hover:text-white'
                 }`}
               >
                 {link.label}
