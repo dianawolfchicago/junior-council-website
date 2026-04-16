@@ -9,50 +9,95 @@ export const metadata: Metadata = {
 
 const corporateTiers = [
   {
-    name: 'Champion Partner',
-    amount: '$25,000+',
+    name: 'Presenting',
+    amount: '$20,000',
+    tickets: 12,
     highlight: true,
     benefits: [
-      'Premier presenting sponsorship of Annual Snowball Gala',
-      'Year-round logo placement on all JC platforms',
-      'Exclusive naming rights for a JC program or initiative',
-      'Board-level engagement and impact briefings',
-      'Dedicated press release and media recognition',
-      'VIP table for 12 at the Gala',
-      'Custom employee engagement opportunity',
+      'Official Presenting Sponsor of Snowball & Kick-Off Party',
+      'Stage speaking opportunity at Snowball',
+      'Official Sponsor of Thermometer Raise',
+      'Logo on wristbands for all attendees',
+      'Exclusive Sponsor of the Silent Auction',
+      'Distribute company giveaways to all attendees',
+      'Featured in 2 JC e-newsletters',
+      'Logo on JC website & Snowball ticketing page',
     ],
   },
   {
-    name: 'Impact Partner',
-    amount: '$10,000–$24,999',
+    name: 'Diamond',
+    amount: '$15,000',
+    tickets: 10,
     highlight: false,
     benefits: [
-      'Gold-level Gala sponsorship',
-      'Logo on JC website and event materials (6 months)',
-      'Social media spotlight series',
-      'Reserved table for 10 at the Gala',
-      'Quarterly impact report',
+      'Official Sponsor of Thermometer Raise',
+      'Stage speaking opportunity at Snowball',
+      'Acknowledgement at media appearances',
+      'Logo on wristbands for all attendees',
+      'Featured in 2 JC e-newsletters',
+      'Logo on JC website & Snowball ticketing page',
     ],
   },
   {
-    name: 'Community Partner',
-    amount: '$5,000–$9,999',
+    name: 'Platinum',
+    amount: '$10,000',
+    tickets: 8,
     highlight: false,
     benefits: [
-      'Silver-level Gala sponsorship',
-      'Logo on JC website (12 months)',
-      'Social media recognition',
-      'Reserved seats for 6 at the Gala',
+      'Logo on wristbands for all attendees',
+      'Speaking opportunity at a JC Member Meeting',
+      'Distribute giveaways to Snowball attendees',
+      'Live mention & photo op on stage',
+      'Featured in 2 JC e-newsletters',
+      'Logo on JC website & Snowball ticketing page',
     ],
   },
   {
-    name: 'Friend of JC',
-    amount: 'Under $5,000',
+    name: 'Gold',
+    amount: '$7,500',
+    tickets: 6,
     highlight: false,
     benefits: [
-      'Name/logo in Gala program',
-      'Social media thank-you',
-      'Two Gala tickets',
+      'Distribute giveaways to Snowball attendees',
+      'Recognized at JC Specialty Events',
+      'Live mention & photo op on stage',
+      'Social media promotion',
+      'Featured in 2 JC e-newsletters',
+      'Logo on JC website & Snowball ticketing page',
+    ],
+  },
+  {
+    name: 'Silver',
+    amount: '$5,000',
+    tickets: 4,
+    highlight: false,
+    benefits: [
+      'Social media promotion',
+      'Featured in 2 JC e-newsletters',
+      'Logo on JC website & Snowball ticketing page',
+      'Logo on rotating slides at Snowball',
+    ],
+  },
+  {
+    name: 'Bronze',
+    amount: '$2,500',
+    tickets: 2,
+    highlight: false,
+    benefits: [
+      'Featured in 1 JC e-newsletter & promo emails',
+      'Logo on JC website & Snowball ticketing page',
+      'Logo on rotating slides at Snowball',
+    ],
+  },
+  {
+    name: 'Black',
+    amount: '$1,500',
+    tickets: 2,
+    highlight: false,
+    benefits: [
+      'Featured in 1 JC e-newsletter & promo emails',
+      'Logo on JC website & Snowball ticketing page',
+      'Logo on rotating slides at Snowball',
     ],
   },
 ]
@@ -176,38 +221,56 @@ export default function SupportPage() {
             Corporate <span className="text-jc-red">Partnerships</span>
           </h2>
           <p className="text-jc-gray-dark text-lg max-w-3xl mx-auto text-center mb-14">
-            Align your company with Chicago&apos;s most passionate nonprofit
-            community. Corporate partners gain brand visibility, employee
-            engagement opportunities, and the satisfaction of directly
-            impacting youth with HIV and AIDS.
+            Align your brand with Chicago&apos;s most passionate nonprofit community.
+            All sponsorships are tax-deductible and JC is happy to tailor packages
+            to create a mutually beneficial partnership.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            {corporateTiers.map((tier, i) => (
+          {/* Presenting Tier — Featured */}
+          {(() => {
+            const presenting = corporateTiers[0]
+            return (
+              <div className="bg-jc-black border-2 border-jc-red p-8 mb-6 flex flex-col sm:flex-row sm:items-start gap-8">
+                <div className="sm:w-48 flex-shrink-0">
+                  <div className="bg-jc-red text-white text-xs font-bold tracking-widest uppercase px-3 py-1 inline-block mb-4">
+                    Top Tier
+                  </div>
+                  <div className="text-jc-red font-black text-4xl mb-1">{presenting.amount}</div>
+                  <div className="text-white font-black text-2xl mb-2">{presenting.name}</div>
+                  <div className="w-8 h-0.5 bg-jc-red mb-3" aria-hidden="true" />
+                  <div className="text-white/50 text-sm">{presenting.tickets} Snowball Tickets</div>
+                </div>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 flex-grow">
+                  {presenting.benefits.map((benefit, j) => (
+                    <li key={j} className="flex items-start gap-2">
+                      <div className="w-4 h-4 bg-jc-red flex-shrink-0 flex items-center justify-center mt-0.5" aria-hidden="true">
+                        <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="text-white/70 text-xs leading-relaxed">{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          })()}
+
+          {/* Remaining 6 Tiers — 3-col grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {corporateTiers.slice(1).map((tier, i) => (
               <div
                 key={i}
-                className={`p-6 border-2 flex flex-col ${
-                  tier.highlight
-                    ? 'bg-jc-black border-jc-red'
-                    : 'bg-white border-jc-gray-mid hover:border-jc-red transition-colors'
-                }`}
+                className="p-6 border-2 border-jc-gray-mid hover:border-jc-red transition-colors bg-white flex flex-col"
               >
-                {tier.highlight && (
-                  <div className="bg-jc-red text-white text-xs font-bold tracking-widest uppercase px-3 py-1 self-start mb-4">
-                    Most Impactful
+                <div className="flex items-start justify-between mb-1">
+                  <div className="text-jc-red font-black text-2xl">{tier.amount}</div>
+                  <div className="text-jc-gray-dark text-xs font-bold uppercase tracking-wide mt-1">
+                    {tier.tickets} Tickets
                   </div>
-                )}
-                <div className="text-jc-red font-black text-2xl mb-1">
-                  {tier.amount}
                 </div>
-                <div
-                  className={`font-black text-xl mb-4 ${
-                    tier.highlight ? 'text-white' : 'text-jc-black'
-                  }`}
-                >
-                  {tier.name}
-                </div>
-                <div className="w-8 h-0.5 bg-jc-red mb-5" aria-hidden="true" />
+                <div className="text-jc-black font-black text-xl mb-3">{tier.name}</div>
+                <div className="w-8 h-0.5 bg-jc-red mb-4" aria-hidden="true" />
                 <ul className="space-y-2.5 flex-grow">
                   {tier.benefits.map((benefit, j) => (
                     <li key={j} className="flex items-start gap-2">
@@ -219,13 +282,7 @@ export default function SupportPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <span
-                        className={`text-xs leading-relaxed ${
-                          tier.highlight ? 'text-white/70' : 'text-jc-gray-dark'
-                        }`}
-                      >
-                        {benefit}
-                      </span>
+                      <span className="text-xs leading-relaxed text-jc-gray-dark">{benefit}</span>
                     </li>
                   ))}
                 </ul>
@@ -238,8 +295,14 @@ export default function SupportPage() {
               href="/contact"
               className="inline-flex items-center bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase px-10 py-4 transition-colors"
             >
-              Inquire About Partnership
+              Become a Sponsor
             </Link>
+            <p className="text-jc-gray-dark text-sm mt-4">
+              For further information, contact Charlie Nash at{' '}
+              <a href="mailto:corporate@juniorcouncil.org" className="text-jc-red font-bold hover:underline">
+                corporate@juniorcouncil.org
+              </a>
+            </p>
           </div>
         </div>
       </section>
