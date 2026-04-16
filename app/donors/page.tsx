@@ -9,14 +9,16 @@ export const metadata: Metadata = {
 
 const donors = {
   corporate: [
-    { name: 'Corporate Donor Name', tier: 'Champion Partner' },
-    { name: 'Corporate Donor Name', tier: 'Impact Partner' },
-    { name: 'Corporate Donor Name', tier: 'Impact Partner' },
-    { name: 'Corporate Donor Name', tier: 'Community Partner' },
-    { name: 'Corporate Donor Name', tier: 'Community Partner' },
-    { name: 'Corporate Donor Name', tier: 'Community Partner' },
-    { name: 'Corporate Donor Name', tier: 'Friend of JC' },
-    { name: 'Corporate Donor Name', tier: 'Friend of JC' },
+    { name: 'Corporate Donor Name', tier: 'Presenting' },
+    { name: 'Corporate Donor Name', tier: 'Diamond' },
+    { name: 'Corporate Donor Name', tier: 'Diamond' },
+    { name: 'Corporate Donor Name', tier: 'Platinum' },
+    { name: 'Corporate Donor Name', tier: 'Gold' },
+    { name: 'Corporate Donor Name', tier: 'Gold' },
+    { name: 'Corporate Donor Name', tier: 'Silver' },
+    { name: 'Corporate Donor Name', tier: 'Bronze' },
+    { name: 'Corporate Donor Name', tier: 'Bronze' },
+    { name: 'Corporate Donor Name', tier: 'Black' },
   ],
   hospitality: [
     { name: 'Hospitality Partner Name', category: 'Catering' },
