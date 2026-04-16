@@ -88,9 +88,9 @@ export default function HomePage() {
 
             {/* Headline */}
             <h1 className="text-white font-black text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-[0.95] tracking-tight mb-8">
-              Every Child
+              Giving Chicago&apos;s
               <br />
-              <span className="text-jc-red">Deserves</span> a
+              <span className="text-jc-red">Youth</span> a
               <br />
               Fighting Chance.
             </h1>
