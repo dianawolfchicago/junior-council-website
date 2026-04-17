@@ -94,7 +94,7 @@ export default function Navigation() {
             className="flex items-center group"
             aria-label="Junior Council — Home"
           >
-            <div className="bg-white px-3 py-1 border-8 border-jc-red">
+            <div className="bg-white px-3 py-1 border-[6px] border-jc-red">
               <Image
                 src="/jc-logo.png"
                 alt="Junior Council"
