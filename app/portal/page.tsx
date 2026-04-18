@@ -241,7 +241,7 @@ export default function PortalPage() {
 
   const tabs = [
     { key:'dashboard' as Tab, label:'Dashboard',      icon:'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-    { key:'calendar'  as Tab, label:'Calendar',       icon:'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+    { key:'calendar'  as Tab, label:'Calendar & Events', icon:'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
     { key:'impact'    as Tab, label:'Impact Tracker', icon:'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
     { key:'resources' as Tab, label:'Resources',      icon:'M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z' },
     { key:'feed'      as Tab, label:'Community',      icon:'M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z' },
@@ -396,8 +396,9 @@ export default function PortalPage() {
           </>
         )}
 
-        {/* ── CALENDAR ──────────────────────────────────────────────────────── */}
+        {/* ── CALENDAR & EVENTS ────────────────────────────────────────────── */}
         {activeTab==='calendar' && (
+          <>
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 bg-white border border-jc-gray-mid">
               <div className="flex items-center justify-between px-6 py-4 border-b border-jc-gray-mid">
@@ -508,6 +509,80 @@ export default function PortalPage() {
               </div>
             </div>
           </div>
+
+          {/* ── Full year schedule ── */}
+          <div className="mt-12">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true"/>
+              <span className="text-jc-red text-xs font-bold tracking-widest uppercase">2026 Season</span>
+            </div>
+            <h2 className="text-jc-black font-black text-3xl tracking-tight mb-8">Full Year Events</h2>
+
+            {(()=>{
+              // Group events by month
+              const groups: Record<string, CalEvent[]> = {}
+              upcomingEvents.forEach(ev => {
+                const monthKey = ev.dateKey.slice(0,7)
+                if (!groups[monthKey]) groups[monthKey] = []
+                groups[monthKey].push(ev)
+              })
+              return Object.entries(groups).map(([key, evs]) => {
+                const monthName = MONTHS[parseInt(key.slice(5,7))-1]
+                return (
+                  <div key={key} className="mb-10">
+                    {/* Month header */}
+                    <div className="flex items-center gap-4 mb-5">
+                      <h3 className="text-jc-black font-black text-xl flex-shrink-0">{monthName}</h3>
+                      <div className="flex-grow h-px bg-jc-gray-mid"/>
+                      <span className="text-jc-gray-dark text-xs flex-shrink-0">{evs.length} event{evs.length!==1?'s':''}</span>
+                    </div>
+
+                    <div className="space-y-3">
+                      {evs.map(ev => (
+                        <div key={ev.id} className="bg-white border border-jc-gray-mid flex flex-col sm:flex-row sm:items-center gap-4 px-5 py-4 hover:border-jc-red/40 transition-colors">
+                          {/* Date block */}
+                          <div className="flex-shrink-0 w-14 text-center hidden sm:block">
+                            <div className="text-jc-red font-black text-xl leading-none">{parseInt(ev.dateKey.slice(8,10))}</div>
+                            <div className="text-jc-gray-dark text-xs uppercase tracking-wide">{ev.date.split(' ')[0].slice(0,3)}</div>
+                          </div>
+                          <div className="w-px h-10 bg-jc-gray-mid flex-shrink-0 hidden sm:block"/>
+
+                          {/* Info */}
+                          <div className="flex-grow min-w-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <span className={`text-xs font-bold px-2 py-0.5 flex-shrink-0 ${eventTypeColors[ev.type]}`}>{ev.type}</span>
+                              <h4 className="text-jc-black font-black text-sm">{ev.title}</h4>
+                            </div>
+                            <p className="text-jc-gray-dark text-xs">
+                              <span className="sm:hidden">{ev.date} · </span>{ev.time} · {ev.location}
+                            </p>
+                          </div>
+
+                          {/* RSVP */}
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {rsvps[ev.id] ? (
+                              <>
+                                <span className={`text-xs font-bold px-3 py-1.5 ${rsvps[ev.id]==='yes'?'bg-green-100 text-green-700':'bg-jc-gray text-jc-gray-dark'}`}>
+                                  {rsvps[ev.id]==='yes'?'Attending':'Not Attending'}
+                                </span>
+                                <button onClick={()=>setRsvps(p=>{const n={...p};delete n[ev.id];return n})} className="text-jc-gray-dark text-xs hover:text-jc-red transition-colors">Change</button>
+                              </>
+                            ) : (
+                              <>
+                                <button onClick={()=>setRsvps(p=>({...p,[ev.id]:'yes'}))} className="bg-jc-red hover:bg-jc-red-dark text-white text-xs font-bold uppercase px-3 py-1.5 transition-colors">RSVP Yes</button>
+                                <button onClick={()=>setRsvps(p=>({...p,[ev.id]:'no'}))} className="border border-jc-gray-mid hover:border-jc-red text-jc-gray-dark hover:text-jc-red text-xs font-bold uppercase px-3 py-1.5 transition-colors">Can&apos;t Go</button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })
+            })()}
+          </div>
+          </>
         )}
 
         {/* ── IMPACT TRACKER ────────────────────────────────────────────────── */}
