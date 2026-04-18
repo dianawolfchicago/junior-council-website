@@ -100,28 +100,28 @@ export default function Navigation() {
       }`}
       aria-label="Main navigation"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-18">
+      <div className="max-w-7xl mx-auto px-4 lg:px-6">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center group"
+            className="flex items-center group flex-shrink-0"
             aria-label="Junior Council — Home"
           >
-            <div className="bg-white px-3 py-1 border-[6px] border-jc-red">
+            <div className="bg-white px-2.5 py-1 border-[5px] border-jc-red">
               <Image
                 src="/jc-logo.png"
                 alt="Junior Council"
-                width={160}
-                height={40}
-                className="h-8 w-auto group-hover:opacity-90 transition-opacity"
+                width={130}
+                height={34}
+                className="h-7 w-auto group-hover:opacity-90 transition-opacity"
                 priority
               />
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center space-x-5 xl:space-x-7" ref={dropdownRef}>
+          <div className="hidden lg:flex items-center space-x-4 xl:space-x-5" ref={dropdownRef}>
             {navLinks.map((link) =>
               link.dropdown ? (
                 /* ── Dropdown item ── */
@@ -132,7 +132,7 @@ export default function Navigation() {
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
-                    className={`flex items-center gap-1 text-sm font-semibold tracking-wide uppercase transition-colors hover:text-jc-red focus:outline-none ${
+                    className={`flex items-center gap-1 text-xs font-bold tracking-wider uppercase transition-colors hover:text-jc-red focus:outline-none ${
                       isActive(link) ? 'text-jc-red' : 'text-white/80 hover:text-white'
                     }`}
                     aria-haspopup="true"
@@ -195,7 +195,7 @@ export default function Navigation() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-semibold tracking-wide uppercase transition-colors hover:text-jc-red ${
+                  className={`text-xs font-bold tracking-wider uppercase transition-colors hover:text-jc-red ${
                     pathname === link.href ? 'text-jc-red' : 'text-white/80 hover:text-white'
                   }`}
                 >
@@ -211,7 +211,7 @@ export default function Navigation() {
               href="/login"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-1.5 text-white/60 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors"
+              className="hidden lg:flex items-center gap-1 text-white/60 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

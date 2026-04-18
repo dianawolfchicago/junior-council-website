@@ -52,3 +52,13 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Shrink UserWay accessibility widget button */
+#userwayAccessibilityIcon,
+[id^="userway-"] svg,
+.uai {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+}
