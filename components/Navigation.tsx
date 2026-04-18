@@ -32,7 +32,16 @@ const navLinks: NavLink[] = [
       { href: '/members', label: 'Member Directory' },
     ],
   },
-  { href: '/gala', label: 'Annual Gala' },
+  {
+    href: '/gala',
+    label: 'Annual Gala',
+    dropdown: [
+      { href: '/gala', label: 'About Snowball' },
+      { href: '/gala/tickets', label: 'Get Your Tickets' },
+      { href: '/gala/silent-auction', label: 'Silent Auction' },
+      { href: '/gala/recap', label: 'Event Recaps' },
+    ],
+  },
   {
     href: '/support',
     label: 'Partner With Us',
