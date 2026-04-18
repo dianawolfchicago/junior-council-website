@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import LogoImage from '@/components/LogoImage'
 
 export const metadata: Metadata = {
   title: 'Our Donors & Partners | Junior Council',
@@ -9,23 +10,23 @@ export const metadata: Metadata = {
 
 const donors = {
   corporate: [
-    { name: 'Blue Cross Blue Shield of Illinois', tier: 'Corporate Sponsor' },
-    { name: 'CBRE', tier: 'Corporate Sponsor' },
-    { name: 'Clayco', tier: 'Corporate Sponsor' },
-    { name: 'EnergyCX', tier: 'Corporate Sponsor' },
-    { name: 'RSMUS Foundation', tier: 'Corporate Sponsor' },
-    { name: 'Neuberger Berman', tier: 'Corporate Sponsor' },
-    { name: 'Merrill Lynch', tier: 'Corporate Sponsor' },
-    { name: 'Concord Group', tier: 'Corporate Sponsor' },
-    { name: 'Barnes & Thornburg', tier: 'Corporate Sponsor' },
-    { name: 'American Medical Association', tier: 'Corporate Sponsor' },
-    { name: 'Old Republic International', tier: 'Corporate Sponsor' },
+    { name: 'Blue Cross Blue Shield of Illinois', tier: 'Corporate Sponsor', domain: 'bcbsil.com' },
+    { name: 'CBRE', tier: 'Corporate Sponsor', domain: 'cbre.com' },
+    { name: 'Clayco', tier: 'Corporate Sponsor', domain: 'claycorp.com' },
+    { name: 'EnergyCX', tier: 'Corporate Sponsor', domain: 'energycx.com' },
+    { name: 'RSMUS Foundation', tier: 'Corporate Sponsor', domain: 'rsmus.com' },
+    { name: 'Neuberger Berman', tier: 'Corporate Sponsor', domain: 'nb.com' },
+    { name: 'Merrill Lynch', tier: 'Corporate Sponsor', domain: 'ml.com' },
+    { name: 'Concord Group', tier: 'Corporate Sponsor', domain: 'concordgroup.net' },
+    { name: 'Barnes & Thornburg', tier: 'Corporate Sponsor', domain: 'btlaw.com' },
+    { name: 'American Medical Association', tier: 'Corporate Sponsor', domain: 'ama-assn.org' },
+    { name: 'Old Republic International', tier: 'Corporate Sponsor', domain: 'oldrepublic.com' },
     { name: 'CST Academy Therapeutic Preschool', tier: 'Corporate Sponsor' },
-    { name: 'GoGlow', tier: 'Corporate Sponsor', perk: '25% off custom airbrush spray tans' },
-    { name: "Men's Wearhouse & Jos. A. Bank", tier: 'Corporate Sponsor', perk: '$70 off suit/tux rentals & 25% off purchases' },
-    { name: 'Blacklane', tier: 'Corporate Sponsor', perk: '$40 off your chauffeured ride to/from Snowball' },
+    { name: 'GoGlow', tier: 'Corporate Sponsor', domain: 'goglow.com', perk: '25% off custom airbrush spray tans' },
+    { name: "Men's Wearhouse & Jos. A. Bank", tier: 'Corporate Sponsor', domain: 'menswearhouse.com', perk: '$70 off suit/tux rentals & 25% off purchases' },
+    { name: 'Blacklane', tier: 'Corporate Sponsor', domain: 'blacklane.com', perk: '$40 off your chauffeured ride to/from Snowball' },
     { name: 'Janet Mandell', tier: 'Corporate Sponsor', perk: '15% of your rental fee goes back to JC — mention Snowball' },
-    { name: 'Pin Me Up Chicago', tier: 'Corporate Sponsor', perk: '20% off hair & makeup services and haircuts' },
+    { name: 'Pin Me Up Chicago', tier: 'Corporate Sponsor', domain: 'pinmeupchicago.com', perk: '20% off hair & makeup services and haircuts' },
   ],
   hospitality: [
     { name: "Men's Wearhouse & Jos. A. Bank", category: 'Formal Wear' },
@@ -112,11 +113,9 @@ export default function DonorsPage() {
                 key={i}
                 className="border border-jc-gray-mid hover:border-jc-red transition-colors p-5 flex flex-col items-center text-center group"
               >
-                {/* Logo placeholder */}
-                <div className="w-12 h-12 bg-jc-gray rounded-sm mb-3 flex items-center justify-center group-hover:bg-jc-red/10 transition-colors flex-shrink-0" aria-hidden="true">
-                  <svg className="w-6 h-6 text-jc-gray-mid group-hover:text-jc-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
+                {/* Company logo */}
+                <div className="w-16 h-16 bg-jc-gray rounded-sm mb-3 flex items-center justify-center group-hover:bg-jc-red/10 transition-colors flex-shrink-0 overflow-hidden">
+                  <LogoImage domain={'domain' in donor ? donor.domain : undefined} name={donor.name} />
                 </div>
                 <div className="text-jc-black font-black text-sm leading-tight mb-1">
                   {donor.name}
