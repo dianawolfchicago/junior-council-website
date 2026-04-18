@@ -35,9 +35,9 @@ const navLinks: NavLink[] = [
   { href: '/gala', label: 'Annual Gala' },
   {
     href: '/support',
-    label: 'Support',
+    label: 'Partner With Us',
     dropdown: [
-      { href: '/support', label: 'Donate & Sponsor' },
+      { href: '/support', label: 'Become a Sponsor' },
       { href: '/donors#corporate', label: 'Corporate Sponsors' },
       { href: '/donors#hospitality', label: 'Hospitality Partners' },
       { href: '/donors#silent-auction', label: 'Silent Auction' },
