@@ -47,7 +47,7 @@ export default function SilentAuctionPage() {
       <section className="bg-jc-red py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-white font-bold text-sm tracking-wide">
-            🎉 Auction items for Snowball 2027 will be announced closer to the event — check back soon!
+            Auction items for Snowball 2027 will be announced closer to the event — check back soon!
           </p>
         </div>
       </section>
