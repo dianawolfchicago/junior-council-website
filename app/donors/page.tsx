@@ -136,7 +136,7 @@ export default function DonorsPage() {
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
                 <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">
-                  Category
+                  2026
                 </span>
               </div>
               <h2 className="text-jc-black font-black text-3xl sm:text-4xl tracking-tight">
@@ -208,7 +208,7 @@ export default function DonorsPage() {
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
                 <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">
-                  Category
+                  2026
                 </span>
               </div>
               <h2 className="text-jc-black font-black text-3xl sm:text-4xl tracking-tight">
