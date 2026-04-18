@@ -21,12 +21,12 @@ const donors = {
     { name: 'Corporate Donor Name', tier: 'Black' },
   ],
   hospitality: [
+    { name: "Men's Wearhouse & Jos. A. Bank", category: 'Formal Wear' },
+    { name: 'Blacklane', category: 'Transportation' },
+    { name: 'Janet Mandell', category: 'Rental Services' },
     { name: 'Hospitality Partner Name', category: 'Catering' },
     { name: 'Hospitality Partner Name', category: 'Bar & Beverage' },
     { name: 'Hospitality Partner Name', category: 'Venue' },
-    { name: 'Hospitality Partner Name', category: 'Catering' },
-    { name: 'Hospitality Partner Name', category: 'Audio / Visual' },
-    { name: 'Hospitality Partner Name', category: 'Floral & Décor' },
   ],
   silentAuction: [
     { name: 'Auction Donor Name', item: 'Travel & Experience' },
@@ -39,12 +39,12 @@ const donors = {
     { name: 'Auction Donor Name', item: 'Services' },
   ],
   wellness: [
+    { name: 'GoGlow', category: 'Spray Tan' },
+    { name: 'Pin Me Up Chicago', category: 'Hair & Makeup' },
     { name: 'Wellness Partner Name', category: 'Fitness' },
     { name: 'Wellness Partner Name', category: 'Spa & Beauty' },
     { name: 'Wellness Partner Name', category: 'Nutrition' },
     { name: 'Wellness Partner Name', category: 'Mental Health' },
-    { name: 'Wellness Partner Name', category: 'Fitness' },
-    { name: 'Wellness Partner Name', category: 'Spa & Beauty' },
   ],
 }
 
