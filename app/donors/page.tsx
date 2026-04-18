@@ -29,12 +29,56 @@ const donors = {
     { name: 'Pin Me Up Chicago', tier: 'Corporate Sponsor', domain: 'pinmeupchicago.com', website: 'https://www.pinmeupchicago.com', perk: '20% off hair & makeup services and haircuts' },
   ],
   hospitality: [
-    { name: "Men's Wearhouse & Jos. A. Bank", category: 'Formal Wear' },
-    { name: 'Blacklane', category: 'Transportation' },
-    { name: 'Janet Mandell', category: 'Rental Services' },
-    { name: 'Hospitality Partner Name', category: 'Catering' },
-    { name: 'Hospitality Partner Name', category: 'Bar & Beverage' },
-    { name: 'Hospitality Partner Name', category: 'Venue' },
+    { name: 'Tandoor Char House', category: 'Restaurant', domain: 'tandoorcharhouse.com', website: 'https://www.tandoorcharhouse.com' },
+    { name: 'Sushi San', category: 'Restaurant', domain: 'sushisanchicago.com', website: 'https://www.sushisanchicago.com' },
+    { name: 'Polombia', category: 'Restaurant' },
+    { name: 'Summer House Santa Monica', category: 'Restaurant', domain: 'summerhousesantamonica.com', website: 'https://www.summerhousesantamonica.com' },
+    { name: "Nonna's", category: 'Restaurant' },
+    { name: 'Paradise Park', category: 'Bar & Restaurant', domain: 'paradiseparkchicago.com', website: 'https://www.paradiseparkchicago.com' },
+    { name: 'Happy Camper', category: 'Bar & Restaurant', domain: 'happycamperchicago.com', website: 'https://www.happycamperchicago.com' },
+    { name: "Gene and Georgetti's", category: 'Restaurant', domain: 'geneandgeorgettis.com', website: 'https://www.geneandgeorgettis.com' },
+    { name: 'Bombay Eats', category: 'Restaurant', domain: 'bombayeats.com', website: 'https://www.bombayeats.com' },
+    { name: "Tito's", category: 'Spirits', domain: 'titosvodka.com', website: 'https://www.titosvodka.com' },
+    { name: 'Goose Island', category: 'Brewery', domain: 'gooseisland.com', website: 'https://www.gooseisland.com' },
+    { name: 'Anheuser-Busch', category: 'Brewery', domain: 'anheuser-busch.com', website: 'https://www.anheuser-busch.com' },
+    { name: 'Spritz Society', category: 'Beverage', domain: 'spritzsociety.com', website: 'https://www.spritzsociety.com' },
+    { name: 'Craft House Cocktails', category: 'Beverage', domain: 'crafthousecocktails.com', website: 'https://www.crafthousecocktails.com' },
+    { name: 'A Hospitality Company', category: 'Hospitality' },
+    { name: 'Bubble House Brewing Company', category: 'Brewery' },
+    { name: 'Cafe Bionda', category: 'Restaurant' },
+    { name: 'Cafe Yaya', category: 'Restaurant' },
+    { name: 'Cebu', category: 'Restaurant' },
+    { name: 'Khmai', category: 'Restaurant' },
+    { name: "Nancy's Pizzeria", category: 'Restaurant', domain: 'nancyspizza.com', website: 'https://www.nancyspizza.com' },
+    { name: 'Biatch Tequila', category: 'Spirits' },
+    { name: 'Chay', category: 'Restaurant' },
+    { name: 'CH Distillery', category: 'Distillery', domain: 'chdistillery.com', website: 'https://www.chdistillery.com' },
+    { name: 'Chicago Beverage', category: 'Beverage' },
+    { name: 'Doc Brown', category: 'Beverage' },
+    { name: 'Go Brewing', category: 'Brewery', domain: 'gobrewing.com', website: 'https://www.gobrewing.com' },
+    { name: 'Hubbard Inn', category: 'Bar & Restaurant', domain: 'hubbardinn.com', website: 'https://www.hubbardinn.com' },
+    { name: 'Hush Aqua', category: 'Bar & Venue' },
+    { name: "JoJo's Shake Bar", category: 'Restaurant', domain: 'jojosshakebar.com', website: 'https://www.jojosshakebar.com' },
+    { name: 'Koval', category: 'Distillery', domain: 'kovaldistillery.com', website: 'https://www.kovaldistillery.com' },
+    { name: 'Rheingeist Brewery', category: 'Brewery', domain: 'rheingeist.com', website: 'https://www.rheingeist.com' },
+    { name: 'Organic Spirits', category: 'Spirits' },
+    { name: 'STK Steakhouse', category: 'Restaurant', domain: 'stksteakhouse.com', website: 'https://www.stksteakhouse.com' },
+    { name: 'LaCroix', category: 'Beverage', domain: 'lacroixwater.com', website: 'https://www.lacroixwater.com' },
+    { name: 'Solemn Oath Brewery', category: 'Brewery', domain: 'solemnoathbrewery.com', website: 'https://www.solemnoathbrewery.com' },
+    { name: 'MMMM Enjoy', category: 'Beverage' },
+    { name: 'Pepsi', category: 'Beverage', domain: 'pepsi.com', website: 'https://www.pepsi.com' },
+    { name: 'Revolution Brewing', category: 'Brewery', domain: 'revbrew.com', website: 'https://www.revbrew.com' },
+    { name: 'Ritual Zero Proof', category: 'Non-Alcoholic', domain: 'ritualzeroproof.com', website: 'https://www.ritualzeroproof.com' },
+    { name: 'RPM Steak', category: 'Restaurant', domain: 'rpmrestaurants.com', website: 'https://www.rpmrestaurants.com' },
+    { name: 'RPM Restaurants', category: 'Restaurant Group', domain: 'rpmrestaurants.com', website: 'https://www.rpmrestaurants.com' },
+    { name: "Trader Joe's", category: 'Grocery', domain: 'traderjoes.com', website: 'https://www.traderjoes.com' },
+    { name: 'Do Rite Donuts', category: 'Restaurant', domain: 'doritechicago.com', website: 'https://www.doritechicago.com' },
+    { name: 'Bacardi', category: 'Spirits', domain: 'bacardi.com', website: 'https://www.bacardi.com' },
+    { name: 'Athletic Brewing', category: 'Brewery', domain: 'athleticbrewing.com', website: 'https://www.athleticbrewing.com' },
+    { name: 'Uni Uni', category: 'Restaurant' },
+    { name: 'Select Beverage Company', category: 'Beverage' },
+    { name: 'Link Drinks Transfusion', category: 'Beverage' },
+    { name: 'Venteux', category: 'Restaurant' },
   ],
   silentAuction: [
     { name: 'Auction Donor Name', item: 'Travel & Experience' },
@@ -180,24 +224,37 @@ export default function DonorsPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {donors.hospitality.map((donor, i) => (
-              <div
-                key={i}
-                className="bg-white border border-jc-gray-mid hover:border-jc-red transition-colors p-6 flex flex-col items-center justify-center text-center min-h-[120px] group"
-              >
-                <div className="w-12 h-12 bg-jc-gray rounded-sm mb-3 flex items-center justify-center group-hover:bg-jc-red/10 transition-colors" aria-hidden="true">
-                  <svg className="w-6 h-6 text-jc-gray-mid group-hover:text-jc-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <div className="text-jc-black font-black text-sm leading-tight mb-1">
-                  {donor.name}
-                </div>
-                <div className="text-jc-red text-xs font-semibold uppercase tracking-wide">
-                  {donor.category}
-                </div>
-              </div>
-            ))}
+            {donors.hospitality.map((donor, i) => {
+              const website = 'website' in donor ? donor.website : undefined
+              const CardWrapper = ({ children }: { children: React.ReactNode }) =>
+                website ? (
+                  <a
+                    href={website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white border border-jc-gray-mid hover:border-jc-red transition-colors p-5 flex flex-col items-center text-center min-h-[120px] group cursor-pointer"
+                  >
+                    {children}
+                  </a>
+                ) : (
+                  <div className="bg-white border border-jc-gray-mid p-5 flex flex-col items-center text-center min-h-[120px] group">
+                    {children}
+                  </div>
+                )
+              return (
+                <CardWrapper key={i}>
+                  <div className="w-16 h-16 bg-jc-gray rounded-sm mb-3 flex items-center justify-center group-hover:bg-jc-red/10 transition-colors flex-shrink-0 overflow-hidden">
+                    <LogoImage domain={'domain' in donor ? donor.domain : undefined} name={donor.name} />
+                  </div>
+                  <div className="text-jc-black font-black text-sm leading-tight mb-1 group-hover:text-jc-red transition-colors">
+                    {donor.name}
+                  </div>
+                  <div className="text-jc-red text-xs font-semibold uppercase tracking-wide">
+                    {donor.category}
+                  </div>
+                </CardWrapper>
+              )
+            })}
           </div>
         </div>
       </section>
