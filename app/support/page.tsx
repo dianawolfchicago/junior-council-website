@@ -316,7 +316,7 @@ export default function SupportPage() {
               </a>
             </div>
             <p className="text-jc-gray-dark text-sm">
-              For further information, contact Charlie Nash at{' '}
+              For further information, contact Marisa Stefani or Jessica Linley at{' '}
               <a href="mailto:corporate@juniorcouncil.org" className="text-jc-red font-bold hover:underline">
                 corporate@juniorcouncil.org
               </a>
