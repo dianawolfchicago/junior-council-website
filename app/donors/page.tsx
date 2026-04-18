@@ -10,23 +10,23 @@ export const metadata: Metadata = {
 
 const donors = {
   corporate: [
-    { name: 'Blue Cross Blue Shield of Illinois', tier: 'Corporate Sponsor', domain: 'bcbsil.com' },
-    { name: 'CBRE', tier: 'Corporate Sponsor', domain: 'cbre.com' },
-    { name: 'Clayco', tier: 'Corporate Sponsor', domain: 'claycorp.com' },
-    { name: 'EnergyCX', tier: 'Corporate Sponsor', domain: 'energycx.com' },
-    { name: 'RSMUS Foundation', tier: 'Corporate Sponsor', domain: 'rsmus.com' },
-    { name: 'Neuberger Berman', tier: 'Corporate Sponsor', domain: 'nb.com' },
-    { name: 'Merrill Lynch', tier: 'Corporate Sponsor', domain: 'ml.com' },
-    { name: 'Concord Group', tier: 'Corporate Sponsor', domain: 'concordgroup.net' },
-    { name: 'Barnes & Thornburg', tier: 'Corporate Sponsor', domain: 'btlaw.com' },
-    { name: 'American Medical Association', tier: 'Corporate Sponsor', domain: 'ama-assn.org' },
-    { name: 'Old Republic International', tier: 'Corporate Sponsor', domain: 'oldrepublic.com' },
-    { name: 'CST Academy Therapeutic Preschool', tier: 'Corporate Sponsor' },
-    { name: 'GoGlow', tier: 'Corporate Sponsor', domain: 'goglow.com', perk: '25% off custom airbrush spray tans' },
-    { name: "Men's Wearhouse & Jos. A. Bank", tier: 'Corporate Sponsor', domain: 'menswearhouse.com', perk: '$70 off suit/tux rentals & 25% off purchases' },
-    { name: 'Blacklane', tier: 'Corporate Sponsor', domain: 'blacklane.com', perk: '$40 off your chauffeured ride to/from Snowball' },
+    { name: 'Blue Cross Blue Shield of Illinois', tier: 'Corporate Sponsor', domain: 'bcbsil.com', website: 'https://www.bcbsil.com' },
+    { name: 'CBRE', tier: 'Corporate Sponsor', domain: 'cbre.com', website: 'https://www.cbre.com' },
+    { name: 'Clayco', tier: 'Corporate Sponsor', domain: 'claycorp.com', website: 'https://www.claycorp.com' },
+    { name: 'EnergyCX', tier: 'Corporate Sponsor', domain: 'energycx.com', website: 'https://www.energycx.com' },
+    { name: 'RSMUS Foundation', tier: 'Corporate Sponsor', domain: 'rsmus.com', website: 'https://rsmus.com' },
+    { name: 'Neuberger Berman', tier: 'Corporate Sponsor', domain: 'nb.com', website: 'https://www.nb.com' },
+    { name: 'Merrill Lynch', tier: 'Corporate Sponsor', domain: 'ml.com', website: 'https://www.ml.com' },
+    { name: 'Concord Group', tier: 'Corporate Sponsor', domain: 'concordgroup.net', website: 'https://www.concordgroup.net' },
+    { name: 'Barnes & Thornburg', tier: 'Corporate Sponsor', domain: 'btlaw.com', website: 'https://www.btlaw.com' },
+    { name: 'American Medical Association', tier: 'Corporate Sponsor', domain: 'ama-assn.org', website: 'https://www.ama-assn.org' },
+    { name: 'Old Republic International', tier: 'Corporate Sponsor', domain: 'oldrepublic.com', website: 'https://www.oldrepublic.com' },
+    { name: 'CST Academy Therapeutic Preschool', tier: 'Corporate Sponsor', website: 'https://www.cstacademy.org' },
+    { name: 'GoGlow', tier: 'Corporate Sponsor', domain: 'goglow.com', website: 'https://www.goglow.com', perk: '25% off custom airbrush spray tans' },
+    { name: "Men's Wearhouse & Jos. A. Bank", tier: 'Corporate Sponsor', domain: 'menswearhouse.com', website: 'https://www.menswearhouse.com', perk: '$70 off suit/tux rentals & 25% off purchases' },
+    { name: 'Blacklane', tier: 'Corporate Sponsor', domain: 'blacklane.com', website: 'https://www.blacklane.com', perk: '$40 off your chauffeured ride to/from Snowball' },
     { name: 'Janet Mandell', tier: 'Corporate Sponsor', perk: '15% of your rental fee goes back to JC — mention Snowball' },
-    { name: 'Pin Me Up Chicago', tier: 'Corporate Sponsor', domain: 'pinmeupchicago.com', perk: '20% off hair & makeup services and haircuts' },
+    { name: 'Pin Me Up Chicago', tier: 'Corporate Sponsor', domain: 'pinmeupchicago.com', website: 'https://www.pinmeupchicago.com', perk: '20% off hair & makeup services and haircuts' },
   ],
   hospitality: [
     { name: "Men's Wearhouse & Jos. A. Bank", category: 'Formal Wear' },
@@ -108,35 +108,50 @@ export default function DonorsPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {donors.corporate.map((donor, i) => (
-              <div
-                key={i}
-                className="border border-jc-gray-mid hover:border-jc-red transition-colors p-5 flex flex-col items-center text-center group"
-              >
-                {/* Company logo */}
-                <div className="w-16 h-16 bg-jc-gray rounded-sm mb-3 flex items-center justify-center group-hover:bg-jc-red/10 transition-colors flex-shrink-0 overflow-hidden">
-                  <LogoImage domain={'domain' in donor ? donor.domain : undefined} name={donor.name} />
-                </div>
-                <div className="text-jc-black font-black text-sm leading-tight mb-1">
-                  {donor.name}
-                </div>
-                <div className="text-jc-red text-xs font-semibold uppercase tracking-wide mb-2">
-                  {donor.tier}
-                </div>
-                {'perk' in donor && donor.perk && (
-                  <div className="w-full bg-jc-red/8 border border-jc-red/20 px-2 py-1.5 mt-auto">
-                    <div className="flex items-start gap-1.5">
-                      <svg className="w-3 h-3 text-jc-red flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                      </svg>
-                      <span className="text-jc-red text-xs leading-snug font-medium">
-                        {donor.perk}
-                      </span>
-                    </div>
+            {donors.corporate.map((donor, i) => {
+              const website = 'website' in donor ? donor.website : undefined
+              const CardWrapper = ({ children }: { children: React.ReactNode }) =>
+                website ? (
+                  <a
+                    href={website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border border-jc-gray-mid hover:border-jc-red transition-colors p-5 flex flex-col items-center text-center group cursor-pointer"
+                  >
+                    {children}
+                  </a>
+                ) : (
+                  <div className="border border-jc-gray-mid p-5 flex flex-col items-center text-center group">
+                    {children}
                   </div>
-                )}
-              </div>
-            ))}
+                )
+              return (
+                <CardWrapper key={i}>
+                  {/* Company logo */}
+                  <div className="w-16 h-16 bg-jc-gray rounded-sm mb-3 flex items-center justify-center group-hover:bg-jc-red/10 transition-colors flex-shrink-0 overflow-hidden">
+                    <LogoImage domain={'domain' in donor ? donor.domain : undefined} name={donor.name} />
+                  </div>
+                  <div className="text-jc-black font-black text-sm leading-tight mb-1 group-hover:text-jc-red transition-colors">
+                    {donor.name}
+                  </div>
+                  <div className="text-jc-red text-xs font-semibold uppercase tracking-wide mb-2">
+                    {donor.tier}
+                  </div>
+                  {'perk' in donor && donor.perk && (
+                    <div className="w-full bg-jc-red/8 border border-jc-red/20 px-2 py-1.5 mt-auto">
+                      <div className="flex items-start gap-1.5">
+                        <svg className="w-3 h-3 text-jc-red flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                        <span className="text-jc-red text-xs leading-snug font-medium">
+                          {donor.perk}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </CardWrapper>
+              )
+            })}
           </div>
         </div>
       </section>
