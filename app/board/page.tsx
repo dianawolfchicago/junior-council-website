@@ -8,54 +8,22 @@ export const metadata: Metadata = {
 }
 
 const boardMembers = [
-  {
-    name: 'Board Member Name',
-    title: 'President',
-    company: 'Company / Organization',
-    bio: 'Brief bio about this board member, their background, and their connection to the Junior Council mission.',
-  },
-  {
-    name: 'Board Member Name',
-    title: 'Vice President',
-    company: 'Company / Organization',
-    bio: 'Brief bio about this board member, their background, and their connection to the Junior Council mission.',
-  },
-  {
-    name: 'Board Member Name',
-    title: 'Treasurer',
-    company: 'Company / Organization',
-    bio: 'Brief bio about this board member, their background, and their connection to the Junior Council mission.',
-  },
-  {
-    name: 'Board Member Name',
-    title: 'Secretary',
-    company: 'Company / Organization',
-    bio: 'Brief bio about this board member, their background, and their connection to the Junior Council mission.',
-  },
-  {
-    name: 'Board Member Name',
-    title: 'Board Member',
-    company: 'Company / Organization',
-    bio: 'Brief bio about this board member, their background, and their connection to the Junior Council mission.',
-  },
-  {
-    name: 'Board Member Name',
-    title: 'Board Member',
-    company: 'Company / Organization',
-    bio: 'Brief bio about this board member, their background, and their connection to the Junior Council mission.',
-  },
-  {
-    name: 'Board Member Name',
-    title: 'Board Member',
-    company: 'Company / Organization',
-    bio: 'Brief bio about this board member, their background, and their connection to the Junior Council mission.',
-  },
-  {
-    name: 'Board Member Name',
-    title: 'Board Member',
-    company: 'Company / Organization',
-    bio: 'Brief bio about this board member, their background, and their connection to the Junior Council mission.',
-  },
+  { name: 'Eve Voci',               title: 'President' },
+  { name: 'Gabe Spach',             title: 'Vice President' },
+  { name: 'Charlie Nash',           title: 'Treasurer' },
+  { name: 'Hailie Schroll',         title: 'Snowball' },
+  { name: 'KK Begley',              title: 'Secretary' },
+  { name: 'Thomas Ware',            title: 'Engagement' },
+  { name: 'Danielle Imbrigiotta',   title: 'Recruitment' },
+  { name: 'Caroline Cheung',        title: 'Education' },
+  { name: 'Erin Bylina',            title: 'Silent Auction' },
+  { name: 'Isabella Del Muro',      title: 'W4AC / Fundraising Pages' },
+  { name: 'Marisa Stefani',         title: 'Corporate Co-Chair' },
+  { name: 'Jessica Linley',         title: 'Corporate Co-Chair' },
+  { name: 'Brooklyn Mychalowych',   title: 'Creative' },
+  { name: 'Catie Hinton',           title: 'PR' },
+  { name: 'Emily Splinter',         title: 'Hospitality' },
+  { name: 'Diana Wolf',             title: 'Transformation Director' },
 ]
 
 export default function BoardPage() {
@@ -78,8 +46,8 @@ export default function BoardPage() {
             Board of Directors
           </h1>
           <p className="text-white/60 text-lg mt-4 max-w-2xl">
-            Junior Council is led by a dedicated group of Chicago professionals
-            who bring expertise, passion, and deep commitment to our mission.
+            Meet the 2026 / 2027 Junior Council Board of Directors — Chicago
+            professionals leading the fight for youth with HIV and AIDS.
           </p>
         </div>
       </section>
@@ -116,16 +84,9 @@ export default function BoardPage() {
                   <div className="text-jc-red text-xs font-bold tracking-widest uppercase mb-1">
                     {member.title}
                   </div>
-                  <h2 className="text-jc-black font-black text-lg leading-tight mb-1">
+                  <h2 className="text-jc-black font-black text-lg leading-tight">
                     {member.name}
                   </h2>
-                  <div className="text-jc-gray-dark text-sm mb-3">
-                    {member.company}
-                  </div>
-                  <div className="w-6 h-0.5 bg-jc-red mb-3" aria-hidden="true" />
-                  <p className="text-jc-gray-dark text-xs leading-relaxed">
-                    {member.bio}
-                  </p>
                 </div>
               </div>
             ))}
