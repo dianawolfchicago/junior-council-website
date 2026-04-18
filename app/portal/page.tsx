@@ -99,7 +99,14 @@ const donationSubGoals = [
   { id:'inkind',      label:'In-kind donation'    },
 ]
 
-const TOTAL_GOALS = 4   // OneCause · Any 1 donation · 3+ events · RSVP
+const TOTAL_GOALS = 3   // OneCause · Any 1 donation · 3+ events
+
+const DONATION_ROUTES: Record<string,string> = {
+  corporate:   'Marisa Stefani & Jessica Linley',
+  auction:     'Erin Bylina',
+  hospitality: 'Emily Splinter',
+  inkind:      'Diana Wolf',
+}
 
 // ─── Resources ────────────────────────────────────────────────────────────────
 
@@ -143,8 +150,19 @@ export default function PortalPage() {
   const completedCount =
     (checked['oncause']   ? 1 : 0) +
     (isDonationComplete   ? 1 : 0) +
-    (checked['attended3'] ? 1 : 0) +
-    (checked['rsvp']      ? 1 : 0)
+    (checked['attended3'] ? 1 : 0)
+
+  // Donor submission form
+  const [donorForm, setDonorForm] = useState({ type:'', donorName:'', contactName:'', contactEmail:'', notes:'' })
+  const [donorSubmitted, setDonorSubmitted] = useState(false)
+  const handleDonorSubmit = () => {
+    if (!donorForm.type || !donorForm.donorName.trim()) return
+    setDonorSubmitted(true)
+    setTimeout(() => {
+      setDonorSubmitted(false)
+      setDonorForm({ type:'', donorName:'', contactName:'', contactEmail:'', notes:'' })
+    }, 5000)
+  }
 
   // Calendar
   const today = new Date()
@@ -745,18 +763,6 @@ export default function PortalPage() {
                     </span>
                   </div>
 
-                  {/* Goal 4 — RSVPd */}
-                  <div className="py-4 flex items-center gap-4">
-                    <button onClick={()=>toggleGoal('rsvp')}
-                      className={`w-6 h-6 flex-shrink-0 border-2 flex items-center justify-center transition-all ${checked['rsvp']?'bg-jc-red border-jc-red':'border-jc-gray-mid hover:border-jc-red'}`}
-                      aria-label={checked['rsvp']?'Mark incomplete':'Mark complete'}>
-                      {checked['rsvp']&&<svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>}
-                    </button>
-                    <span className={`text-sm font-bold transition-colors flex-grow ${checked['rsvp']?'text-jc-gray-dark line-through':'text-jc-black'}`}>
-                      4. RSVPd to next member meeting
-                    </span>
-                  </div>
-
                 </div>
 
                 <div className="px-6 py-4 border-t border-jc-gray-mid bg-jc-gray/30">
@@ -767,19 +773,88 @@ export default function PortalPage() {
 
             {/* Right sidebar */}
             <div className="space-y-5">
-              {/* Completion badge */}
-              <div className={`p-6 text-center border-2 ${completedCount===TOTAL_GOALS?'bg-jc-red border-jc-red':'bg-white border-jc-gray-mid'}`}>
-                <div className={`text-5xl font-black mb-2 ${completedCount===TOTAL_GOALS?'text-white':'text-jc-black'}`}>
-                  {completedCount===TOTAL_GOALS?'🏆':'⭐'}
+
+              {/* Donor submission form */}
+              <div className="bg-white border border-jc-gray-mid">
+                <div className="px-5 py-4 border-b border-jc-gray-mid">
+                  <div className="flex items-center gap-3 mb-0.5">
+                    <div className="w-5 h-0.5 bg-jc-red" aria-hidden="true"/>
+                    <span className="text-jc-red text-xs font-bold tracking-widest uppercase">Log a Win</span>
+                  </div>
+                  <h3 className="text-jc-black font-black text-base">Submit a Secured Donor</h3>
                 </div>
-                <div className={`font-black text-lg mb-1 ${completedCount===TOTAL_GOALS?'text-white':'text-jc-black'}`}>
-                  {completedCount===TOTAL_GOALS?'All Goals Complete!':'Keep Going!'}
-                </div>
-                <div className={`text-xs ${completedCount===TOTAL_GOALS?'text-white/80':'text-jc-gray-dark'}`}>
-                  {completedCount===TOTAL_GOALS
-                    ?'You are a JC superstar. Thank you!'
-                    :`${TOTAL_GOALS-completedCount} goal${TOTAL_GOALS-completedCount!==1?'s':''} remaining`}
-                </div>
+
+                {donorSubmitted ? (
+                  <div className="p-5 text-center">
+                    <div className="w-12 h-12 bg-green-100 flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </div>
+                    <p className="text-jc-black font-black text-sm mb-1">Submitted!</p>
+                    <p className="text-jc-gray-dark text-xs leading-relaxed">
+                      {donorForm.type && DONATION_ROUTES[donorForm.type]
+                        ? <><strong>{DONATION_ROUTES[donorForm.type]}</strong> has been notified and will follow up.</>
+                        : 'The appropriate chair has been notified.'
+                      }
+                    </p>
+                  </div>
+                ) : (
+                  <div className="p-5 space-y-3">
+                    {/* Donation type */}
+                    <div>
+                      <label className="block text-jc-gray-dark text-xs font-bold uppercase tracking-wide mb-1">Type <span className="text-jc-red">*</span></label>
+                      <select value={donorForm.type} onChange={e=>setDonorForm(p=>({...p,type:e.target.value}))}
+                        className="w-full border border-jc-gray-mid focus:border-jc-red px-3 py-2 text-sm text-jc-black outline-none bg-white">
+                        <option value="">Select type…</option>
+                        <option value="corporate">Corporate Sponsor</option>
+                        <option value="auction">Silent Auction Item</option>
+                        <option value="hospitality">Hospitality Partner</option>
+                        <option value="inkind">In-Kind Donation</option>
+                      </select>
+                      {donorForm.type && (
+                        <p className="text-jc-gray-dark text-xs mt-1">
+                          Will be sent to <span className="font-bold text-jc-black">{DONATION_ROUTES[donorForm.type]}</span>
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Donor name */}
+                    <div>
+                      <label className="block text-jc-gray-dark text-xs font-bold uppercase tracking-wide mb-1">Donor / Company Name <span className="text-jc-red">*</span></label>
+                      <input value={donorForm.donorName} onChange={e=>setDonorForm(p=>({...p,donorName:e.target.value}))}
+                        placeholder="e.g. Acme Corp" className="w-full border border-jc-gray-mid focus:border-jc-red px-3 py-2 text-sm text-jc-black outline-none"/>
+                    </div>
+
+                    {/* Contact name */}
+                    <div>
+                      <label className="block text-jc-gray-dark text-xs font-bold uppercase tracking-wide mb-1">Contact Name</label>
+                      <input value={donorForm.contactName} onChange={e=>setDonorForm(p=>({...p,contactName:e.target.value}))}
+                        placeholder="e.g. Jane Smith" className="w-full border border-jc-gray-mid focus:border-jc-red px-3 py-2 text-sm text-jc-black outline-none"/>
+                    </div>
+
+                    {/* Contact email */}
+                    <div>
+                      <label className="block text-jc-gray-dark text-xs font-bold uppercase tracking-wide mb-1">Contact Email</label>
+                      <input type="email" value={donorForm.contactEmail} onChange={e=>setDonorForm(p=>({...p,contactEmail:e.target.value}))}
+                        placeholder="jane@company.com" className="w-full border border-jc-gray-mid focus:border-jc-red px-3 py-2 text-sm text-jc-black outline-none"/>
+                    </div>
+
+                    {/* Notes */}
+                    <div>
+                      <label className="block text-jc-gray-dark text-xs font-bold uppercase tracking-wide mb-1">Notes</label>
+                      <textarea value={donorForm.notes} onChange={e=>setDonorForm(p=>({...p,notes:e.target.value}))}
+                        placeholder="What did they commit to? Any next steps?" rows={3}
+                        className="w-full border border-jc-gray-mid focus:border-jc-red px-3 py-2 text-sm text-jc-black outline-none resize-none"/>
+                    </div>
+
+                    <button onClick={handleDonorSubmit}
+                      disabled={!donorForm.type || !donorForm.donorName.trim()}
+                      className="w-full bg-jc-red hover:bg-jc-red-dark disabled:opacity-30 disabled:cursor-not-allowed text-white font-black text-xs tracking-widest uppercase py-3 transition-colors">
+                      Submit to Chair
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* OneCause quick link */}
