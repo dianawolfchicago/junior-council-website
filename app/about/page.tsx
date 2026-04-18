@@ -131,33 +131,6 @@ export default function OurCausePage() {
         </div>
       </section>
 
-      {/* Board of Directors link */}
-      <section className="bg-white py-20 border-t border-jc-gray-mid">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <div>
-              <h2 className="text-jc-black font-black text-3xl sm:text-4xl mb-3 tracking-tight">
-                Board of <span className="text-jc-red">Directors</span>
-              </h2>
-              <p className="text-jc-gray-dark text-lg max-w-xl">
-                Junior Council is led by a dedicated group of Chicago
-                professionals who bring expertise, passion, and deep commitment
-                to our mission.
-              </p>
-            </div>
-            <Link
-              href="/board"
-              className="flex-shrink-0 inline-flex items-center bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase px-8 py-4 transition-colors"
-            >
-              Meet the Board
-              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="bg-jc-black py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
