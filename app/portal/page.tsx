@@ -63,15 +63,32 @@ const seedPosts: Post[] = [
   },
 ]
 
-// ─── Events (for Dashboard tab) ──────────────────────────────────────────────
+// ─── Events ──────────────────────────────────────────────────────────────────
 
-const upcomingEvents = [
-  { id: 1, title: 'Monthly Member Meeting', date: 'May 14, 2026', time: '6:30 PM – 8:00 PM', location: 'The Drake Hotel, Chicago', type: 'Meeting' },
-  { id: 2, title: 'Snowball 2026 Kick-Off Party', date: 'January 17, 2026', time: '7:00 PM – 10:00 PM', location: 'TBD, Chicago', type: 'Event' },
-  { id: 3, title: 'Cruising for a Cause', date: 'July 12, 2026', time: '5:00 PM – 9:00 PM', location: 'Navy Pier, Chicago', type: 'Fundraiser' },
-  { id: 4, title: 'Happy Hour — Summer Edition', date: 'August 6, 2026', time: '6:00 PM – 9:00 PM', location: 'Venteux, Chicago', type: 'Social' },
-  { id: 5, title: 'Annual Golf Outing', date: 'September 19, 2026', time: '8:00 AM – 4:00 PM', location: 'Cog Hill Golf & Country Club', type: 'Fundraiser' },
+type CalEvent = { id: number; title: string; dateKey: string; date: string; time: string; location: string; type: string }
+
+const allEvents: CalEvent[] = [
+  { id: 1,  title: 'Monthly Member Meeting',       dateKey: '2026-01-14', date: 'January 14, 2026',   time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 2,  title: 'Snowball Kick-Off Party',       dateKey: '2026-01-17', date: 'January 17, 2026',   time: '7:00 PM – 10:00 PM', location: 'TBD, Chicago',                   type: 'Event'      },
+  { id: 3,  title: 'Monthly Member Meeting',        dateKey: '2026-02-11', date: 'February 11, 2026',  time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 4,  title: 'Monthly Member Meeting',        dateKey: '2026-03-11', date: 'March 11, 2026',     time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 5,  title: 'Derby Party',                   dateKey: '2026-04-25', date: 'April 25, 2026',     time: '4:00 PM – 8:00 PM',  location: 'TBD, Chicago',                   type: 'Fundraiser' },
+  { id: 6,  title: 'Monthly Member Meeting',        dateKey: '2026-04-08', date: 'April 8, 2026',      time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 7,  title: 'Monthly Member Meeting',        dateKey: '2026-05-13', date: 'May 13, 2026',       time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 8,  title: 'Monthly Member Meeting',        dateKey: '2026-06-10', date: 'June 10, 2026',      time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 9,  title: 'Happy Hour',                    dateKey: '2026-06-18', date: 'June 18, 2026',      time: '6:00 PM – 9:00 PM',  location: 'TBD, Chicago',                   type: 'Social'     },
+  { id: 10, title: 'Cruising for a Cause',          dateKey: '2026-07-12', date: 'July 12, 2026',      time: '5:00 PM – 9:00 PM',  location: 'Navy Pier, Chicago',             type: 'Fundraiser' },
+  { id: 11, title: 'Happy Hour — Summer Edition',   dateKey: '2026-08-06', date: 'August 6, 2026',     time: '6:00 PM – 9:00 PM',  location: 'Venteux, Chicago',               type: 'Social'     },
+  { id: 12, title: 'Monthly Member Meeting',        dateKey: '2026-09-09', date: 'September 9, 2026',  time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 13, title: 'Annual Golf Outing',            dateKey: '2026-09-19', date: 'September 19, 2026', time: '8:00 AM – 4:00 PM',  location: 'Cog Hill Golf & Country Club',   type: 'Fundraiser' },
+  { id: 14, title: 'Monthly Member Meeting',        dateKey: '2026-10-14', date: 'October 14, 2026',   time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 15, title: 'Monthly Member Meeting',        dateKey: '2026-11-04', date: 'November 4, 2026',   time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
+  { id: 16, title: 'Holiday Happy Hour',            dateKey: '2026-12-10', date: 'December 10, 2026',  time: '6:00 PM – 9:00 PM',  location: 'TBD, Chicago',                   type: 'Social'     },
+  { id: 17, title: 'Monthly Member Meeting',        dateKey: '2026-12-09', date: 'December 9, 2026',   time: '6:30 PM – 8:00 PM',  location: 'The Drake Hotel, Chicago',       type: 'Meeting'    },
 ]
+
+// Dashboard shows only future events sorted by date
+const upcomingEvents = [...allEvents].sort((a, b) => a.dateKey.localeCompare(b.dateKey))
 
 const eventTypeColors: Record<string, string> = {
   Meeting:    'bg-blue-100 text-blue-700',
@@ -80,12 +97,42 @@ const eventTypeColors: Record<string, string> = {
   Social:     'bg-yellow-100 text-yellow-700',
 }
 
+const eventTypeDots: Record<string, string> = {
+  Meeting:    'bg-blue-500',
+  Event:      'bg-purple-500',
+  Fundraiser: 'bg-green-500',
+  Social:     'bg-yellow-500',
+}
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
+const DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function PortalPage() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'feed'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'feed' | 'calendar'>('dashboard')
   const [rsvps, setRsvps] = useState<Record<number, 'yes' | 'no'>>({})
   const [duesModalOpen, setDuesModalOpen] = useState(false)
+
+  // Calendar state
+  const today = new Date()
+  const [calYear, setCalYear]   = useState(2026)
+  const [calMonth, setCalMonth] = useState(0) // 0 = January
+  const [selectedDay, setSelectedDay] = useState<string | null>(null)
+
+  const prevMonth = () => { if (calMonth === 0) { setCalMonth(11); setCalYear(y => y - 1) } else setCalMonth(m => m - 1); setSelectedDay(null) }
+  const nextMonth = () => { if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1) } else setCalMonth(m => m + 1); setSelectedDay(null) }
+
+  const daysInMonth  = new Date(calYear, calMonth + 1, 0).getDate()
+  const firstDayOfWeek = new Date(calYear, calMonth, 1).getDay()
+  const pad = (n: number) => String(n).padStart(2, '0')
+
+  const eventsOnDay = (day: number) => {
+    const key = `${calYear}-${pad(calMonth + 1)}-${pad(day)}`
+    return allEvents.filter(e => e.dateKey === key)
+  }
+
+  const selectedEvents = selectedDay ? allEvents.filter(e => e.dateKey === selectedDay) : []
 
   // Feed state
   const [posts, setPosts] = useState<Post[]>(seedPosts)
@@ -188,9 +235,10 @@ export default function PortalPage() {
       <div className="bg-jc-black border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1">
           {([
-            { key: 'dashboard', label: 'Dashboard', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+            { key: 'dashboard', label: 'Dashboard',      icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+            { key: 'calendar',  label: 'Calendar',        icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
             { key: 'feed',      label: 'Community Feed', icon: 'M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z' },
-          ] as { key: 'dashboard' | 'feed'; label: string; icon: string }[]).map((tab) => (
+          ] as { key: 'dashboard' | 'feed' | 'calendar'; label: string; icon: string }[]).map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
@@ -332,6 +380,179 @@ export default function PortalPage() {
               </div>
             </div>
           </>
+        )}
+
+        {/* ── CALENDAR TAB ──────────────────────────────────────────────────── */}
+        {activeTab === 'calendar' && (
+          <div className="grid lg:grid-cols-3 gap-6">
+
+            {/* Calendar grid */}
+            <div className="lg:col-span-2 bg-white border border-jc-gray-mid">
+
+              {/* Month nav */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-jc-gray-mid">
+                <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center hover:bg-jc-gray rounded transition-colors" aria-label="Previous month">
+                  <svg className="w-4 h-4 text-jc-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <h2 className="text-jc-black font-black text-lg tracking-tight">
+                  {MONTHS[calMonth]} <span className="text-jc-red">{calYear}</span>
+                </h2>
+                <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center hover:bg-jc-gray rounded transition-colors" aria-label="Next month">
+                  <svg className="w-4 h-4 text-jc-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Day headers */}
+              <div className="grid grid-cols-7 border-b border-jc-gray-mid">
+                {DAYS.map((d) => (
+                  <div key={d} className="py-2 text-center text-xs font-bold uppercase tracking-widest text-jc-gray-dark">
+                    {d}
+                  </div>
+                ))}
+              </div>
+
+              {/* Day grid */}
+              <div className="grid grid-cols-7">
+                {/* Empty cells before first day */}
+                {Array.from({ length: firstDayOfWeek }).map((_, i) => (
+                  <div key={`empty-${i}`} className="border-r border-b border-jc-gray-mid min-h-[80px] bg-jc-gray/30" />
+                ))}
+
+                {/* Day cells */}
+                {Array.from({ length: daysInMonth }).map((_, i) => {
+                  const day = i + 1
+                  const key = `${calYear}-${pad(calMonth + 1)}-${pad(day)}`
+                  const dayEvents = eventsOnDay(day)
+                  const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === day
+                  const isSelected = selectedDay === key
+                  const col = (firstDayOfWeek + i) % 7
+
+                  return (
+                    <div
+                      key={day}
+                      onClick={() => setSelectedDay(isSelected ? null : key)}
+                      className={`border-b border-jc-gray-mid min-h-[80px] p-2 cursor-pointer transition-colors ${col < 6 ? 'border-r' : ''} ${isSelected ? 'bg-jc-red/5 border-jc-red' : 'hover:bg-jc-gray/40'}`}
+                    >
+                      {/* Day number */}
+                      <div className={`w-7 h-7 flex items-center justify-center text-sm font-bold mb-1 ${isToday ? 'bg-jc-red text-white' : isSelected ? 'text-jc-red' : 'text-jc-black'}`}>
+                        {day}
+                      </div>
+
+                      {/* Event dots / chips */}
+                      <div className="space-y-0.5">
+                        {dayEvents.slice(0, 2).map((ev) => (
+                          <div key={ev.id} className="flex items-center gap-1">
+                            <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${eventTypeDots[ev.type]}`} />
+                            <span className="text-jc-black text-xs leading-tight truncate hidden sm:block">{ev.title}</span>
+                          </div>
+                        ))}
+                        {dayEvents.length > 2 && (
+                          <div className="text-jc-gray-dark text-xs">+{dayEvents.length - 2} more</div>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-5">
+
+              {/* Legend */}
+              <div className="bg-white border border-jc-gray-mid p-5">
+                <h3 className="text-jc-black font-black text-sm mb-3 uppercase tracking-widest">Legend</h3>
+                <div className="space-y-2">
+                  {Object.entries(eventTypeDots).map(([type, dot]) => (
+                    <div key={type} className="flex items-center gap-2">
+                      <div className={`w-3 h-3 rounded-full ${dot}`} />
+                      <span className="text-jc-gray-dark text-sm">{type}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Selected day events */}
+              {selectedDay && (
+                <div className="bg-white border border-jc-red">
+                  <div className="px-5 py-3 border-b border-jc-red bg-jc-red/5">
+                    <p className="text-jc-red text-xs font-bold uppercase tracking-widest">
+                      {new Date(selectedDay + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    </p>
+                  </div>
+                  {selectedEvents.length === 0 ? (
+                    <div className="px-5 py-6 text-center">
+                      <p className="text-jc-gray-dark text-sm">No events on this day.</p>
+                    </div>
+                  ) : (
+                    <div className="divide-y divide-jc-gray-mid">
+                      {selectedEvents.map((ev) => (
+                        <div key={ev.id} className="px-5 py-4">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className={`w-2 h-2 rounded-full ${eventTypeDots[ev.type]}`} />
+                            <span className={`text-xs font-bold px-2 py-0.5 ${eventTypeColors[ev.type]}`}>{ev.type}</span>
+                          </div>
+                          <h4 className="text-jc-black font-black text-sm mb-1">{ev.title}</h4>
+                          <p className="text-jc-gray-dark text-xs">{ev.time}</p>
+                          <p className="text-jc-gray-dark text-xs">{ev.location}</p>
+                          <div className="flex gap-2 mt-3">
+                            {rsvps[ev.id] ? (
+                              <div className="flex items-center gap-2">
+                                <span className={`text-xs font-bold px-2 py-1 ${rsvps[ev.id] === 'yes' ? 'bg-green-100 text-green-700' : 'bg-jc-gray text-jc-gray-dark'}`}>
+                                  {rsvps[ev.id] === 'yes' ? 'Attending' : 'Not Attending'}
+                                </span>
+                                <button onClick={() => setRsvps(p => { const n = { ...p }; delete n[ev.id]; return n })} className="text-jc-gray-dark text-xs hover:text-jc-red transition-colors">Change</button>
+                              </div>
+                            ) : (
+                              <>
+                                <button onClick={() => setRsvps(p => ({ ...p, [ev.id]: 'yes' }))} className="bg-jc-red hover:bg-jc-red-dark text-white text-xs font-bold uppercase px-3 py-1 transition-colors">RSVP Yes</button>
+                                <button onClick={() => setRsvps(p => ({ ...p, [ev.id]: 'no' }))} className="border border-jc-gray-mid hover:border-jc-red text-jc-gray-dark hover:text-jc-red text-xs font-bold uppercase px-3 py-1 transition-colors">Can&apos;t Go</button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* This month's events list */}
+              <div className="bg-white border border-jc-gray-mid">
+                <div className="px-5 py-3 border-b border-jc-gray-mid">
+                  <h3 className="text-jc-black font-black text-sm">Events This Month</h3>
+                </div>
+                {allEvents.filter(e => e.dateKey.startsWith(`${calYear}-${pad(calMonth + 1)}`)).length === 0 ? (
+                  <div className="px-5 py-6 text-center">
+                    <p className="text-jc-gray-dark text-sm">No events this month.</p>
+                  </div>
+                ) : (
+                  <div className="divide-y divide-jc-gray-mid">
+                    {allEvents
+                      .filter(e => e.dateKey.startsWith(`${calYear}-${pad(calMonth + 1)}`))
+                      .sort((a, b) => a.dateKey.localeCompare(b.dateKey))
+                      .map(ev => (
+                        <button
+                          key={ev.id}
+                          onClick={() => setSelectedDay(ev.dateKey)}
+                          className="w-full text-left px-5 py-3 hover:bg-jc-gray transition-colors group"
+                        >
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <div className={`w-2 h-2 rounded-full flex-shrink-0 ${eventTypeDots[ev.type]}`} />
+                            <span className="text-jc-black text-sm font-bold group-hover:text-jc-red transition-colors truncate">{ev.title}</span>
+                          </div>
+                          <p className="text-jc-gray-dark text-xs pl-4">{ev.date} · {ev.time}</p>
+                        </button>
+                      ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         )}
 
         {/* ── COMMUNITY FEED TAB ────────────────────────────────────────────── */}
