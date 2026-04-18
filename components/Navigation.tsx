@@ -207,15 +207,17 @@ export default function Navigation() {
 
           {/* Donate Button + Mobile Toggle */}
           <div className="flex items-center gap-3">
-            <Link
+            <a
               href="/login"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden lg:flex items-center gap-1.5 text-white/60 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               Member Login
-            </Link>
+            </a>
             <Link
               href="/donate"
               className="bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase px-5 py-2.5 transition-colors focus:outline-none focus:ring-2 focus:ring-jc-red focus:ring-offset-2 focus:ring-offset-jc-black"
@@ -312,7 +314,18 @@ export default function Navigation() {
               </Link>
             )
           )}
-          <div className="pt-3">
+          <div className="pt-3 space-y-2">
+            <a
+              href="/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 border border-white/20 text-white/70 font-bold text-sm tracking-widest uppercase px-3 py-3 text-center transition-colors hover:text-white hover:border-white/50"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Member Login
+            </a>
             <Link
               href="/donate"
               className="block bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase px-3 py-3 text-center transition-colors"
