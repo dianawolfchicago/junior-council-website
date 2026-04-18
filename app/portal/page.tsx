@@ -85,15 +85,14 @@ const DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
 // ─── Impact goals ─────────────────────────────────────────────────────────────
 
-const memberGoals = [
-  { id:'oncause',     label:'Raised $100+ on OneCause',           link:'https://www.onecause.com/juniorcouncil', linkLabel:'View My Page' },
-  { id:'corporate',   label:'Secured a corporate donor',           link: null, linkLabel: null },
-  { id:'auction',     label:'Secured a silent auction item',       link: null, linkLabel: null },
-  { id:'inkind',      label:'Secured an in-kind donation',         link: null, linkLabel: null },
-  { id:'hospitality', label:'Secured a hospitality partner',       link: null, linkLabel: null },
-  { id:'attended3',   label:'Attended 3+ events this season',      link: null, linkLabel: null },
-  { id:'rsvp',        label:'RSVPd to next member meeting',        link: null, linkLabel: null },
+const donationSubGoals = [
+  { id:'corporate',   label:'Corporate donor'     },
+  { id:'auction',     label:'Silent auction item' },
+  { id:'hospitality', label:'Hospitality partner' },
+  { id:'inkind',      label:'In-kind donation'    },
 ]
+
+const TOTAL_GOALS = 4   // OneCause · Any 1 donation · 3+ events · RSVP
 
 // ─── Resources ────────────────────────────────────────────────────────────────
 
@@ -116,7 +115,12 @@ export default function PortalPage() {
   // Goals
   const [checked, setChecked] = useState<Record<string,boolean>>({})
   const toggleGoal = (id: string) => setChecked(p => ({ ...p, [id]: !p[id] }))
-  const completedCount = memberGoals.filter(g => checked[g.id]).length
+  const isDonationComplete = donationSubGoals.some(g => checked[g.id])
+  const completedCount =
+    (checked['oncause']   ? 1 : 0) +
+    (isDonationComplete   ? 1 : 0) +
+    (checked['attended3'] ? 1 : 0) +
+    (checked['rsvp']      ? 1 : 0)
 
   // Calendar
   const today = new Date()
@@ -254,7 +258,7 @@ export default function PortalPage() {
                 { label:'Dues Status',     value:'Pending', sub:'2026–2027',      highlight:true  },
                 { label:'Events Attended', value:'4',       sub:'This season'                     },
                 { label:'My Committee',    value:'Events',  sub:'Active member'                   },
-                { label:'Goals Completed', value:`${completedCount}/${memberGoals.length}`, sub:'View Impact Tracker' },
+                { label:'Goals Completed', value:`${completedCount}/${TOTAL_GOALS}`, sub:'View Impact Tracker' },
               ].map(stat => (
                 <div key={stat.label}
                   className={`bg-white border border-jc-gray-mid p-5 ${stat.label==='Goals Completed'?'cursor-pointer hover:border-jc-red transition-colors':''}`}
@@ -498,7 +502,7 @@ export default function PortalPage() {
                     <h2 className="text-jc-black font-black text-xl">My Member Goals</h2>
                   </div>
                   <div className="text-right">
-                    <div className="text-jc-black font-black text-2xl">{completedCount}<span className="text-jc-gray-dark font-normal text-base">/{memberGoals.length}</span></div>
+                    <div className="text-jc-black font-black text-2xl">{completedCount}<span className="text-jc-gray-dark font-normal text-base">/{TOTAL_GOALS}</span></div>
                     <div className="text-jc-gray-dark text-xs">completed</div>
                   </div>
                 </div>
@@ -506,42 +510,82 @@ export default function PortalPage() {
                 {/* Progress bar */}
                 <div className="px-6 pt-4">
                   <div className="w-full bg-jc-gray h-2 overflow-hidden">
-                    <div className="h-full bg-jc-red transition-all duration-500" style={{width:`${(completedCount/memberGoals.length)*100}%`}}/>
+                    <div className="h-full bg-jc-red transition-all duration-500" style={{width:`${(completedCount/TOTAL_GOALS)*100}%`}}/>
                   </div>
                 </div>
 
                 <div className="divide-y divide-jc-gray-mid px-6">
-                  {memberGoals.map((goal,i)=>(
-                    <div key={goal.id} className="py-4 flex items-center gap-4">
-                      {/* Checkbox */}
-                      <button
-                        onClick={()=>toggleGoal(goal.id)}
-                        className={`w-6 h-6 flex-shrink-0 border-2 flex items-center justify-center transition-all ${
-                          checked[goal.id] ? 'bg-jc-red border-jc-red' : 'border-jc-gray-mid hover:border-jc-red'
-                        }`}
-                        aria-label={checked[goal.id]?'Mark incomplete':'Mark complete'}
-                      >
-                        {checked[goal.id]&&(
-                          <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/>
-                          </svg>
-                        )}
-                      </button>
 
-                      <div className="flex-grow">
-                        <span className={`text-sm font-bold transition-colors ${checked[goal.id]?'text-jc-gray-dark line-through':'text-jc-black'}`}>
-                          {i+1}. {goal.label}
-                        </span>
-                      </div>
-
-                      {goal.link&&(
-                        <a href={goal.link} target="_blank" rel="noopener noreferrer"
-                          className="flex-shrink-0 text-jc-red text-xs font-bold hover:underline">
-                          {goal.linkLabel} →
-                        </a>
-                      )}
+                  {/* Goal 1 — OneCause */}
+                  <div className="py-4 flex items-center gap-4">
+                    <button onClick={()=>toggleGoal('oncause')}
+                      className={`w-6 h-6 flex-shrink-0 border-2 flex items-center justify-center transition-all ${checked['oncause']?'bg-jc-red border-jc-red':'border-jc-gray-mid hover:border-jc-red'}`}
+                      aria-label={checked['oncause']?'Mark incomplete':'Mark complete'}>
+                      {checked['oncause']&&<svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>}
+                    </button>
+                    <div className="flex-grow">
+                      <span className={`text-sm font-bold transition-colors ${checked['oncause']?'text-jc-gray-dark line-through':'text-jc-black'}`}>
+                        1. Raised $100+ on OneCause
+                      </span>
                     </div>
-                  ))}
+                    <a href="https://www.onecause.com/juniorcouncil" target="_blank" rel="noopener noreferrer"
+                      className="flex-shrink-0 text-jc-red text-xs font-bold hover:underline">View My Page →</a>
+                  </div>
+
+                  {/* Goal 2 — Donation group (any one type counts) */}
+                  <div className="py-4">
+                    <div className="flex items-start gap-4 mb-3">
+                      {/* Auto-indicator — filled when any sub-goal is checked */}
+                      <div className={`w-6 h-6 flex-shrink-0 border-2 flex items-center justify-center mt-0.5 transition-all ${isDonationComplete?'bg-jc-red border-jc-red':'border-jc-gray-mid'}`}>
+                        {isDonationComplete&&<svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>}
+                      </div>
+                      <div>
+                        <span className={`text-sm font-bold transition-colors ${isDonationComplete?'text-jc-gray-dark line-through':'text-jc-black'}`}>
+                          2. Secured at least one donation
+                        </span>
+                        <p className="text-jc-gray-dark text-xs mt-0.5">Check all that apply — any one type completes this goal</p>
+                      </div>
+                    </div>
+                    {/* Sub-checkboxes */}
+                    <div className="ml-10 grid grid-cols-2 gap-2">
+                      {donationSubGoals.map(opt=>(
+                        <button key={opt.id} onClick={()=>toggleGoal(opt.id)}
+                          className={`flex items-center gap-2 text-xs font-bold px-3 py-2 border-2 transition-all text-left ${
+                            checked[opt.id]?'border-jc-red bg-jc-red/5 text-jc-red':'border-jc-gray-mid hover:border-jc-red text-jc-gray-dark hover:text-jc-black'
+                          }`}>
+                          <div className={`w-4 h-4 flex-shrink-0 border-2 flex items-center justify-center transition-all ${checked[opt.id]?'border-jc-red bg-jc-red':'border-current'}`}>
+                            {checked[opt.id]&&<svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>}
+                          </div>
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Goal 3 — Attended 3+ events */}
+                  <div className="py-4 flex items-center gap-4">
+                    <button onClick={()=>toggleGoal('attended3')}
+                      className={`w-6 h-6 flex-shrink-0 border-2 flex items-center justify-center transition-all ${checked['attended3']?'bg-jc-red border-jc-red':'border-jc-gray-mid hover:border-jc-red'}`}
+                      aria-label={checked['attended3']?'Mark incomplete':'Mark complete'}>
+                      {checked['attended3']&&<svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>}
+                    </button>
+                    <span className={`text-sm font-bold transition-colors flex-grow ${checked['attended3']?'text-jc-gray-dark line-through':'text-jc-black'}`}>
+                      3. Attended 3+ events this season
+                    </span>
+                  </div>
+
+                  {/* Goal 4 — RSVPd */}
+                  <div className="py-4 flex items-center gap-4">
+                    <button onClick={()=>toggleGoal('rsvp')}
+                      className={`w-6 h-6 flex-shrink-0 border-2 flex items-center justify-center transition-all ${checked['rsvp']?'bg-jc-red border-jc-red':'border-jc-gray-mid hover:border-jc-red'}`}
+                      aria-label={checked['rsvp']?'Mark incomplete':'Mark complete'}>
+                      {checked['rsvp']&&<svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>}
+                    </button>
+                    <span className={`text-sm font-bold transition-colors flex-grow ${checked['rsvp']?'text-jc-gray-dark line-through':'text-jc-black'}`}>
+                      4. RSVPd to next member meeting
+                    </span>
+                  </div>
+
                 </div>
 
                 <div className="px-6 py-4 border-t border-jc-gray-mid bg-jc-gray/30">
@@ -553,17 +597,17 @@ export default function PortalPage() {
             {/* Right sidebar */}
             <div className="space-y-5">
               {/* Completion badge */}
-              <div className={`p-6 text-center border-2 ${completedCount===memberGoals.length?'bg-jc-red border-jc-red':'bg-white border-jc-gray-mid'}`}>
-                <div className={`text-5xl font-black mb-2 ${completedCount===memberGoals.length?'text-white':'text-jc-black'}`}>
-                  {completedCount===memberGoals.length?'🏆':'⭐'}
+              <div className={`p-6 text-center border-2 ${completedCount===TOTAL_GOALS?'bg-jc-red border-jc-red':'bg-white border-jc-gray-mid'}`}>
+                <div className={`text-5xl font-black mb-2 ${completedCount===TOTAL_GOALS?'text-white':'text-jc-black'}`}>
+                  {completedCount===TOTAL_GOALS?'🏆':'⭐'}
                 </div>
-                <div className={`font-black text-lg mb-1 ${completedCount===memberGoals.length?'text-white':'text-jc-black'}`}>
-                  {completedCount===memberGoals.length?'All Goals Complete!':'Keep Going!'}
+                <div className={`font-black text-lg mb-1 ${completedCount===TOTAL_GOALS?'text-white':'text-jc-black'}`}>
+                  {completedCount===TOTAL_GOALS?'All Goals Complete!':'Keep Going!'}
                 </div>
-                <div className={`text-xs ${completedCount===memberGoals.length?'text-white/80':'text-jc-gray-dark'}`}>
-                  {completedCount===memberGoals.length
+                <div className={`text-xs ${completedCount===TOTAL_GOALS?'text-white/80':'text-jc-gray-dark'}`}>
+                  {completedCount===TOTAL_GOALS
                     ?'You are a JC superstar. Thank you!'
-                    :`${memberGoals.length-completedCount} goal${memberGoals.length-completedCount!==1?'s':''} remaining`}
+                    :`${TOTAL_GOALS-completedCount} goal${TOTAL_GOALS-completedCount!==1?'s':''} remaining`}
                 </div>
               </div>
 
