@@ -355,108 +355,173 @@ export default function PortalPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {/* ── DASHBOARD ─────────────────────────────────────────────────────── */}
-        {activeTab==='dashboard' && (
-          <>
-            <div className="bg-jc-black border-l-4 border-jc-red p-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <p className="text-jc-red text-xs font-bold tracking-widest uppercase mb-1">Member Dashboard</p>
-                <h1 className="text-white font-black text-2xl sm:text-3xl tracking-tight">Welcome back!</h1>
-                <p className="text-white/50 text-sm mt-1">Junior Council 2026 / 2027</p>
+        {activeTab==='dashboard' && (()=>{
+          const hour       = today.getHours()
+          const greeting   = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+          const firstName  = profile.name === 'Member Name' ? 'Member' : profile.name.split(' ')[0]
+          const todayStr   = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`
+          const nextEvent  = upcomingEvents.find(e => e.dateKey >= todayStr) ?? null
+          const daysUntil  = nextEvent ? Math.ceil((new Date(nextEvent.dateKey+'T00:00:00').getTime() - new Date(todayStr+'T00:00:00').getTime()) / 86400000) : null
+          const raisedAmt  = 242000; const goalAmt = 250000
+          const raisedPct  = Math.min(Math.round(raisedAmt / goalAmt * 100), 100)
+          const ringR      = 36; const ringC = 2 * Math.PI * ringR
+          const ringOffset = ringC * (1 - completedCount / TOTAL_GOALS)
+          return (
+            <div className="space-y-5">
+
+              {/* ── Hero ── */}
+              <div className="bg-jc-black">
+                <div className="h-0.5 w-full bg-jc-red"/>
+                <div className="px-8 sm:px-12 py-10 sm:py-14">
+                  <p className="text-jc-red text-xs font-bold tracking-[0.3em] uppercase mb-5">{greeting}</p>
+                  <h1 className="text-white font-black text-7xl sm:text-9xl tracking-tight leading-none mb-6">{firstName}</h1>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <span className="text-white/20 text-xs tracking-[0.2em] uppercase">Junior Council</span>
+                    <div className="w-1 h-1 bg-white/15 rounded-full"/>
+                    <span className="text-white/20 text-xs tracking-[0.2em] uppercase">2026 / 2027 Season</span>
+                    <div className="w-1 h-1 bg-white/15 rounded-full"/>
+                    <span className="text-white/20 text-xs tracking-[0.2em] uppercase">
+                      {today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
+                    </span>
+                  </div>
+                </div>
+                {/* Fundraising strip */}
+                <div className="border-t border-white/10 px-8 sm:px-12 py-5 flex items-center gap-6 flex-wrap">
+                  <div>
+                    <p className="text-white/30 text-xs uppercase tracking-widest mb-0.5">2026 Fundraising Goal</p>
+                    <div className="flex items-baseline gap-3">
+                      <span className="text-white font-black text-2xl">${raisedAmt.toLocaleString()}</span>
+                      <span className="text-white/30 text-xs">of ${goalAmt.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  <div className="flex-grow flex items-center gap-4 min-w-[160px]">
+                    <div className="flex-grow h-px bg-white/10 relative overflow-hidden">
+                      <div className="absolute inset-y-0 left-0 bg-jc-red transition-all" style={{width:`${raisedPct}%`}}/>
+                    </div>
+                    <span className="text-jc-red font-black text-sm flex-shrink-0">{raisedPct}%</span>
+                  </div>
+                  <span className="text-white/20 text-xs">${(goalAmt-raisedAmt).toLocaleString()} to go</span>
+                </div>
               </div>
-              <button onClick={()=>setDuesModalOpen(true)} className="flex-shrink-0 bg-jc-red hover:bg-jc-red-dark text-white font-black text-xs tracking-widest uppercase px-6 py-3 transition-colors">
-                Pay My Dues
-              </button>
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              {[
-                { label:'Dues Status',     value:'Pending', sub:'2026–2027',      highlight:true  },
-                { label:'Events Attended', value:'4',       sub:'This season'                     },
-                { label:'My Committee',    value:'Events',  sub:'Active member'                   },
-                { label:'Goals Completed', value:`${completedCount}/${TOTAL_GOALS}`, sub:'View Impact Tracker' },
-              ].map(stat => (
-                <div key={stat.label}
-                  className={`bg-white border border-jc-gray-mid p-5 ${stat.label==='Goals Completed'?'cursor-pointer hover:border-jc-red transition-colors':''}`}
-                  onClick={stat.label==='Goals Completed'?()=>setActiveTab('impact'):undefined}
-                >
-                  <div className="text-jc-gray-dark text-xs uppercase tracking-widest mb-1">{stat.label}</div>
-                  <div className={`font-black text-xl mb-0.5 ${stat.highlight?'text-jc-red':'text-jc-black'}`}>{stat.value}</div>
-                  <div className="text-jc-gray-dark text-xs">{stat.sub}</div>
+
+              {/* ── Next event ── */}
+              <div className="bg-white border border-jc-gray-mid">
+                <div className="px-6 py-3 border-b border-jc-gray-mid flex items-center justify-between">
+                  <span className="text-jc-red text-xs font-black uppercase tracking-[0.2em]">Next Up</span>
+                  <button onClick={()=>setActiveTab('calendar')} className="text-jc-gray-dark text-xs font-bold hover:text-jc-red transition-colors">Full calendar →</button>
                 </div>
-              ))}
-            </div>
-            <div className="grid lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-white border border-jc-gray-mid">
-                <div className="px-6 py-4 border-b border-jc-gray-mid flex items-center justify-between">
-                  <h2 className="text-jc-black font-black text-lg">Upcoming Events</h2>
-                  <span className="text-jc-gray-dark text-xs">{upcomingEvents.length} events</span>
-                </div>
-                <div className="divide-y divide-jc-gray-mid">
-                  {upcomingEvents.slice(0,5).map(event => (
-                    <div key={event.id} className="px-6 py-5 flex flex-col sm:flex-row sm:items-center gap-4">
-                      <div className="flex-grow">
-                        <span className={`text-xs font-bold px-2 py-0.5 ${eventTypeColors[event.type]}`}>{event.type}</span>
-                        <h3 className="text-jc-black font-black text-sm mt-1">{event.title}</h3>
-                        <p className="text-jc-gray-dark text-xs mt-0.5">{event.date} · {event.time} · {event.location}</p>
-                      </div>
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        {rsvps[event.id] ? (
-                          <div className="flex items-center gap-2">
-                            <span className={`text-xs font-bold px-3 py-1.5 ${rsvps[event.id]==='yes'?'bg-green-100 text-green-700':'bg-jc-gray text-jc-gray-dark'}`}>
-                              {rsvps[event.id]==='yes'?'Attending':'Not Attending'}
-                            </span>
-                            <button onClick={()=>setRsvps(p=>{const n={...p};delete n[event.id];return n})} className="text-jc-gray-dark text-xs hover:text-jc-red">Change</button>
+                {nextEvent ? (
+                  <div className="flex flex-col sm:flex-row">
+                    {/* Date block */}
+                    <div className="bg-jc-black sm:w-52 px-8 py-10 flex flex-col items-center justify-center flex-shrink-0 text-center">
+                      <p className="text-jc-red text-xs font-black uppercase tracking-[0.2em] mb-3">
+                        {nextEvent.date.split(' ')[0].toUpperCase()}
+                      </p>
+                      <p className="text-white font-black leading-none mb-3" style={{fontSize:'5.5rem'}}>
+                        {parseInt(nextEvent.dateKey.slice(8,10))}
+                      </p>
+                      <p className="text-white/30 text-xs tracking-widest uppercase mb-4">{nextEvent.date.split(',')[1]?.trim()}</p>
+                      {daysUntil !== null && (
+                        <div className="px-3 py-1.5 bg-white/5 border border-white/10">
+                          <span className="text-white/50 text-xs font-bold tracking-wide">
+                            {daysUntil === 0 ? 'Today' : `${daysUntil} day${daysUntil !== 1 ? 's' : ''} away`}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    {/* Details */}
+                    <div className="flex-grow px-8 py-10 flex flex-col justify-between">
+                      <div>
+                        <span className={`inline-block text-xs font-bold px-2 py-0.5 mb-5 ${eventTypeColors[nextEvent.type]}`}>{nextEvent.type}</span>
+                        <h2 className="text-jc-black font-black text-3xl sm:text-4xl leading-tight tracking-tight mb-6">{nextEvent.title}</h2>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2.5">
+                            <svg className="w-4 h-4 text-jc-red flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <p className="text-jc-gray-dark text-sm">{nextEvent.time}</p>
                           </div>
+                          <div className="flex items-center gap-2.5">
+                            <svg className="w-4 h-4 text-jc-red flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <p className="text-jc-gray-dark text-sm">{nextEvent.location}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 mt-8">
+                        {rsvps[nextEvent.id] ? (
+                          <>
+                            <span className={`text-xs font-bold px-5 py-3 ${rsvps[nextEvent.id]==='yes'?'bg-green-100 text-green-700':'bg-jc-gray text-jc-gray-dark'}`}>
+                              {rsvps[nextEvent.id]==='yes'?'You\'re Attending':'Not Attending'}
+                            </span>
+                            <button onClick={()=>setRsvps(p=>{const n={...p};delete n[nextEvent.id];return n})} className="text-jc-gray-dark text-xs hover:text-jc-red transition-colors">Change</button>
+                          </>
                         ) : (
                           <>
-                            <button onClick={()=>setRsvps(p=>({...p,[event.id]:'yes'}))} className="bg-jc-red hover:bg-jc-red-dark text-white text-xs font-bold uppercase px-3 py-1.5 transition-colors">RSVP Yes</button>
-                            <button onClick={()=>setRsvps(p=>({...p,[event.id]:'no'}))}  className="border border-jc-gray-mid hover:border-jc-red text-jc-gray-dark hover:text-jc-red text-xs font-bold uppercase px-3 py-1.5 transition-colors">Can&apos;t Go</button>
+                            <button onClick={()=>setRsvps(p=>({...p,[nextEvent.id]:'yes'}))} className="bg-jc-red hover:bg-jc-red-dark text-white font-black text-xs uppercase tracking-widest px-8 py-3.5 transition-colors">RSVP Yes</button>
+                            <button onClick={()=>setRsvps(p=>({...p,[nextEvent.id]:'no'}))} className="border-2 border-jc-gray-mid hover:border-jc-red text-jc-gray-dark hover:text-jc-red font-bold text-xs uppercase px-5 py-3.5 transition-colors">Can&apos;t Go</button>
                           </>
                         )}
                       </div>
                     </div>
-                  ))}
-                </div>
-                <div className="px-6 py-3 border-t border-jc-gray-mid">
-                  <button onClick={()=>setActiveTab('calendar')} className="text-jc-red text-xs font-bold hover:underline">View full calendar →</button>
-                </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center py-20">
+                    <p className="text-jc-gray-dark text-sm">No upcoming events.</p>
+                  </div>
+                )}
               </div>
-              <div className="space-y-6">
-                <div className="bg-white border border-jc-gray-mid">
-                  <div className="px-6 py-4 border-b border-jc-gray-mid"><h2 className="text-jc-black font-black text-lg">My Dues</h2></div>
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-jc-gray-dark text-sm">2026–2027 Dues</span>
-                      <span className="text-jc-red font-black">Unpaid</span>
+
+              {/* ── Goals + Dues ── */}
+              <div className="grid sm:grid-cols-3 gap-5">
+
+                {/* Goals */}
+                <div className="sm:col-span-2 bg-white border border-jc-gray-mid p-7 flex items-center gap-7 cursor-pointer hover:border-jc-red transition-colors group"
+                  onClick={()=>setActiveTab('impact')} role="button" aria-label="View Impact Tracker">
+                  <div className="relative flex-shrink-0 w-24 h-24">
+                    <svg className="w-24 h-24 -rotate-90" viewBox="0 0 88 88" aria-hidden="true">
+                      <circle cx="44" cy="44" r={ringR} fill="none" stroke="#e8e8e8" strokeWidth="7"/>
+                      <circle cx="44" cy="44" r={ringR} fill="none" stroke="#C8102E" strokeWidth="7"
+                        strokeDasharray={ringC} strokeDashoffset={ringOffset}
+                        className="transition-all duration-700"/>
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center flex-col">
+                      <span className="text-jc-black font-black text-2xl leading-none">{completedCount}</span>
+                      <span className="text-jc-gray-dark text-xs">of {TOTAL_GOALS}</span>
                     </div>
-                    <div className="bg-jc-red/10 border border-jc-red/20 px-4 py-3 mb-4">
-                      <p className="text-jc-red text-xs font-medium leading-snug">Annual dues keep your membership active.</p>
-                    </div>
-                    <button onClick={()=>setDuesModalOpen(true)} className="w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-xs tracking-widest uppercase py-3 transition-colors">Pay Dues Now</button>
+                  </div>
+                  <div className="flex-grow">
+                    <p className="text-jc-gray-dark text-xs uppercase tracking-widest mb-1.5">Season Goals</p>
+                    <p className="text-jc-black font-black text-2xl leading-tight mb-1.5">
+                      {completedCount === TOTAL_GOALS ? 'All Complete!' : completedCount === 0 ? 'Get Started' : `${completedCount} of ${TOTAL_GOALS} Done`}
+                    </p>
+                    <p className="text-jc-gray-dark text-xs leading-relaxed mb-4">
+                      {completedCount === TOTAL_GOALS
+                        ? 'You\'ve hit every goal this season — great work.'
+                        : 'OneCause fundraising, donations, and event attendance.'}
+                    </p>
+                    <span className="text-jc-red text-xs font-bold group-hover:underline">View Impact Tracker →</span>
                   </div>
                 </div>
-                <div className="bg-white border border-jc-gray-mid">
-                  <div className="px-6 py-4 border-b border-jc-gray-mid"><h2 className="text-jc-black font-black text-lg">Quick Links</h2></div>
-                  <div className="divide-y divide-jc-gray-mid">
-                    {[
-                      {label:'My OneCause Fundraiser', href:'https://www.onecause.com/juniorcouncil', external:true},
-                      {label:'Member Directory',        href:'/members'},
-                      {label:'Board of Directors',      href:'/board'},
-                      {label:'Contact the Board',       href:'/contact'},
-                    ].map(link => (
-                      <a key={link.label} href={link.href} target={'external' in link&&link.external?'_blank':undefined} rel={'external' in link&&link.external?'noopener noreferrer':undefined}
-                        className="flex items-center justify-between px-6 py-3 hover:bg-jc-gray transition-colors group">
-                        <span className="text-jc-black text-sm group-hover:text-jc-red transition-colors">{link.label}</span>
-                        <svg className="w-4 h-4 text-jc-gray-mid group-hover:text-jc-red" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </a>
-                    ))}
+
+                {/* Dues */}
+                <div className="bg-jc-black p-7 flex flex-col justify-between">
+                  <div>
+                    <p className="text-white/30 text-xs uppercase tracking-widest mb-2">2026–2027 Dues</p>
+                    <p className="text-jc-red font-black text-4xl leading-none mb-3">Unpaid</p>
+                    <p className="text-white/30 text-xs leading-relaxed">Annual dues keep your membership active.</p>
                   </div>
+                  <button onClick={()=>setDuesModalOpen(true)} className="mt-8 w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-xs tracking-widest uppercase py-3.5 transition-colors">
+                    Pay Dues Now
+                  </button>
                 </div>
+
               </div>
             </div>
-          </>
-        )}
+          )
+        })()}
 
         {/* ── CALENDAR & EVENTS ────────────────────────────────────────────── */}
         {activeTab==='calendar' && (
