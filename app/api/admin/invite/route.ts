@@ -6,13 +6,9 @@ const ADMIN_EMAILS = [
   'dianawolfchicago@gmail.com',
 ]
 
-// After accepting the invitation and setting a password on Clerk's hosted
-// page, send the user straight to our portal — otherwise Clerk falls back
-// to its own "Start Building" Account Portal dashboard.
-const REDIRECT_URL =
-  process.env.NEXT_PUBLIC_SITE_URL
-    ? `${process.env.NEXT_PUBLIC_SITE_URL}/portal`
-    : 'https://junior-council-website.vercel.app/portal'
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  'https://junior-council-website.vercel.app'
 
 export async function POST(req: Request) {
   const { userId } = auth()
@@ -39,20 +35,30 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
   }
 
+  // Build the invite link to OUR custom sign-up page
+  const params = new URLSearchParams({ email })
+  if (body.firstName) params.set('firstName', body.firstName)
+  if (body.lastName) params.set('lastName', body.lastName)
+  const signUpLink = `${SITE_URL}/sign-up?${params.toString()}`
+
+  // Send a Clerk invitation — but with our own link. Clerk will email the
+  // user; the link in the email goes to our custom sign-up page so we
+  // never bounce through accounts.dev.
   try {
     const invitation = await clerkClient().invitations.createInvitation({
       emailAddress: email,
-      redirectUrl: REDIRECT_URL,
+      redirectUrl: signUpLink,
       publicMetadata: {
         invitedBy: callerEmail,
         firstName: body.firstName || undefined,
         lastName: body.lastName || undefined,
       },
+      // Skip Clerk's own ticket-based flow — just notify the user
+      ignoreExisting: true,
     })
-    return NextResponse.json({ ok: true, invitationId: invitation.id })
+    return NextResponse.json({ ok: true, invitationId: invitation.id, signUpLink })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Could not send invitation'
-    // Clerk returns a structured error for duplicate invites etc.
     const clerkErr = err as { errors?: { message: string; longMessage?: string }[] }
     const first = clerkErr.errors?.[0]
     return NextResponse.json({ error: first?.longMessage || first?.message || msg }, { status: 400 })
