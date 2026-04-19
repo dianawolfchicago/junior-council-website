@@ -28,9 +28,15 @@ export default function LoginPage() {
         router.push('/portal')
       } else {
         // Surface anything that isn't an outright success so we never get silent failures
-        // Common statuses here: needs_first_factor, needs_second_factor, needs_identifier, needs_new_password
         console.warn('Clerk sign-in returned non-complete status:', result)
-        setError(`Sign-in needs another step (status: ${result.status}). Check your email for a verification code, or contact info@juniorcouncil.org.`)
+        const supported2FA = (result as unknown as { supportedSecondFactors?: { strategy: string }[] }).supportedSecondFactors
+        const supported1FA = (result as unknown as { supportedFirstFactors?: { strategy: string }[] }).supportedFirstFactors
+        const details = [
+          `status: ${result.status}`,
+          supported1FA ? `1FA: ${supported1FA.map(f=>f.strategy).join(', ')}` : '',
+          supported2FA ? `2FA: ${supported2FA.map(f=>f.strategy).join(', ')}` : '',
+        ].filter(Boolean).join(' | ')
+        setError(`Sign-in blocked. ${details}`)
       }
     } catch (err: unknown) {
       const clerkErr = err as { errors?: { message: string; code?: string }[] }
