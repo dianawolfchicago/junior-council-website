@@ -16,6 +16,10 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  // Email-code second factor
+  const [needs2fa, setNeeds2fa] = useState(false)
+  const [code, setCode] = useState('')
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isLoaded) return
@@ -26,23 +30,48 @@ export default function LoginPage() {
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
         router.push('/portal')
+      } else if (result.status === 'needs_second_factor') {
+        // Clerk wants a second factor. Prefer email_code — send it automatically
+        const secondFactors = (result as unknown as { supportedSecondFactors?: { strategy: string; emailAddressId?: string }[] }).supportedSecondFactors || []
+        const emailFactor = secondFactors.find(f => f.strategy === 'email_code')
+        if (emailFactor && emailFactor.emailAddressId) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await (signIn as any).prepareSecondFactor({ strategy: 'email_code', emailAddressId: emailFactor.emailAddressId })
+          setNeeds2fa(true)
+        } else {
+          setError('Second factor required but no supported method available. Contact info@juniorcouncil.org.')
+        }
       } else {
-        // Surface anything that isn't an outright success so we never get silent failures
         console.warn('Clerk sign-in returned non-complete status:', result)
-        const supported2FA = (result as unknown as { supportedSecondFactors?: { strategy: string }[] }).supportedSecondFactors
-        const supported1FA = (result as unknown as { supportedFirstFactors?: { strategy: string }[] }).supportedFirstFactors
-        const details = [
-          `status: ${result.status}`,
-          supported1FA ? `1FA: ${supported1FA.map(f=>f.strategy).join(', ')}` : '',
-          supported2FA ? `2FA: ${supported2FA.map(f=>f.strategy).join(', ')}` : '',
-        ].filter(Boolean).join(' | ')
-        setError(`Sign-in blocked. ${details}`)
+        setError(`Sign-in needs another step (status: ${result.status}). Contact info@juniorcouncil.org.`)
       }
     } catch (err: unknown) {
       const clerkErr = err as { errors?: { message: string; code?: string }[] }
       const first = clerkErr.errors?.[0]
       console.warn('Clerk sign-in error:', clerkErr)
       setError(first?.message || 'Invalid email or password.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!isLoaded) return
+    setLoading(true)
+    setError('')
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await (signIn as any).attemptSecondFactor({ strategy: 'email_code', code })
+      if (result.status === 'complete') {
+        await setActive({ session: result.createdSessionId })
+        router.push('/portal')
+      } else {
+        setError(`Verification failed (status: ${result.status}).`)
+      }
+    } catch (err: unknown) {
+      const clerkErr = err as { errors?: { message: string }[] }
+      setError(clerkErr.errors?.[0]?.message || 'Invalid code.')
     } finally {
       setLoading(false)
     }
@@ -108,7 +137,58 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Form */}
+          {/* 2FA code form */}
+          {needs2fa ? (
+            <form onSubmit={handleVerifyCode}>
+              <div className="bg-jc-charcoal border border-white/10 p-8">
+                <div className="space-y-5">
+                  <div>
+                    <p className="text-white text-sm font-bold mb-2">Check your email</p>
+                    <p className="text-white/50 text-xs">We sent a 6-digit verification code to <span className="text-white">{email}</span>. Enter it below to finish signing in.</p>
+                  </div>
+
+                  {error && (
+                    <div className="bg-red-900/30 border border-red-500/40 px-4 py-3">
+                      <p className="text-red-400 text-xs font-bold">{error}</p>
+                    </div>
+                  )}
+
+                  <div>
+                    <label htmlFor="code" className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">
+                      Verification Code
+                    </label>
+                    <input
+                      id="code"
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      value={code}
+                      onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                      placeholder="000000"
+                      required
+                      className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-4 py-3 text-white text-xl tracking-[0.5em] text-center outline-none transition-colors placeholder:text-white/20"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || code.length !== 6}
+                    className="block w-full bg-jc-red hover:bg-jc-red-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-sm tracking-widest uppercase py-4 text-center transition-colors"
+                  >
+                    {loading ? 'Verifying…' : 'Verify & Sign In'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => { setNeeds2fa(false); setCode(''); setError('') }}
+                    className="block w-full text-white/50 hover:text-white text-xs font-bold uppercase tracking-widest py-2 text-center transition-colors"
+                  >
+                    ← Back
+                  </button>
+                </div>
+              </div>
+            </form>
+          ) : (
           <form onSubmit={handleSubmit}>
             <div className="bg-jc-charcoal border border-white/10 p-8">
               <div className="space-y-5">
@@ -209,6 +289,7 @@ export default function LoginPage() {
               </div>
             </div>
           </form>
+          )}
 
           <p className="text-white/20 text-xs text-center mt-6">
             Having trouble signing in? Contact{' '}
