@@ -147,6 +147,32 @@ export default function PortalPage() {
   const [duesModalOpen, setDuesModalOpen] = useState(false)
   const [navMenuOpen, setNavMenuOpen] = useState(false)
 
+  // Admin invite modal
+  const ADMIN_EMAILS = ['dianawolfchicago@gmail.com']
+  const userEmail = user?.primaryEmailAddress?.emailAddress?.toLowerCase() || ''
+  const isAdmin = ADMIN_EMAILS.includes(userEmail)
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
+  const [inviteForm, setInviteForm] = useState({ email:'', firstName:'', lastName:'' })
+  const [inviteStatus, setInviteStatus] = useState<{type:'idle'|'sending'|'ok'|'error', msg?:string}>({type:'idle'})
+  const sendInvite = async () => {
+    if (!inviteForm.email.trim()) return
+    setInviteStatus({type:'sending'})
+    try {
+      const res = await fetch('/api/admin/invite', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(inviteForm),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to send invite')
+      setInviteStatus({type:'ok', msg:`Invitation sent to ${inviteForm.email}`})
+      setInviteForm({ email:'', firstName:'', lastName:'' })
+      setTimeout(() => setInviteStatus({type:'idle'}), 4000)
+    } catch (err) {
+      setInviteStatus({type:'error', msg: err instanceof Error ? err.message : 'Something went wrong'})
+    }
+  }
+
   // Goals
   const [checked, setChecked] = useState<Record<string,boolean>>({})
   const toggleGoal = (id: string) => setChecked(p => ({ ...p, [id]: !p[id] }))
@@ -342,6 +368,17 @@ export default function PortalPage() {
                 </svg>
                 Account & Password
               </button>
+              {isAdmin && (
+                <button
+                  onClick={() => { setInviteModalOpen(true); setNavMenuOpen(false) }}
+                  className="w-full flex items-center gap-2.5 px-4 py-3 text-jc-red hover:text-white hover:bg-jc-red/20 text-xs font-bold uppercase tracking-wide transition-colors border-b border-white/5"
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                  </svg>
+                  Invite Member
+                </button>
+              )}
               <button
                 onClick={() => signOut({ redirectUrl: '/login' })}
                 className="w-full flex items-center gap-2.5 px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-xs font-bold uppercase tracking-wide transition-colors"
@@ -1596,6 +1633,79 @@ export default function PortalPage() {
             <button onClick={()=>setDuesModalOpen(false)} className="w-full mt-4 border-2 border-jc-gray-mid hover:border-jc-red text-jc-black hover:text-jc-red font-black text-xs tracking-widest uppercase py-3 transition-colors">
               Close
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Admin — Invite member modal */}
+      {inviteModalOpen && isAdmin && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4" onClick={()=>setInviteModalOpen(false)}>
+          <div className="bg-jc-charcoal border border-white/10 max-w-md w-full p-8" onClick={e=>e.stopPropagation()}>
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <p className="text-jc-red text-xs font-bold tracking-widest uppercase mb-1">Admin</p>
+                <h2 className="text-white font-black text-2xl tracking-tight">Invite New Member</h2>
+              </div>
+              <button onClick={()=>setInviteModalOpen(false)} className="text-white/40 hover:text-white transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            <p className="text-white/50 text-xs mb-5">They&rsquo;ll receive an invitation email and land directly on our branded sign-up page.</p>
+
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">First name</label>
+                  <input
+                    value={inviteForm.firstName}
+                    onChange={e=>setInviteForm(p=>({...p,firstName:e.target.value}))}
+                    placeholder="Jane"
+                    className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
+                  />
+                </div>
+                <div>
+                  <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Last name</label>
+                  <input
+                    value={inviteForm.lastName}
+                    onChange={e=>setInviteForm(p=>({...p,lastName:e.target.value}))}
+                    placeholder="Doe"
+                    className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Email</label>
+                <input
+                  type="email"
+                  value={inviteForm.email}
+                  onChange={e=>setInviteForm(p=>({...p,email:e.target.value}))}
+                  placeholder="member@example.com"
+                  className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
+                />
+              </div>
+
+              {inviteStatus.type === 'ok' && (
+                <div className="bg-green-900/30 border border-green-500/40 px-4 py-3">
+                  <p className="text-green-400 text-xs font-bold">{inviteStatus.msg}</p>
+                </div>
+              )}
+              {inviteStatus.type === 'error' && (
+                <div className="bg-red-900/30 border border-red-500/40 px-4 py-3">
+                  <p className="text-red-400 text-xs font-bold">{inviteStatus.msg}</p>
+                </div>
+              )}
+
+              <button
+                onClick={sendInvite}
+                disabled={inviteStatus.type === 'sending' || !inviteForm.email.trim()}
+                className="w-full bg-jc-red hover:bg-jc-red-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-sm tracking-widest uppercase py-3 transition-colors"
+              >
+                {inviteStatus.type === 'sending' ? 'Sending…' : 'Send Invitation'}
+              </button>
+            </div>
           </div>
         </div>
       )}
