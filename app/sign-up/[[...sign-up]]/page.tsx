@@ -48,6 +48,8 @@ export default function SignUpPage() {
             routing="path"
             signInUrl="/login"
             afterSignUpUrl="/portal"
+            forceRedirectUrl="/portal"
+            fallbackRedirectUrl="/portal"
             appearance={{
               elements: {
                 rootBox: 'w-full',
