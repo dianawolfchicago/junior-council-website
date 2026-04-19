@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { useUser, useClerk } from '@clerk/nextjs'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -138,6 +139,9 @@ const defaultProfile: Profile = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function PortalPage() {
+  const { user } = useUser()
+  const { signOut } = useClerk()
+
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
   const [rsvps, setRsvps]         = useState<Record<number,'yes'|'no'>>({})
   const [duesModalOpen, setDuesModalOpen] = useState(false)
@@ -177,9 +181,10 @@ export default function PortalPage() {
   const eventsOnDay = (day:number) => { const k=`${calYear}-${pad(calMonth+1)}-${pad(day)}`; return allEvents.filter(e=>e.dateKey===k) }
   const selectedEvents = selectedDay ? allEvents.filter(e=>e.dateKey===selectedDay) : []
 
-  // Profile
-  const [profile, setProfile]           = useState<Profile>(defaultProfile)
-  const [profileDraft, setProfileDraft] = useState<Profile>(defaultProfile)
+  // Profile — seed name from Clerk if available
+  const clerkName = user ? [user.firstName, user.lastName].filter(Boolean).join(' ') : ''
+  const [profile, setProfile]           = useState<Profile>({...defaultProfile, name: clerkName || defaultProfile.name})
+  const [profileDraft, setProfileDraft] = useState<Profile>({...defaultProfile, name: clerkName || defaultProfile.name})
   const [editingProfile, setEditingProfile] = useState(false)
   const avatarInputRef = useRef<HTMLInputElement>(null)
 
@@ -319,15 +324,15 @@ export default function PortalPage() {
                 </svg>
                 My Profile
               </button>
-              <Link
-                href="/"
-                className="flex items-center gap-2.5 px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-xs font-bold uppercase tracking-wide transition-colors"
+              <button
+                onClick={() => signOut({ redirectUrl: '/login' })}
+                className="w-full flex items-center gap-2.5 px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-xs font-bold uppercase tracking-wide transition-colors"
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
                 Log Out
-              </Link>
+              </button>
             </div>
           )}
         </div>

@@ -1,13 +1,39 @@
 'use client'
 
 import { useState } from 'react'
+import { useSignIn } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default function LoginPage() {
+  const { isLoaded, signIn, setActive } = useSignIn()
+  const router = useRouter()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!isLoaded) return
+    setLoading(true)
+    setError('')
+    try {
+      const result = await signIn.create({ identifier: email, password })
+      if (result.status === 'complete') {
+        await setActive({ session: result.createdSessionId })
+        router.push('/portal')
+      }
+    } catch (err: unknown) {
+      const clerkErr = err as { errors?: { message: string }[] }
+      setError(clerkErr.errors?.[0]?.message || 'Invalid email or password.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-jc-black flex flex-col">
@@ -55,79 +81,84 @@ export default function LoginPage() {
           </div>
 
           {/* Form */}
-          <div className="bg-jc-charcoal border border-white/10 p-8">
-            <div className="space-y-5">
-              {/* Email */}
-              <div>
-                <label htmlFor="email" className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">
-                  Email Address
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@email.com"
-                  className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-4 py-3 text-white text-sm outline-none transition-colors placeholder:text-white/20"
-                />
-              </div>
+          <form onSubmit={handleSubmit}>
+            <div className="bg-jc-charcoal border border-white/10 p-8">
+              <div className="space-y-5">
 
-              {/* Password */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label htmlFor="password" className="block text-white/70 text-xs font-bold uppercase tracking-widest">
+                {/* Error message */}
+                {error && (
+                  <div className="bg-red-900/30 border border-red-500/40 px-4 py-3">
+                    <p className="text-red-400 text-xs font-bold">{error}</p>
+                  </div>
+                )}
+
+                {/* Email */}
+                <div>
+                  <label htmlFor="email" className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@email.com"
+                    required
+                    className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-4 py-3 text-white text-sm outline-none transition-colors placeholder:text-white/20"
+                  />
+                </div>
+
+                {/* Password */}
+                <div>
+                  <label htmlFor="password" className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">
                     Password
                   </label>
-                  <button
-                    type="button"
-                    className="text-jc-red text-xs hover:underline"
-                  >
-                    Forgot password?
-                  </button>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-4 py-3 text-white text-sm outline-none transition-colors placeholder:text-white/20 pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 transition-colors"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        {showPassword
+                          ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                          : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        }
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <div className="relative">
-                  <input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-4 py-3 text-white text-sm outline-none transition-colors placeholder:text-white/20 pr-12"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 transition-colors"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      {showPassword
-                        ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                        : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      }
-                    </svg>
-                  </button>
-                </div>
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={loading || !isLoaded}
+                  className="block w-full bg-jc-red hover:bg-jc-red-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-sm tracking-widest uppercase py-4 text-center transition-colors mt-2"
+                >
+                  {loading ? 'Signing in…' : 'Sign In'}
+                </button>
               </div>
 
-              {/* Submit */}
-              <Link
-                href="/portal"
-                className="block w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase py-4 text-center transition-colors mt-2"
-              >
-                Sign In
-              </Link>
+              <div className="border-t border-white/10 mt-8 pt-6 text-center">
+                <p className="text-white/40 text-xs">
+                  New member?{' '}
+                  <Link href="/join" className="text-jc-red hover:underline font-bold">
+                    Enter your access code
+                  </Link>
+                </p>
+              </div>
             </div>
-
-            <div className="border-t border-white/10 mt-8 pt-6 text-center">
-              <p className="text-white/40 text-xs">
-                Not a member yet?{' '}
-                <Link href="/membership" className="text-jc-red hover:underline font-bold">
-                  Learn about membership
-                </Link>
-              </p>
-            </div>
-          </div>
+          </form>
 
           <p className="text-white/20 text-xs text-center mt-6">
             Having trouble signing in? Contact{' '}
