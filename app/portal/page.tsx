@@ -153,10 +153,12 @@ export default function PortalPage() {
   const isAdmin = ADMIN_EMAILS.includes(userEmail)
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
   const [inviteForm, setInviteForm] = useState({ email:'', firstName:'', lastName:'' })
-  const [inviteStatus, setInviteStatus] = useState<{type:'idle'|'sending'|'ok'|'error', msg?:string}>({type:'idle'})
+  const [inviteStatus, setInviteStatus] = useState<{type:'idle'|'sending'|'ok'|'error', msg?:string, link?:string}>({type:'idle'})
+  const [linkCopied, setLinkCopied] = useState(false)
   const sendInvite = async () => {
     if (!inviteForm.email.trim()) return
     setInviteStatus({type:'sending'})
+    setLinkCopied(false)
     try {
       const res = await fetch('/api/admin/invite', {
         method:'POST',
@@ -164,13 +166,25 @@ export default function PortalPage() {
         body: JSON.stringify(inviteForm),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Failed to send invite')
-      setInviteStatus({type:'ok', msg:`Invitation sent to ${inviteForm.email}`})
-      setInviteForm({ email:'', firstName:'', lastName:'' })
-      setTimeout(() => setInviteStatus({type:'idle'}), 4000)
+      if (!res.ok) throw new Error(data.error || 'Failed to generate link')
+      setInviteStatus({type:'ok', msg:`Link generated for ${inviteForm.email}`, link: data.signUpLink})
     } catch (err) {
       setInviteStatus({type:'error', msg: err instanceof Error ? err.message : 'Something went wrong'})
     }
+  }
+  const copyInviteLink = async () => {
+    if (!inviteStatus.link) return
+    try {
+      await navigator.clipboard.writeText(inviteStatus.link)
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    } catch {}
+  }
+  const resetInviteModal = () => {
+    setInviteModalOpen(false)
+    setInviteStatus({type:'idle'})
+    setInviteForm({ email:'', firstName:'', lastName:'' })
+    setLinkCopied(false)
   }
 
   // Goals
@@ -1639,73 +1653,93 @@ export default function PortalPage() {
 
       {/* Admin — Invite member modal */}
       {inviteModalOpen && isAdmin && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4" onClick={()=>setInviteModalOpen(false)}>
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4" onClick={resetInviteModal}>
           <div className="bg-jc-charcoal border border-white/10 max-w-md w-full p-8" onClick={e=>e.stopPropagation()}>
             <div className="flex items-start justify-between mb-6">
               <div>
                 <p className="text-jc-red text-xs font-bold tracking-widest uppercase mb-1">Admin</p>
                 <h2 className="text-white font-black text-2xl tracking-tight">Invite New Member</h2>
               </div>
-              <button onClick={()=>setInviteModalOpen(false)} className="text-white/40 hover:text-white transition-colors">
+              <button onClick={resetInviteModal} className="text-white/40 hover:text-white transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
                 </svg>
               </button>
             </div>
 
-            <p className="text-white/50 text-xs mb-5">They&rsquo;ll receive an invitation email and land directly on our branded sign-up page.</p>
-
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">First name</label>
-                  <input
-                    value={inviteForm.firstName}
-                    onChange={e=>setInviteForm(p=>({...p,firstName:e.target.value}))}
-                    placeholder="Jane"
-                    className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
-                  />
+            {inviteStatus.type === 'ok' && inviteStatus.link ? (
+              <div className="space-y-4">
+                <p className="text-white/70 text-sm">
+                  Share this link with <span className="text-white font-bold">{inviteForm.email || 'the new member'}</span>. They&rsquo;ll land on our sign-up page with their email pre-filled.
+                </p>
+                <div className="bg-jc-black border border-white/20 px-3 py-3 text-xs text-white/80 break-all font-mono">
+                  {inviteStatus.link}
                 </div>
-                <div>
-                  <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Last name</label>
-                  <input
-                    value={inviteForm.lastName}
-                    onChange={e=>setInviteForm(p=>({...p,lastName:e.target.value}))}
-                    placeholder="Doe"
-                    className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
-                  />
-                </div>
+                <button
+                  onClick={copyInviteLink}
+                  className="w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase py-3 transition-colors"
+                >
+                  {linkCopied ? '✓ Copied' : 'Copy Link'}
+                </button>
+                <button
+                  onClick={() => { setInviteStatus({type:'idle'}); setInviteForm({email:'',firstName:'',lastName:''}) }}
+                  className="w-full text-white/50 hover:text-white text-xs uppercase tracking-widest py-2 transition-colors"
+                >
+                  Generate another
+                </button>
               </div>
-              <div>
-                <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Email</label>
-                <input
-                  type="email"
-                  value={inviteForm.email}
-                  onChange={e=>setInviteForm(p=>({...p,email:e.target.value}))}
-                  placeholder="member@example.com"
-                  className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
-                />
-              </div>
+            ) : (
+              <>
+                <p className="text-white/50 text-xs mb-5">Generate a sign-up link to share with the new member. They&rsquo;ll land directly on our branded sign-up page.</p>
 
-              {inviteStatus.type === 'ok' && (
-                <div className="bg-green-900/30 border border-green-500/40 px-4 py-3">
-                  <p className="text-green-400 text-xs font-bold">{inviteStatus.msg}</p>
-                </div>
-              )}
-              {inviteStatus.type === 'error' && (
-                <div className="bg-red-900/30 border border-red-500/40 px-4 py-3">
-                  <p className="text-red-400 text-xs font-bold">{inviteStatus.msg}</p>
-                </div>
-              )}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">First name</label>
+                      <input
+                        value={inviteForm.firstName}
+                        onChange={e=>setInviteForm(p=>({...p,firstName:e.target.value}))}
+                        placeholder="Jane"
+                        className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Last name</label>
+                      <input
+                        value={inviteForm.lastName}
+                        onChange={e=>setInviteForm(p=>({...p,lastName:e.target.value}))}
+                        placeholder="Doe"
+                        className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Email</label>
+                    <input
+                      type="email"
+                      value={inviteForm.email}
+                      onChange={e=>setInviteForm(p=>({...p,email:e.target.value}))}
+                      placeholder="member@example.com"
+                      className="w-full bg-jc-black border border-white/20 focus:border-jc-red px-3 py-2.5 text-white text-sm outline-none transition-colors placeholder:text-white/20"
+                    />
+                  </div>
 
-              <button
-                onClick={sendInvite}
-                disabled={inviteStatus.type === 'sending' || !inviteForm.email.trim()}
-                className="w-full bg-jc-red hover:bg-jc-red-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-sm tracking-widest uppercase py-3 transition-colors"
-              >
-                {inviteStatus.type === 'sending' ? 'Sending…' : 'Send Invitation'}
-              </button>
-            </div>
+                  {inviteStatus.type === 'error' && (
+                    <div className="bg-red-900/30 border border-red-500/40 px-4 py-3">
+                      <p className="text-red-400 text-xs font-bold">{inviteStatus.msg}</p>
+                    </div>
+                  )}
+
+                  <button
+                    onClick={sendInvite}
+                    disabled={inviteStatus.type === 'sending' || !inviteForm.email.trim()}
+                    className="w-full bg-jc-red hover:bg-jc-red-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-sm tracking-widest uppercase py-3 transition-colors"
+                  >
+                    {inviteStatus.type === 'sending' ? 'Generating…' : 'Generate Sign-Up Link'}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
