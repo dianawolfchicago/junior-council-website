@@ -218,14 +218,15 @@ export default function PortalPage() {
 
   // Calendar
   const today = new Date()
-  const [calYear,  setCalYear]    = useState(2026)
-  const [calMonth, setCalMonth]   = useState(0)
-  const [selectedDay, setSelectedDay] = useState<string|null>(null)
+  const [calYear,  setCalYear]    = useState(today.getFullYear())
+  const [calMonth, setCalMonth]   = useState(today.getMonth())
+  const pad = (n:number) => String(n).padStart(2,'0')
+  const todayKey = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`
+  const [selectedDay, setSelectedDay] = useState<string|null>(todayKey)
   const prevMonth = () => { if (calMonth===0){setCalMonth(11);setCalYear(y=>y-1)}else setCalMonth(m=>m-1); setSelectedDay(null) }
   const nextMonth = () => { if (calMonth===11){setCalMonth(0);setCalYear(y=>y+1)}else setCalMonth(m=>m+1); setSelectedDay(null) }
   const daysInMonth    = new Date(calYear, calMonth+1, 0).getDate()
   const firstDayOfWeek = new Date(calYear, calMonth, 1).getDay()
-  const pad = (n:number) => String(n).padStart(2,'0')
   const eventsOnDay = (day:number) => { const k=`${calYear}-${pad(calMonth+1)}-${pad(day)}`; return allEvents.filter(e=>e.dateKey===k) }
   const selectedEvents = selectedDay ? allEvents.filter(e=>e.dateKey===selectedDay) : []
 
