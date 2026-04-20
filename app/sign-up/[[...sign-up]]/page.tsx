@@ -116,13 +116,13 @@ export default function SignUpPage() {
                   inputMode="numeric"
                   autoComplete="one-time-code"
                   required
-                  maxLength={6}
+                  maxLength={10}
                   value={code}
                   onChange={e => setCode(e.target.value.replace(/\D/g, ''))}
-                  placeholder="000000"
-                  className="w-full bg-jc-black border border-white/20 focus:border-jc-red text-white outline-none px-4 py-3 text-sm tracking-[0.5em] text-center font-mono text-lg placeholder:text-white/20"
+                  placeholder="00000000"
+                  className="w-full bg-jc-black border border-white/20 focus:border-jc-red text-white outline-none px-4 py-3 text-sm tracking-[0.3em] text-center font-mono text-lg placeholder:text-white/20"
                 />
-                <p className="text-white/40 text-xs mt-2">6-digit code from your invitation email</p>
+                <p className="text-white/40 text-xs mt-2">Code from your invitation email</p>
               </div>
 
               <div>
@@ -156,7 +156,7 @@ export default function SignUpPage() {
 
               <button
                 type="submit"
-                disabled={loading || code.length !== 6 || password.length < 8 || !email.trim()}
+                disabled={loading || code.length < 6 || password.length < 8 || !email.trim()}
                 className="w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase py-4 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Activating…' : 'Enter the Portal'}
