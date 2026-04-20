@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
@@ -9,46 +9,43 @@ import { createClient } from '@/lib/supabase/client'
 export default function SignUpPage() {
   const router = useRouter()
   const supabase = createClient()
+  const searchParams = useSearchParams()
 
+  const [email, setEmail] = useState('')
+  const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [sessionReady, setSessionReady] = useState(false)
-  const [userEmail, setUserEmail] = useState('')
 
-  // Detect session from invite link (hash tokens or code exchange)
+  // Pre-fill email if it came in via ?email= query param
   useEffect(() => {
-    // Check if there's already an active session (e.g. from URL hash tokens)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setSessionReady(true)
-        setUserEmail(session.user.email ?? '')
-      }
-    })
+    const e = searchParams.get('email')
+    if (e) setEmail(e)
+  }, [searchParams])
 
-    // Listen for auth state changes — fires when Supabase processes the invite hash
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if ((event === 'SIGNED_IN' || event === 'USER_UPDATED') && session?.user) {
-        setSessionReady(true)
-        setUserEmail(session.user.email ?? '')
-      }
-    })
-
-    return () => subscription.unsubscribe()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const handleSetPassword = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
+
     try {
-      const { error } = await supabase.auth.updateUser({ password })
-      if (error) throw error
+      // Step 1: Verify the 6-digit invite code → creates a session
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        email: email.trim().toLowerCase(),
+        token: code.trim(),
+        type: 'invite',
+      })
+      if (verifyError) throw verifyError
+
+      // Step 2: Set the chosen password on the now-authenticated user
+      const { error: updateError } = await supabase.auth.updateUser({ password })
+      if (updateError) throw updateError
+
+      // Step 3: Land them in the portal
       router.push('/portal')
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Could not set password.'
+      const msg = err instanceof Error ? err.message : 'Could not complete sign-up.'
       setError(msg)
     } finally {
       setLoading(false)
@@ -87,76 +84,84 @@ export default function SignUpPage() {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-              <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">
-                {sessionReady ? 'Set Password' : 'Joining…'}
-              </span>
+              <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">Activate Account</span>
               <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
             </div>
             <h1 className="text-white font-black text-3xl sm:text-4xl tracking-tight">
-              {sessionReady ? (
-                <>Create your <span className="text-jc-red">Password</span></>
-              ) : (
-                <>Join the <span className="text-jc-red">Portal</span></>
-              )}
+              Join the <span className="text-jc-red">Portal</span>
             </h1>
-            {sessionReady && userEmail && (
-              <p className="text-white/50 text-sm mt-3">
-                Setting up account for <span className="text-white">{userEmail}</span>
-              </p>
-            )}
+            <p className="text-white/50 text-sm mt-3">
+              Enter the code from your invitation email along with your email and a new password.
+            </p>
           </div>
 
           <div className="bg-jc-charcoal border border-white/10 p-8">
-            {!sessionReady ? (
-              <div className="text-center py-4">
-                <div className="w-8 h-8 border-2 border-jc-red border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                <p className="text-white/50 text-sm">Processing your invite link…</p>
-                <p className="text-white/30 text-xs mt-2">
-                  If this takes more than a few seconds, check that you clicked the link directly from your email.
-                </p>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="you@email.com"
+                  className="w-full bg-jc-black border border-white/20 focus:border-jc-red text-white outline-none px-4 py-3 text-sm placeholder:text-white/20"
+                />
               </div>
-            ) : (
-              <form onSubmit={handleSetPassword} className="space-y-5">
-                <div>
-                  <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">
-                    Choose a Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      minLength={8}
-                      value={password}
-                      onChange={e => setPassword(e.target.value)}
-                      className="w-full bg-jc-black border border-white/20 focus:border-jc-red text-white outline-none px-4 py-3 pr-12 text-sm"
-                      placeholder="••••••••"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(s => !s)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white text-xs uppercase tracking-widest"
-                    >
-                      {showPassword ? 'Hide' : 'Show'}
-                    </button>
-                  </div>
-                  <p className="text-white/40 text-xs mt-2">8+ characters</p>
+
+              <div>
+                <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Verification Code</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  required
+                  maxLength={6}
+                  value={code}
+                  onChange={e => setCode(e.target.value.replace(/\D/g, ''))}
+                  placeholder="000000"
+                  className="w-full bg-jc-black border border-white/20 focus:border-jc-red text-white outline-none px-4 py-3 text-sm tracking-[0.5em] text-center font-mono text-lg placeholder:text-white/20"
+                />
+                <p className="text-white/40 text-xs mt-2">6-digit code from your invitation email</p>
+              </div>
+
+              <div>
+                <label className="block text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Choose a Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    minLength={8}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-jc-black border border-white/20 focus:border-jc-red text-white outline-none px-4 py-3 pr-12 text-sm placeholder:text-white/20"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(s => !s)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white text-xs uppercase tracking-widest"
+                  >
+                    {showPassword ? 'Hide' : 'Show'}
+                  </button>
                 </div>
+                <p className="text-white/40 text-xs mt-2">8+ characters</p>
+              </div>
 
-                {error && (
-                  <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-xs p-3">
-                    {error}
-                  </div>
-                )}
+              {error && (
+                <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-xs p-3">
+                  {error}
+                </div>
+              )}
 
-                <button
-                  type="submit"
-                  disabled={loading || password.length < 8}
-                  className="w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase py-4 transition-colors disabled:opacity-50"
-                >
-                  {loading ? 'Setting up account…' : 'Enter the Portal'}
-                </button>
-              </form>
-            )}
+              <button
+                type="submit"
+                disabled={loading || code.length !== 6 || password.length < 8 || !email.trim()}
+                className="w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase py-4 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Activating…' : 'Enter the Portal'}
+              </button>
+            </form>
           </div>
 
           <p className="text-white/20 text-xs text-center mt-6">
