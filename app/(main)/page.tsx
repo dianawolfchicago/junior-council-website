@@ -43,9 +43,9 @@ const involvementCards = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
       </svg>
     ),
-    title: 'Corporate Partnership',
+    title: 'Partner & Sponsor',
     description:
-      'Align your brand with a cause that matters. Corporate partners receive visibility across our events, communications, and the greater Lurie network.',
+      'Align your brand with a cause that matters. Whether through hospitality, Wellness for a Cause, silent auction, or event sponsorship — partners receive visibility across our events, communications, and the greater Lurie network.',
     cta: 'Partner With Us',
     href: '/support#corporate',
   },
@@ -546,7 +546,7 @@ export default function HomePage() {
               href="/support#corporate"
               className="inline-flex items-center justify-center border-2 border-white text-white font-black text-sm tracking-widest uppercase px-10 py-4 hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-jc-red"
             >
-              Corporate Partnership
+              Partner & Sponsor
             </Link>
           </div>
           <p className="text-white/50 text-xs mt-8">
