@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import AuctionCountdown from '@/components/AuctionCountdown'
 
 export const metadata: Metadata = {
   title: 'Silent Auction | Snowball | Junior Council',
@@ -51,6 +52,8 @@ export default function SilentAuctionPage() {
           </p>
         </div>
       </section>
+
+      <AuctionCountdown />
 
       {/* Categories */}
       <section className="bg-white py-20">
