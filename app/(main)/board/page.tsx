@@ -37,7 +37,7 @@ const boardMembers: BoardMember[] = [
     jobTitle: 'Financial Tech Consultant',
     company: 'Cognizant',
     memberSince: 'November 2025',
-    bio: 'A global adventurer at heart, Diana has explored 20+ countries — her most recent trip taking her to the vibrant streets of Thailand. Of Austrian and Mexican heritage, she speaks English, Spanish, and German fluently. When she\'s not consulting in the financial tech space at Cognizant, you\'ll find her training for her first triathlon or buried in GMAT prep.',
+    bio: 'A global adventurer at heart, Diana has explored 25+ countries — her most recent trip taking her to the vibrant streets of Thailand. Of Austrian and Mexican heritage, she speaks English, Spanish, and German fluently. When she\'s not consulting in the financial tech space at Cognizant, you\'ll find her training for her first triathlon or buried in GMAT prep.',
   },
 ]
 
