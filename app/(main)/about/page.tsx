@@ -42,9 +42,8 @@ export default function OurCausePage() {
             <div className="w-8 h-0.5 bg-white/60" aria-hidden="true" />
           </div>
           <p className="text-white font-black text-xl sm:text-2xl lg:text-3xl leading-snug tracking-tight">
-            Junior Council&apos;s mission is to ensure all children with HIV/AIDS,
-            regardless of their ability to pay, have access to high-quality
-            pediatric care.
+            To ensure all children with HIV/AIDS, regardless of their ability
+            to pay, have access to high-quality pediatric care.
           </p>
         </div>
       </section>
