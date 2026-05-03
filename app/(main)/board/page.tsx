@@ -96,7 +96,7 @@ export default function BoardPage() {
                           alt={member.name}
                           width={400}
                           height={400}
-                          className="w-full h-full object-cover object-top"
+                          className="w-full h-full object-cover object-top -translate-y-6"
                         />
                       </div>
                     ) : (
