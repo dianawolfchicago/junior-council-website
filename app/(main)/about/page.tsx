@@ -96,6 +96,52 @@ export default function OurCausePage() {
         </div>
       </section>
 
+      {/* By the Numbers */}
+      <section className="bg-jc-black py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
+            <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">By the Numbers</span>
+          </div>
+          <h2 className="text-white font-black text-3xl sm:text-4xl mb-4 tracking-tight">
+            This Is a <span className="text-jc-red">Real Crisis</span> — Right Now
+          </h2>
+          <p className="text-white/60 text-base mb-12 max-w-2xl">
+            HIV among adolescents is not a problem of the past. These are the facts — sourced from the CDC, NIH, and UNICEF.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10">
+            {[
+              {
+                stat: '19%',
+                label: 'of all new U.S. HIV diagnoses in 2022 were among youth ages 13–24',
+                source: 'NIH HIVinfo, 2025',
+              },
+              {
+                stat: '44%',
+                label: 'of adolescents living with HIV in the U.S. don\'t know their status',
+                source: 'NIH HIVinfo, 2025',
+              },
+              {
+                stat: '34%',
+                label: 'of diagnosed young people achieve viral suppression — vs. 63% of adults',
+                source: 'NICHD, 2020',
+              },
+              {
+                stat: '70%',
+                label: 'of new U.S. HIV infections occur among Black and Latino individuals',
+                source: 'CDC, 2023',
+              },
+            ].map((item) => (
+              <div key={item.stat} className="bg-jc-black p-8 flex flex-col">
+                <div className="text-jc-red font-black text-5xl sm:text-6xl mb-4 leading-none">{item.stat}</div>
+                <p className="text-white text-sm leading-relaxed flex-1">{item.label}</p>
+                <p className="text-white/30 text-xs mt-4 uppercase tracking-widest">{item.source}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Scholarship Fund */}
       <section className="bg-jc-gray py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
