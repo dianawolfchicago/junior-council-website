@@ -4,6 +4,7 @@ const footerLinks = {
   'About': [
     { href: '/about#our-cause', label: 'Our Cause' },
     { href: '/membership#board', label: 'Board of Directors' },
+    { href: '/about/scholarship', label: 'Scholarship Fund' },
     { href: '/about#dei', label: 'DEI Commitment' },
     { href: '/about#faq', label: 'FAQ' },
   ],
