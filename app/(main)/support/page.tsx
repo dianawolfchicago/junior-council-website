@@ -350,6 +350,12 @@ export default function SupportPage() {
               >
                 Become a Hospitality Partner
               </Link>
+              <p className="text-jc-gray-dark text-sm mt-5">
+                For further information, email us at{' '}
+                <a href="mailto:hospitality@juniorcouncil.com" className="text-jc-red font-bold hover:underline">
+                  hospitality@juniorcouncil.com
+                </a>
+              </p>
             </div>
             <div className="bg-jc-gray p-8">
               <h3 className="text-jc-black font-black text-xl mb-6">
@@ -416,6 +422,12 @@ export default function SupportPage() {
             >
               Donate an Item
             </Link>
+            <p className="text-white/60 text-sm mt-5">
+              For further information, email us at{' '}
+              <a href="mailto:silentauction@juniorcouncil.com" className="text-jc-red font-bold hover:underline">
+                silentauction@juniorcouncil.com
+              </a>
+            </p>
           </div>
         </div>
       </section>
