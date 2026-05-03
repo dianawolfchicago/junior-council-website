@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
@@ -51,33 +52,46 @@ export default function OurCausePage() {
       {/* Our Cause */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-              <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">Who We Serve</span>
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
+                <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">Who We Serve</span>
+              </div>
+              <h2 className="text-jc-black font-black text-3xl sm:text-4xl mb-6 tracking-tight">
+                The Fight for <span className="text-jc-red">Youth with HIV & AIDS</span>
+              </h2>
+              <p className="text-jc-gray-dark text-lg leading-relaxed mb-5">
+                Junior Council is a Chicago-based nonprofit dedicated to raising
+                funds for adolescents living with HIV and AIDS. In partnership with
+                Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago, we support
+                one of the most vulnerable and underserved populations in our city.
+              </p>
+              <p className="text-jc-gray-dark text-base leading-relaxed mb-5">
+                Adolescents with HIV face unique challenges — stigma, complex
+                medication regimens, and the intersection of puberty with chronic
+                illness. The Adolescent HIV program at Lurie provides
+                comprehensive care: medical treatment, mental health support,
+                social services, and connection to community.
+              </p>
+              <p className="text-jc-gray-dark text-base leading-relaxed">
+                Every event we host, every membership dues we collect, and every
+                corporate partnership we forge translates directly into resources
+                for these young patients. This is a cause that deserves a champion
+                — and Junior Council is proud to be that champion.
+              </p>
             </div>
-            <h2 className="text-jc-black font-black text-3xl sm:text-4xl mb-6 tracking-tight">
-              The Fight for <span className="text-jc-red">Youth with HIV & AIDS</span>
-            </h2>
-            <p className="text-jc-gray-dark text-lg leading-relaxed mb-5">
-              Junior Council is a Chicago-based nonprofit dedicated to raising
-              funds for adolescents living with HIV and AIDS. In partnership with
-              Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago, we support
-              one of the most vulnerable and underserved populations in our city.
-            </p>
-            <p className="text-jc-gray-dark text-base leading-relaxed mb-5">
-              Adolescents with HIV face unique challenges — stigma, complex
-              medication regimens, and the intersection of puberty with chronic
-              illness. The Adolescent HIV program at Lurie provides
-              comprehensive care: medical treatment, mental health support,
-              social services, and connection to community.
-            </p>
-            <p className="text-jc-gray-dark text-base leading-relaxed">
-              Every event we host, every membership dues we collect, and every
-              corporate partnership we forge translates directly into resources
-              for these young patients. This is a cause that deserves a champion
-              — and Junior Council is proud to be that champion.
-            </p>
+
+            {/* Logo */}
+            <div className="flex justify-center lg:justify-end lg:pt-2">
+              <Image
+                src="/jc-logo.png"
+                alt="Junior Council logo"
+                width={340}
+                height={340}
+                className="object-contain"
+              />
+            </div>
           </div>
         </div>
       </section>
