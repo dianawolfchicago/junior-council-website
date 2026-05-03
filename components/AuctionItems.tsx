@@ -400,8 +400,8 @@ export default function AuctionItems() {
                         <p className="text-jc-gray-dark text-xs italic mb-3">{item.tagline}</p>
                         <div className="flex items-center justify-between">
                           <div>
-                            <div className="text-jc-gray-dark text-xs uppercase tracking-widest">Current Bid</div>
-                            <div className="text-jc-red font-black text-lg">{fmt(item.currentBid)}</div>
+                            <div className="text-jc-gray-dark text-xs uppercase tracking-widest">Starting Bid</div>
+                            <div className="text-jc-red font-black text-lg">{fmt(item.startingBid)}</div>
                           </div>
                           <div className="text-right">
                             <div className="text-jc-gray-dark text-xs uppercase tracking-widest">Est. Value</div>
@@ -464,10 +464,9 @@ export default function AuctionItems() {
               <p className="text-jc-gray-dark text-sm italic mb-5">{selectedItem.tagline}</p>
 
               {/* Bid stats */}
-              <div className="grid grid-cols-3 gap-3 mb-6">
+              <div className="grid grid-cols-2 gap-3 mb-6">
                 {[
-                  { label: 'Starting Bid', value: fmt(selectedItem.startingBid) },
-                  { label: 'Current Bid',  value: fmt(selectedItem.currentBid), highlight: true },
+                  { label: 'Starting Bid', value: fmt(selectedItem.startingBid), highlight: true },
                   { label: 'Est. Value',   value: fmt(selectedItem.estimatedValue) },
                 ].map(({ label, value, highlight }) => (
                   <div key={label} className={`p-3 text-center border ${highlight ? 'border-jc-red bg-jc-red/5' : 'border-jc-gray-mid'}`}>
@@ -503,10 +502,10 @@ export default function AuctionItems() {
                 className="w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase py-4 transition-colors"
                 onClick={() => alert('Live bidding opens at Snowball 2027 — February 27, 2027!')}
               >
-                Place a Bid — {fmt(selectedItem.currentBid + 100)} Min.
+                Bidding Opens February 27, 2027
               </button>
               <p className="text-jc-gray-dark text-xs text-center mt-3">
-                {selectedItem.bidCount} bid{selectedItem.bidCount !== 1 ? 's' : ''} placed · Bidding closes at the event on Feb 27, 2027
+                Bidding closes at the event · Snowball 2027 · Chicago, IL
               </p>
             </div>
           </div>
