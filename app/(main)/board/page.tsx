@@ -90,7 +90,7 @@ export default function BoardPage() {
                     isSelected ? 'border-jc-red' : 'border-jc-gray-mid group-hover:border-jc-red'
                   } ${member.photo ? '' : 'bg-jc-gray flex items-center justify-center'}`}>
                     {member.photo ? (
-                      <div className="w-full h-full border-2 border-jc-red overflow-hidden">
+                      <div className="w-full h-full border-4 border-jc-red overflow-hidden">
                         <Image
                           src={member.photo}
                           alt={member.name}
@@ -154,7 +154,7 @@ export default function BoardPage() {
                   {/* Photo */}
                   <div className="relative aspect-square bg-jc-gray flex items-center justify-center p-3">
                     {selected.photo ? (
-                      <div className="relative w-full h-full border-2 border-jc-red overflow-hidden">
+                      <div className="relative w-full h-full overflow-hidden">
                         <Image
                           src={selected.photo}
                           alt={selected.name}
