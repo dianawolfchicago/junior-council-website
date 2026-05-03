@@ -156,7 +156,7 @@ export default function BoardPage() {
                         src={selected.photo}
                         alt={selected.name}
                         fill
-                        className="object-cover object-top scale-75 translate-y-8"
+                        className="object-cover object-top"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
