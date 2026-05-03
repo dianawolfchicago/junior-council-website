@@ -90,13 +90,15 @@ export default function BoardPage() {
                     isSelected ? 'border-jc-red' : 'border-jc-gray-mid group-hover:border-jc-red'
                   } ${member.photo ? '' : 'bg-jc-gray flex items-center justify-center'}`}>
                     {member.photo ? (
-                      <Image
-                        src={member.photo}
-                        alt={member.name}
-                        width={400}
-                        height={400}
-                        className="w-full h-full object-cover object-top"
-                      />
+                      <div className="w-full h-full border-2 border-jc-red overflow-hidden">
+                        <Image
+                          src={member.photo}
+                          alt={member.name}
+                          width={400}
+                          height={400}
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
                     ) : (
                       <svg
                         className="w-16 h-16 text-jc-gray-mid"
@@ -150,14 +152,16 @@ export default function BoardPage() {
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2">
                   {/* Photo */}
-                  <div className="relative aspect-square overflow-hidden bg-jc-gray">
+                  <div className="relative aspect-square bg-jc-gray flex items-center justify-center p-3">
                     {selected.photo ? (
-                      <Image
-                        src={selected.photo}
-                        alt={selected.name}
-                        fill
-                        className="object-cover object-top"
-                      />
+                      <div className="relative w-full h-full border-2 border-jc-red overflow-hidden">
+                        <Image
+                          src={selected.photo}
+                          alt={selected.name}
+                          fill
+                          className="object-contain object-center"
+                        />
+                      </div>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <svg className="w-20 h-20 text-jc-gray-mid" fill="none" stroke="currentColor" viewBox="0 0 24 24">
