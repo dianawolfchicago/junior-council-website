@@ -178,36 +178,55 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── MISSION / WHO WE ARE ─────────────────────────────────────── */}
-      <section className="bg-white py-24 lg:py-32" aria-label="Our mission">
+      {/* ─── WHO WE ARE + LURIE PARTNERSHIP (merged) ──────────────────── */}
+      <section className="bg-white py-24 lg:py-32" aria-label="Who we are and our partner">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            {/* Text */}
+          {/* Header */}
+          <div className="mb-14">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
+              <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">Who We Are</span>
+            </div>
+            <h2 className="text-jc-black font-black text-4xl sm:text-5xl leading-[1.05] tracking-tight max-w-3xl">
+              A Community United
+              <br />
+              <span className="text-jc-red">Around a Cause.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+            {/* Left: text content */}
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-                <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">
-                  Who We Are
-                </span>
-              </div>
-              <h2 className="text-jc-black font-black text-4xl sm:text-5xl leading-[1.05] tracking-tight mb-6">
-                A Community United
-                <br />
-                <span className="text-jc-red">Around a Cause.</span>
-              </h2>
               <p className="text-jc-gray-dark text-lg leading-relaxed mb-5">
-                Junior Council is a Chicago-based nonprofit of young
-                professionals, advocates, and community members who believe
-                every adolescent living with HIV and AIDS deserves access to
-                world-class care.
+                Junior Council is a Chicago-based nonprofit of young professionals,
+                advocates, and community members who believe every adolescent living
+                with HIV and AIDS deserves access to world-class care.
               </p>
               <p className="text-jc-gray-dark text-base leading-relaxed mb-8">
-                Through fundraising events, corporate partnerships, and
-                community engagement, we channel resources directly to the
-                Adolescent HIV program at Ann &amp; Robert H. Lurie
-                Children&apos;s Hospital — one of the nation&apos;s top
-                children&apos;s hospitals and a leader in pediatric HIV care.
+                Through fundraising events, corporate partnerships, and community
+                engagement, we channel 100% of resources directly to the Adolescent
+                HIV program at{' '}
+                <a
+                  href="https://www.luriechildrens.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-jc-black hover:text-jc-red transition-colors underline underline-offset-2"
+                >
+                  Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago
+                </a>{' '}
+                — nationally ranked as one of America&apos;s best children&apos;s hospitals
+                and a leader in pediatric HIV care.
               </p>
+
+              {/* Mission statement */}
+              <div className="border-l-4 border-jc-red pl-6 mb-8">
+                <p className="text-jc-gray-dark text-xs font-bold uppercase tracking-widest mb-2">Our Mission</p>
+                <p className="text-jc-black font-black text-xl leading-snug">
+                  To ensure all children with HIV/AIDS, regardless of their ability
+                  to pay, have access to high-quality pediatric care.
+                </p>
+              </div>
+
               <Link
                 href="/about"
                 className="inline-flex items-center text-jc-black font-bold text-sm uppercase tracking-widest border-b-2 border-jc-red hover:text-jc-red transition-colors pb-1"
@@ -219,97 +238,37 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Visual block */}
-            <div className="relative">
-              <div className="bg-jc-black aspect-square max-w-md mx-auto flex flex-col items-center justify-center p-12 text-center">
-                <div className="text-jc-red/20 font-black text-[8rem] leading-none absolute select-none" aria-hidden="true">
-                  JC
-                </div>
-                <div className="relative z-10">
-                  <div className="text-white/80 text-sm font-semibold uppercase tracking-widest mb-4">
-                    Our Mission
-                  </div>
-                  <blockquote className="text-white font-black text-2xl sm:text-3xl leading-tight">
-                    &ldquo;To raise funds and awareness for adolescents living
-                    with HIV and AIDS in partnership with Lurie Children&apos;s
-                    Hospital.&rdquo;
-                  </blockquote>
-                  <div className="mt-6 w-12 h-0.5 bg-jc-red mx-auto" aria-hidden="true" />
+            {/* Right: checklist + visual */}
+            <div className="space-y-6">
+              <div className="bg-jc-black p-8">
+                <p className="text-jc-red text-xs font-bold uppercase tracking-widest mb-5">Our Partner</p>
+                <div className="space-y-4">
+                  {[
+                    'Nationally ranked children\'s hospital',
+                    'Expert adolescent HIV care team',
+                    'Holistic support: medical, mental health & social services',
+                    '100% of JC funds benefit Lurie programs',
+                  ].map((point, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-jc-red flex-shrink-0 flex items-center justify-center mt-0.5" aria-hidden="true">
+                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <p className="text-white/80 text-sm leading-relaxed">{point}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
-              {/* Red accent corner */}
-              <div
-                className="absolute -bottom-4 -right-4 w-24 h-24 bg-jc-red"
-                aria-hidden="true"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── LURIE PARTNERSHIP ────────────────────────────────────────── */}
-      <section
-        className="bg-jc-gray py-20 lg:py-28"
-        aria-label="Lurie Children's Hospital partnership"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-              <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">
-                Our Partner
-              </span>
-              <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-            </div>
-            <h2 className="text-jc-black font-black text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight max-w-3xl mx-auto">
-              Partnering with One of the Nation&apos;s
-              <span className="text-jc-red"> Best Children&apos;s Hospitals.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 bg-white p-8 sm:p-10 border-l-4 border-jc-red">
-              <h3 className="text-jc-black font-black text-xl sm:text-2xl mb-4">
-                <a
-                  href="https://www.luriechildrens.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-jc-red transition-colors"
-                >
-                  Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago
-                </a>
-              </h3>
-              <p className="text-jc-gray-dark leading-relaxed mb-4">
-                Lurie Children&apos;s is nationally ranked as one of America&apos;s best
-                children&apos;s hospitals by U.S. News &amp; World Report. Their
-                Adolescent Medicine program provides comprehensive HIV care — from
-                medical treatment and mental health support to social services and
-                long-term follow-up.
-              </p>
-              <p className="text-jc-gray-dark leading-relaxed">
-                Every dollar Junior Council raises goes directly to support this
-                program, ensuring that no young person in Chicago goes without the
-                care they need.
-              </p>
-            </div>
-            <div className="bg-jc-black p-8 flex flex-col justify-center">
-              <div className="space-y-5">
+              <div className="grid grid-cols-3 gap-4">
                 {[
-                  'Nationally ranked children\'s hospital',
-                  'Expert adolescent HIV care team',
-                  'Holistic support: medical, mental health & social services',
-                  '100% of JC funds benefit Lurie programs',
-                ].map((point, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div
-                      className="w-5 h-5 bg-jc-red flex-shrink-0 flex items-center justify-center mt-0.5"
-                      aria-hidden="true"
-                    >
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <p className="text-white/80 text-sm leading-relaxed">{point}</p>
+                  { value: '160+', label: 'Members' },
+                  { value: '$5M+', label: 'Raised for Lurie' },
+                  { value: '100%', label: 'To patient care' },
+                ].map((s, i) => (
+                  <div key={i} className="bg-jc-gray border border-jc-gray-mid p-5 text-center">
+                    <div className="text-jc-red font-black text-2xl">{s.value}</div>
+                    <div className="text-jc-gray-dark text-xs mt-1 uppercase tracking-wide">{s.label}</div>
                   </div>
                 ))}
               </div>
