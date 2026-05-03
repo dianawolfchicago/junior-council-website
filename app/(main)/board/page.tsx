@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 
 type BoardMember = {
@@ -222,72 +221,6 @@ export default function BoardPage() {
         </div>
       </section>
 
-      {/* Advisory / Lurie Connection */}
-      <section className="bg-jc-black py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-                <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">
-                  Our Partnership
-                </span>
-              </div>
-              <h2 className="text-white font-black text-3xl sm:text-4xl tracking-tight mb-5">
-                Guided by Purpose,
-                <br />
-                <span className="text-jc-red">Accountable to Lurie.</span>
-              </h2>
-              <p className="text-white/70 leading-relaxed mb-5">
-                The Junior Council Board of Directors works in close partnership
-                with Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago to
-                ensure that all funds raised are deployed effectively and that
-                our work reflects the needs of the adolescent HIV community.
-              </p>
-              <p className="text-white/70 leading-relaxed">
-                Our board members serve as ambassadors for the mission,
-                connecting their professional networks, corporate relationships,
-                and personal passion to amplify Junior Council&apos;s impact across
-                Chicago.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { value: '100%', label: 'Volunteer board — no paid staff overhead' },
-                { value: '2x',   label: 'Annual board meetings minimum' },
-                { value: '$0',   label: 'Administrative overhead from donations' },
-                { value: '501(c)(3)', label: 'Registered nonprofit status' },
-              ].map((stat, i) => (
-                <div key={i} className="bg-jc-charcoal border border-white/10 p-6">
-                  <div className="text-jc-red font-black text-3xl mb-2">{stat.value}</div>
-                  <div className="text-white/60 text-xs leading-relaxed">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Join the Board CTA */}
-      <section className="bg-jc-gray py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-jc-black font-black text-3xl sm:text-4xl mb-4 tracking-tight">
-            Interested in Joining
-            <span className="text-jc-red"> the Board?</span>
-          </h2>
-          <p className="text-jc-gray-dark text-lg mb-8 max-w-2xl mx-auto">
-            Junior Council welcomes expressions of interest from dedicated
-            Chicago professionals who share our commitment to the mission.
-            Board seats are filled on a rolling basis.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center bg-jc-red hover:bg-jc-red-dark text-white font-black text-sm tracking-widest uppercase px-10 py-4 transition-colors"
-          >
-            Get in Touch
-          </Link>
-        </div>
-      </section>
     </div>
   )
 }
