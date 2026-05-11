@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   }
 
   // TODO: replace with routingMap[reason] once juniorcouncil.org is verified in Resend
-  const toEmail = 'transformation@juniorcouncil.org'
+  const toEmail = 'dianawolfchicago@gmail.com'
 
   if (!toEmail) {
     return NextResponse.json({ error: 'Unknown contact reason' }, { status: 400 })
