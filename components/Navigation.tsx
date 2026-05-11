@@ -18,6 +18,7 @@ const navLinks: NavLink[] = [
     label: 'About',
     dropdown: [
       { href: '/about', label: 'Our Cause' },
+      { href: '/events', label: 'Events' },
       { href: '/about/dei', label: 'Diversity, Equity & Inclusion' },
       { href: '/gallery', label: 'Gallery' },
       { href: '/about/faq', label: 'FAQ' },
