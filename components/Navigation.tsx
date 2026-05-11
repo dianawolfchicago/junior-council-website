@@ -29,7 +29,6 @@ const navLinks: NavLink[] = [
     dropdown: [
       { href: '/membership', label: 'Join Junior Council' },
       { href: '/board', label: 'Board of Directors' },
-      { href: '/members', label: 'Member Directory' },
     ],
   },
   {
