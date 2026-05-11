@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import RecapTabs from '@/components/RecapTabs'
 
 export const metadata: Metadata = {
   title: 'Event Recaps | Snowball | Junior Council',
@@ -24,12 +25,6 @@ const highlights2026 = [
   'Partnered with 50+ hospitality sponsors who donated food, beverage, and services to make the night possible',
 ]
 
-// Photo grid — replace src values with real photos when available
-const photos = Array.from({ length: 12 }, (_, i) => ({
-  id: i + 1,
-  alt: `Snowball 2026 photo ${i + 1}`,
-  aspect: i % 5 === 0 ? 'aspect-video' : 'aspect-square',
-}))
 
 export default function RecapPage() {
   return (
@@ -121,114 +116,13 @@ export default function RecapPage() {
             </div>
           </div>
 
-          {/* Photo gallery */}
+          {/* Tabs: Photos / Corporate Sponsors / Hospitality Sponsors */}
           <div>
             <div className="flex items-center gap-3 mb-8">
               <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-              <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">Photos</span>
-            </div>
-            <h3 className="text-jc-black font-black text-2xl sm:text-3xl mb-8 tracking-tight">
-              Snowball 2026 <span className="text-jc-red">Gallery</span>
-            </h3>
-
-            {/* Masonry-style grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {photos.map((photo) => (
-                <div
-                  key={photo.id}
-                  className={`bg-jc-gray overflow-hidden group relative ${photo.aspect} ${photo.id === 1 || photo.id === 7 ? 'col-span-2' : ''}`}
-                >
-                  {/* Placeholder — replace with <Image> when real photos are available */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-jc-gray group-hover:bg-jc-gray-mid transition-colors">
-                    <svg className="w-8 h-8 text-jc-gray-mid" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  {/* Red overlay on hover */}
-                  <div className="absolute inset-0 bg-jc-red/0 group-hover:bg-jc-red/10 transition-colors" />
-                </div>
-              ))}
-            </div>
-            <p className="text-jc-gray-dark text-sm text-center mt-6">
-              More photos available on our{' '}
-              <Link href="/gallery" className="text-jc-red font-bold hover:underline">
-                full gallery page
-              </Link>
-              .
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 2026 Sponsors */}
-      <section className="bg-jc-charcoal py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* Corporate Sponsors */}
-          <div className="mb-16">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
               <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">Snowball 2026</span>
             </div>
-            <h3 className="text-white font-black text-2xl sm:text-3xl tracking-tight mb-8">
-              Corporate <span className="text-jc-red">Sponsors</span>
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {[
-                'Blue Cross Blue Shield of Illinois',
-                'CBRE',
-                'Clayco',
-                'EnergyCX',
-                'RSMUS Foundation',
-                'Neuberger Berman',
-                'Merrill Lynch',
-                'Concord Group',
-                'Barnes & Thornburg',
-                'American Medical Association',
-                'Old Republic International',
-                'CST Academy Therapeutic Preschool',
-                'GoGlow',
-                "Men's Wearhouse & Jos. A. Bank",
-                'Blacklane',
-                'Janet Mandell',
-                'Pin Me Up Chicago',
-              ].map((name, i) => (
-                <div key={i} className="border border-white/10 px-4 py-3 text-white/80 text-sm font-semibold text-center hover:border-jc-red hover:text-white transition-colors">
-                  {name}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Hospitality Sponsors */}
-          <div>
-            <h3 className="text-white font-black text-2xl sm:text-3xl tracking-tight mb-8">
-              Hospitality <span className="text-jc-red">Sponsors</span>
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              {[
-                'Tandoor Char House', 'Sushi San', 'Polombia', 'Summer House Santa Monica',
-                "Nonna's", 'Paradise Park', 'Happy Camper', "Gene and Georgetti's",
-                'Bombay Eats', "Tito's", 'Goose Island', 'Anheuser-Busch',
-                'Spritz Society', 'Craft House Cocktails', 'A Hospitality Company',
-                'Bubble House Brewing Company', 'Cafe Bionda', 'Cafe Yaya', 'Cebu',
-                'Khmai', "Nancy's Pizzeria", 'Biatch Tequila', 'Chay', 'CH Distillery',
-                'Chicago Beverage', 'Doc Brown', 'Go Brewing', 'Hubbard Inn',
-                'Hush Aqua', "JoJo's Shake Bar", 'Koval', 'Rheingeist Brewery',
-                'Organic Spirits', 'STK Steakhouse', 'LaCroix', 'Solemn Oath Brewery',
-                'MMMM Enjoy', 'Pepsi', 'Revolution Brewing', 'Ritual Zero Proof',
-                'RPM Steak', 'RPM Restaurants', "Trader Joe's", 'Do Rite Donuts',
-                'Bacardi', 'Athletic Brewing', 'Uni Uni', 'Select Beverage Company',
-                'Link Drinks Transfusion', 'Venteux',
-              ].map((name, i) => (
-                <div key={i} className="border border-white/10 px-3 py-2.5 text-white/70 text-xs font-semibold text-center hover:border-jc-red hover:text-white transition-colors">
-                  {name}
-                </div>
-              ))}
-            </div>
-            <p className="text-white/30 text-xs mt-8 text-center">
-              Thank you to all 50+ hospitality sponsors who made Snowball 2026 possible.
-            </p>
+            <RecapTabs />
           </div>
         </div>
       </section>
