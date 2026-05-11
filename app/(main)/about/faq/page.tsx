@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: 'How does Junior Council use donated funds?',
-    a: 'Funds raised by Junior Council go directly to support the Adolescent HIV/AIDS Program at Ann & Robert H. Lurie Children\'s Hospital of Chicago, covering medical care, mental health services, social support, and scholarship awards for patients.',
+    a: 'Funds raised by Junior Council go directly to support the Adolescent HIV/AIDS Program at Ann & Robert H. Lurie Children\'s Hospital of Chicago, covering medical care, mental health services, social support, and educational assistance for patients.',
   },
   {
     q: 'Is Junior Council a registered nonprofit?',

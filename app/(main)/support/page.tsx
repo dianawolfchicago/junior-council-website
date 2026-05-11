@@ -190,7 +190,7 @@ export default function SupportPage() {
               </h3>
               <div className="space-y-0">
                 {[
-                  { amount: '$40,000', impact: 'The Junior Council Scholarship Fund, which helps support past and present patients in their education.' },
+                  { amount: '$40,000', impact: 'Direct patient support and educational assistance for past and present patients of the Lurie Adolescent HIV Program.' },
                   { amount: '$20,000', impact: 'The purchase of vehicles (lasting 20 years) to help transport patients to necessary check-ups.' },
                   { amount: '$10,058', impact: '30 days of HIV medication for a single patient during financial hardship.' },
                   { amount: '$2,347',  impact: 'One week of standard HIV medication for a single patient.' },

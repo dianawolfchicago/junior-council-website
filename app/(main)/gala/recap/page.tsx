@@ -17,7 +17,7 @@ const stats2026 = [
 const highlights2026 = [
   'Surpassed our $250,000 fundraising goal with the most successful Thermometer Raise in Junior Council history',
   'Welcomed over 500 guests to a stunning sold-out venue in the heart of Chicago',
-  'Presented the annual Junior Council Scholarship to a deserving patient of the Lurie Children\'s Adolescent HIV/AIDS Program',
+  'Provided direct patient support to deserving recipients of the Lurie Children\'s Adolescent HIV/AIDS Program',
   'Featured 30+ corporate sponsors representing some of Chicago\'s most prominent companies',
   'Raised over $40,000 through a record-breaking silent auction with 50+ items',
   'Hosted a Kick-Off Party the night before, bringing together sponsors and board members for an exclusive preview evening',

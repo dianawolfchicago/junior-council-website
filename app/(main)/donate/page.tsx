@@ -114,7 +114,7 @@ export default function DonatePage() {
                 {[
                   {
                     amount: '$40,000',
-                    impact: 'The Junior Council Scholarship Fund, which helps support past and present patients in their education.',
+                    impact: 'Direct patient support and educational assistance for past and present patients of the Lurie Adolescent HIV Program.',
                   },
                   {
                     amount: '$20,000',

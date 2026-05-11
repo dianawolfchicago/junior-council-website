@@ -178,62 +178,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── CLINIC TESTIMONIALS ──────────────────────────────────────── */}
-      <section className="bg-white py-24 lg:py-32" aria-label="Patient testimonials">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-              <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">
-                From the Clinic
-              </span>
-              <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
-            </div>
-            <h2 className="text-jc-black font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-              Real Lives. <span className="text-jc-red">Real Impact.</span>
-            </h2>
-            <p className="text-jc-gray-dark text-lg mt-4 max-w-2xl mx-auto">
-              Behind every dollar raised is a young person getting the care they deserve.
-              Here are their stories.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                quote:
-                  'Coming to Lurie changed everything for me. The team there doesn\'t just treat your diagnosis — they treat you like a person. I finally felt like someone was in my corner.',
-                name: 'Patient, age 17',
-                detail: 'Diagnosed at age 14 · Lurie Adolescent HIV Program',
-              },
-              {
-                quote:
-                  'As a mom, I was terrified. I didn\'t know where to turn or how we\'d afford the care my son needed. The clinic connected us to resources we didn\'t even know existed — and Junior Council helped make that possible.',
-                name: 'Parent of a Lurie patient',
-                detail: 'Family enrolled in program since 2021',
-              },
-              {
-                quote:
-                  'I\'ve been a patient here for three years. The doctors know my name, they know my story. Because of the support from this community, I haven\'t had to worry about the cost of my treatment — I just focus on getting better.',
-                name: 'Patient, age 19',
-                detail: 'Transitioned from pediatric to adolescent care at Lurie',
-              },
-            ].map((t, i) => (
-              <div key={i} className="flex flex-col bg-jc-gray border border-jc-gray-mid p-8">
-                <div className="text-jc-red font-black text-5xl leading-none mb-4" aria-hidden="true">&ldquo;</div>
-                <p className="text-jc-gray-dark text-base leading-relaxed flex-grow mb-8">
-                  {t.quote}
-                </p>
-                <div className="border-t border-jc-gray-mid pt-6">
-                  <div className="text-jc-black font-bold text-sm">{t.name}</div>
-                  <div className="text-jc-gray-dark text-xs mt-1">{t.detail}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ─── WHO WE ARE + LURIE PARTNERSHIP (merged) ──────────────────── */}
       <section className="bg-white py-24 lg:py-32" aria-label="Who we are and our partner">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -330,6 +274,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
         </div>
       </section>
 

@@ -5,7 +5,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Our Cause | Junior Council',
   description:
-    "Learn about Junior Council's mission, the cause we fight for, and the scholarship fund supporting youth with HIV and AIDS in Chicago.",
+    "Learn about Junior Council's mission and the cause we fight for — supporting youth with HIV and AIDS in Chicago.",
 }
 
 export default function OurCausePage() {
@@ -74,11 +74,16 @@ export default function OurCausePage() {
                 comprehensive care: medical treatment, mental health support,
                 social services, and connection to community.
               </p>
-              <p className="text-jc-gray-dark text-base leading-relaxed">
+              <p className="text-jc-gray-dark text-base leading-relaxed mb-5">
                 Every event we host, every membership dues we collect, and every
                 corporate partnership we forge translates directly into resources
                 for these young patients. This is a cause that deserves a champion
                 — and Junior Council is proud to be that champion.
+              </p>
+              <p className="text-jc-gray-dark text-base leading-relaxed">
+                A portion of funds raised each year also supports educational
+                opportunities for past and present patients of the Lurie
+                Adolescent HIV Program.
               </p>
             </div>
 
@@ -136,6 +141,53 @@ export default function OurCausePage() {
                 <div className="text-jc-red font-black text-5xl sm:text-6xl mb-4 leading-none">{item.stat}</div>
                 <p className="text-white text-sm leading-relaxed flex-1">{item.label}</p>
                 <p className="text-white/30 text-xs mt-4 uppercase tracking-widest">{item.source}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Clinic Testimonials */}
+      <section className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
+            <span className="text-jc-red text-xs font-bold tracking-[0.25em] uppercase">From the Clinic</span>
+          </div>
+          <h2 className="text-jc-black font-black text-3xl sm:text-4xl mb-4 tracking-tight">
+            Real Lives. <span className="text-jc-red">Real Impact.</span>
+          </h2>
+          <p className="text-jc-gray-dark text-lg mb-12 max-w-2xl">
+            Behind every dollar raised is a young person getting the care they deserve. Here are their stories.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                quote:
+                  "Coming to Lurie changed everything for me. The team there doesn't just treat your diagnosis — they treat you like a person. I finally felt like someone was in my corner.",
+                name: 'Patient, age 17',
+                detail: 'Diagnosed at age 14 · Lurie Adolescent HIV Program',
+              },
+              {
+                quote:
+                  "As a mom, I was terrified. I didn't know where to turn or how we'd afford the care my son needed. The clinic connected us to resources we didn't even know existed — and Junior Council helped make that possible.",
+                name: 'Parent of a Lurie patient',
+                detail: 'Family enrolled in program since 2021',
+              },
+              {
+                quote:
+                  "I've been a patient here for three years. The doctors know my name, they know my story. Because of the support from this community, I haven't had to worry about the cost of my treatment — I just focus on getting better.",
+                name: 'Patient, age 19',
+                detail: 'Transitioned from pediatric to adolescent care at Lurie',
+              },
+            ].map((t, i) => (
+              <div key={i} className="flex flex-col bg-jc-gray border border-jc-gray-mid p-8">
+                <div className="text-jc-red font-black text-5xl leading-none mb-4" aria-hidden="true">&ldquo;</div>
+                <p className="text-jc-gray-dark text-base leading-relaxed flex-grow mb-8">{t.quote}</p>
+                <div className="border-t border-jc-gray-mid pt-6">
+                  <div className="text-jc-black font-bold text-sm">{t.name}</div>
+                  <div className="text-jc-gray-dark text-xs mt-1">{t.detail}</div>
+                </div>
               </div>
             ))}
           </div>

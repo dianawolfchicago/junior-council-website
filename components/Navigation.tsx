@@ -18,10 +18,8 @@ const navLinks: NavLink[] = [
     label: 'About',
     dropdown: [
       { href: '/about', label: 'Our Cause' },
-      { href: '/about/scholarship', label: 'Scholarship Fund' },
       { href: '/about/dei', label: 'Diversity, Equity & Inclusion' },
       { href: '/gallery', label: 'Gallery' },
-      { href: '/blog', label: 'Blog' },
       { href: '/about/faq', label: 'FAQ' },
     ],
   },
