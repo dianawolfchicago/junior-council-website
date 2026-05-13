@@ -3,19 +3,25 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-// Routing map — expand with full mappings once smoke test passes
-const routingMap: Record<string, string> = {
-  general: 'transformation@juniorcouncil.org',
+// Routing map — some reasons go to multiple recipients
+const routingMap: Record<string, string[]> = {
+  membership:  ['membership@juniorcouncil.org'],
+  corporate:   ['corporate@juniorcouncil.org'],
+  hospitality: ['hospitality@juniorcouncil.org'],
+  inkind:      ['hospitality@juniorcouncil.org'],
+  gala:        ['snowball@juniorcouncil.org', 'president@juniorcouncil.org'],
+  media:       ['social@juniorcouncil.org', 'media@juniorcouncil.org'],
+  general:     ['president@juniorcouncil.org', 'secretary@juniorcouncil.org'],
 }
 
 const reasonLabels: Record<string, string> = {
-  membership:   'Membership Inquiry',
-  corporate:    'Corporate Partnership',
-  hospitality:  'Hospitality Partnership',
-  inkind:       'In-Kind Donation',
-  gala:         'Gala / Event Inquiry',
-  media:        'Media & Press',
-  general:      'General Inquiry',
+  membership:  'Membership Inquiry',
+  corporate:   'Corporate Partnership',
+  hospitality: 'Hospitality Partnership',
+  inkind:      'In-Kind Donation',
+  gala:        'Gala / Event Inquiry',
+  media:       'Media & Press',
+  general:     'General Inquiry',
 }
 
 export async function POST(req: Request) {
@@ -40,10 +46,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
-  // TODO: replace with routingMap[reason] once juniorcouncil.org is verified in Resend
-  const toEmail = 'dianawolfchicago@gmail.com'
+  const toEmails = routingMap[reason]
 
-  if (!toEmail) {
+  if (!toEmails || toEmails.length === 0) {
     return NextResponse.json({ error: 'Unknown contact reason' }, { status: 400 })
   }
 
@@ -51,7 +56,7 @@ export async function POST(req: Request) {
 
   const { error } = await resend.emails.send({
     from: 'Junior Council Website <onboarding@resend.dev>',
-    to: toEmail,
+    to: toEmails,
     replyTo: email,
     subject: `[JC Contact] ${reasonLabel} — ${firstName} ${lastName}`,
     html: `
