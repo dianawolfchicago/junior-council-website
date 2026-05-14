@@ -10,17 +10,25 @@ type MemberProfile = {
   email: string
   full_name: string
   role: 'member' | 'board' | 'admin'
+  board_title: string
+  dues_paid: boolean
 }
+
+const BOARD_TITLES = [
+  '', 'President', 'Vice President', 'Treasurer', 'Secretary',
+  'Snowball', 'Engagement', 'Recruitment', 'Education', 'Silent Auction',
+  'W4AC / Fundraising Pages', 'Corporate Co-Chair', 'Creative', 'PR',
+  'Hospitality', 'Transformation Director',
+]
 
 export default function RolesPage() {
   const router = useRouter()
   const [profiles, setProfiles] = useState<MemberProfile[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [updating, setUpdating] = useState<string | null>(null) // userId being updated
+  const [updating, setUpdating] = useState<string | null>(null)
   const [statusMsg, setStatusMsg] = useState<{ type: 'ok' | 'error'; msg: string } | null>(null)
 
-  // Gate: redirect if not admin
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -30,7 +38,6 @@ export default function RolesPage() {
     })
   }, [router])
 
-  // Fetch profiles
   useEffect(() => {
     fetch('/api/admin/roles')
       .then(r => r.json())
@@ -43,7 +50,7 @@ export default function RolesPage() {
   }, [])
 
   const updateRole = async (userId: string, newRole: 'member' | 'board') => {
-    setUpdating(userId)
+    setUpdating(userId + '-role')
     setStatusMsg(null)
     try {
       const res = await fetch('/api/admin/roles', {
@@ -54,7 +61,28 @@ export default function RolesPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to update role')
       setProfiles(p => p.map(m => m.id === userId ? { ...m, role: newRole } : m))
-      setStatusMsg({ type: 'ok', msg: `Role updated successfully.` })
+      setStatusMsg({ type: 'ok', msg: 'Role updated successfully.' })
+      setTimeout(() => setStatusMsg(null), 3000)
+    } catch (err) {
+      setStatusMsg({ type: 'error', msg: err instanceof Error ? err.message : 'Something went wrong' })
+    } finally {
+      setUpdating(null)
+    }
+  }
+
+  const updateBoardTitle = async (userId: string, board_title: string) => {
+    setUpdating(userId + '-title')
+    setStatusMsg(null)
+    try {
+      const res = await fetch('/api/admin/roles', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, board_title }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to update title')
+      setProfiles(p => p.map(m => m.id === userId ? { ...m, board_title } : m))
+      setStatusMsg({ type: 'ok', msg: 'Board title updated.' })
       setTimeout(() => setStatusMsg(null), 3000)
     } catch (err) {
       setStatusMsg({ type: 'error', msg: err instanceof Error ? err.message : 'Something went wrong' })
@@ -65,7 +93,6 @@ export default function RolesPage() {
 
   return (
     <div className="min-h-screen bg-jc-gray flex flex-col">
-      {/* Nav */}
       <nav className="bg-jc-black border-b border-white/10 px-6 py-4 flex items-center justify-between">
         <Link href="/portal" className="text-white/60 hover:text-white text-sm font-bold uppercase tracking-widest flex items-center gap-2 transition-colors">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -76,7 +103,7 @@ export default function RolesPage() {
         <span className="text-jc-red text-xs font-black uppercase tracking-widest">Admin Only</span>
       </nav>
 
-      <div className="flex-grow px-4 py-12 max-w-4xl mx-auto w-full">
+      <div className="flex-grow px-4 py-12 max-w-5xl mx-auto w-full">
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
@@ -84,10 +111,10 @@ export default function RolesPage() {
             <div className="w-8 h-0.5 bg-jc-red" aria-hidden="true" />
           </div>
           <h1 className="text-jc-black font-black text-3xl sm:text-4xl tracking-tight">
-            Manage <span className="text-jc-red">Roles</span>
+            Manage <span className="text-jc-red">Roles & Titles</span>
           </h1>
           <p className="text-jc-gray-dark text-sm mt-2">
-            Grant or remove board access for members. Admins cannot be modified here.
+            Set member roles and board titles. Board title controls feature access (e.g. Treasurer sees Dues Tracker).
           </p>
         </div>
 
@@ -108,17 +135,17 @@ export default function RolesPage() {
             </div>
           ) : (
             <>
-              {/* Table header */}
-              <div className="hidden sm:grid grid-cols-[1fr_1fr_120px_160px] gap-4 px-6 py-3 border-b border-jc-gray-mid bg-jc-gray/50">
+              <div className="hidden sm:grid grid-cols-[1fr_1fr_100px_180px_160px] gap-4 px-6 py-3 border-b border-jc-gray-mid bg-jc-gray/50">
                 <span className="text-jc-black text-xs font-black uppercase tracking-widest">Name</span>
                 <span className="text-jc-black text-xs font-black uppercase tracking-widest">Email</span>
                 <span className="text-jc-black text-xs font-black uppercase tracking-widest">Role</span>
+                <span className="text-jc-black text-xs font-black uppercase tracking-widest">Board Title</span>
                 <span className="text-jc-black text-xs font-black uppercase tracking-widest">Action</span>
               </div>
 
               <div className="divide-y divide-jc-gray-mid">
                 {profiles.map(member => (
-                  <div key={member.id} className="grid sm:grid-cols-[1fr_1fr_120px_160px] gap-4 px-6 py-4 items-center">
+                  <div key={member.id} className="grid sm:grid-cols-[1fr_1fr_100px_180px_160px] gap-4 px-6 py-4 items-center">
                     <div>
                       <p className="text-jc-black font-bold text-sm">{member.full_name || '—'}</p>
                     </div>
@@ -127,14 +154,28 @@ export default function RolesPage() {
                     </div>
                     <div>
                       <span className={`inline-block text-xs font-bold px-2 py-0.5 ${
-                        member.role === 'admin'
-                          ? 'bg-purple-100 text-purple-700'
-                          : member.role === 'board'
-                          ? 'bg-blue-100 text-blue-700'
-                          : 'bg-jc-gray text-jc-gray-dark'
+                        member.role === 'admin' ? 'bg-purple-100 text-purple-700'
+                        : member.role === 'board' ? 'bg-blue-100 text-blue-700'
+                        : 'bg-jc-gray text-jc-gray-dark'
                       }`}>
                         {member.role}
                       </span>
+                    </div>
+                    <div>
+                      {member.role === 'admin' ? (
+                        <span className="text-jc-gray-dark text-xs italic">—</span>
+                      ) : (
+                        <select
+                          value={member.board_title}
+                          onChange={e => updateBoardTitle(member.id, e.target.value)}
+                          disabled={updating === member.id + '-title'}
+                          className="w-full border border-jc-gray-mid focus:border-jc-red outline-none px-2 py-1.5 text-xs bg-white text-jc-black disabled:opacity-50"
+                        >
+                          {BOARD_TITLES.map(t => (
+                            <option key={t} value={t}>{t || '— No title —'}</option>
+                          ))}
+                        </select>
+                      )}
                     </div>
                     <div>
                       {member.role === 'admin' ? (
@@ -142,18 +183,18 @@ export default function RolesPage() {
                       ) : member.role === 'board' ? (
                         <button
                           onClick={() => updateRole(member.id, 'member')}
-                          disabled={updating === member.id}
-                          className="border border-jc-gray-mid hover:border-jc-red text-jc-gray-dark hover:text-jc-red disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold uppercase px-4 py-2 transition-colors"
+                          disabled={updating === member.id + '-role'}
+                          className="border border-jc-gray-mid hover:border-jc-red text-jc-gray-dark hover:text-jc-red disabled:opacity-50 text-xs font-bold uppercase px-4 py-2 transition-colors"
                         >
-                          {updating === member.id ? 'Saving…' : 'Remove Board Role'}
+                          {updating === member.id + '-role' ? 'Saving…' : 'Remove Board'}
                         </button>
                       ) : (
                         <button
                           onClick={() => updateRole(member.id, 'board')}
-                          disabled={updating === member.id}
-                          className="bg-jc-red hover:bg-jc-red-dark disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold uppercase px-4 py-2 transition-colors"
+                          disabled={updating === member.id + '-role'}
+                          className="bg-jc-red hover:bg-jc-red-dark disabled:opacity-50 text-white text-xs font-bold uppercase px-4 py-2 transition-colors"
                         >
-                          {updating === member.id ? 'Saving…' : 'Grant Board Role'}
+                          {updating === member.id + '-role' ? 'Saving…' : 'Grant Board'}
                         </button>
                       )}
                     </div>

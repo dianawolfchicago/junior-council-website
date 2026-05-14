@@ -143,6 +143,7 @@ export default function PortalPage() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
   const [duesModalOpen, setDuesModalOpen] = useState(false)
   const [duesPaid, setDuesPaid] = useState(false)
+  const [boardTitle, setBoardTitle] = useState('')
   const [allMembers, setAllMembers] = useState<{id:string; full_name:string; email:string; dues_paid:boolean}[]>([])
   const [duesToggling, setDuesToggling] = useState<string|null>(null)
   const [navMenuOpen, setNavMenuOpen] = useState(false)
@@ -298,19 +299,21 @@ export default function PortalPage() {
     supabase.rpc('get_my_role').then(({ data }) => {
       if (data) setMyRole(data as 'member'|'board'|'admin')
     })
-    supabase.from('profiles').select('dues_paid').eq('id', user.id).single().then(({ data }) => {
-      if (data) setDuesPaid(data.dues_paid)
+    supabase.from('profiles').select('dues_paid, board_title').eq('id', user.id).single().then(({ data }) => {
+      if (data) { setDuesPaid(data.dues_paid); setBoardTitle(data.board_title || '') }
     })
   }, [user])
 
+  const isTreasurer = boardTitle === 'Treasurer'
+
   // Fetch all members for admin dues panel
   useEffect(() => {
-    if (!isAdmin) return
+    if (!isAdmin && !isTreasurer) return
     const supabase = createClient()
     supabase.from('profiles').select('id, full_name, email, dues_paid').order('full_name').then(({ data }) => {
       if (data) setAllMembers(data)
     })
-  }, [isAdmin])
+  }, [isAdmin, isTreasurer])
 
   const toggleDues = async (userId: string, current: boolean) => {
     setDuesToggling(userId)
@@ -1148,8 +1151,8 @@ export default function PortalPage() {
         {activeTab==='resources' && (
           <div className="space-y-8">
 
-            {/* Admin Dues Panel */}
-            {isAdmin && (
+            {/* Admin/Treasurer Dues Panel */}
+            {(isAdmin || isTreasurer) && (
               <div className="bg-white border border-jc-gray-mid">
                 <div className="px-6 py-4 border-b border-jc-gray-mid flex items-center justify-between">
                   <div>
