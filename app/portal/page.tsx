@@ -200,13 +200,33 @@ export default function PortalPage() {
   // Donor submission form
   const [donorForm, setDonorForm] = useState({ type:'', donorName:'', contactName:'', contactEmail:'', notes:'' })
   const [donorSubmitted, setDonorSubmitted] = useState(false)
-  const handleDonorSubmit = () => {
+  const [donorSubmitting, setDonorSubmitting] = useState(false)
+  const [donorError, setDonorError] = useState<string|null>(null)
+  const handleDonorSubmit = async () => {
     if (!donorForm.type || !donorForm.donorName.trim()) return
-    setDonorSubmitted(true)
-    setTimeout(() => {
-      setDonorSubmitted(false)
-      setDonorForm({ type:'', donorName:'', contactName:'', contactEmail:'', notes:'' })
-    }, 5000)
+    setDonorSubmitting(true)
+    setDonorError(null)
+    try {
+      const res = await fetch('/api/win', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...donorForm,
+          submittedBy: user?.user_metadata?.full_name || user?.email,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to submit')
+      setDonorSubmitted(true)
+      setTimeout(() => {
+        setDonorSubmitted(false)
+        setDonorForm({ type:'', donorName:'', contactName:'', contactEmail:'', notes:'' })
+      }, 5000)
+    } catch (err) {
+      setDonorError(err instanceof Error ? err.message : 'Something went wrong')
+    } finally {
+      setDonorSubmitting(false)
+    }
   }
 
   // Calendar
@@ -1105,10 +1125,13 @@ export default function PortalPage() {
                         className="w-full border border-jc-gray-mid focus:border-jc-red px-3 py-2 text-sm text-jc-black outline-none resize-none"/>
                     </div>
 
+                    {donorError && (
+                      <p className="text-red-600 text-xs font-bold">{donorError}</p>
+                    )}
                     <button onClick={handleDonorSubmit}
-                      disabled={!donorForm.type || !donorForm.donorName.trim()}
+                      disabled={!donorForm.type || !donorForm.donorName.trim() || donorSubmitting}
                       className="w-full bg-jc-red hover:bg-jc-red-dark disabled:opacity-30 disabled:cursor-not-allowed text-white font-black text-xs tracking-widest uppercase py-3 transition-colors">
-                      Submit to Chair
+                      {donorSubmitting ? 'Sending…' : 'Submit to Chair'}
                     </button>
                   </div>
                 )}
