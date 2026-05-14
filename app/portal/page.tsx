@@ -142,6 +142,9 @@ export default function PortalPage() {
 
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
   const [duesModalOpen, setDuesModalOpen] = useState(false)
+  const [duesPaid, setDuesPaid] = useState(false)
+  const [allMembers, setAllMembers] = useState<{id:string; full_name:string; email:string; dues_paid:boolean}[]>([])
+  const [duesToggling, setDuesToggling] = useState<string|null>(null)
   const [navMenuOpen, setNavMenuOpen] = useState(false)
 
   // Role + org events + RSVPs
@@ -288,14 +291,40 @@ export default function PortalPage() {
     setPersonalEvents(p => p.filter(e => e.id !== id))
   }
 
-  // Fetch user role
+  // Fetch user role + dues status
   useEffect(() => {
     if (!user) return
     const supabase = createClient()
     supabase.rpc('get_my_role').then(({ data }) => {
       if (data) setMyRole(data as 'member'|'board'|'admin')
     })
+    supabase.from('profiles').select('dues_paid').eq('id', user.id).single().then(({ data }) => {
+      if (data) setDuesPaid(data.dues_paid)
+    })
   }, [user])
+
+  // Fetch all members for admin dues panel
+  useEffect(() => {
+    if (!isAdmin) return
+    const supabase = createClient()
+    supabase.from('profiles').select('id, full_name, email, dues_paid').order('full_name').then(({ data }) => {
+      if (data) setAllMembers(data)
+    })
+  }, [isAdmin])
+
+  const toggleDues = async (userId: string, current: boolean) => {
+    setDuesToggling(userId)
+    const res = await fetch('/api/admin/dues', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, dues_paid: !current }),
+    })
+    if (res.ok) {
+      setAllMembers(m => m.map(member => member.id === userId ? { ...member, dues_paid: !current } : member))
+      if (userId === user?.id) setDuesPaid(!current)
+    }
+    setDuesToggling(null)
+  }
 
   // Fetch org events
   useEffect(() => {
@@ -805,12 +834,20 @@ export default function PortalPage() {
                 <div className="bg-jc-black p-5 flex flex-col justify-between">
                   <div>
                     <p className="text-white/60 text-xs uppercase tracking-widest mb-1.5">2026–2027 Dues</p>
-                    <p className="text-jc-red font-black text-3xl leading-none mb-2">Unpaid</p>
+                    <p className={`font-black text-3xl leading-none mb-2 ${duesPaid ? 'text-green-400' : 'text-jc-red'}`}>
+                      {duesPaid ? 'Paid' : 'Unpaid'}
+                    </p>
                     <p className="text-white/70 text-xs leading-relaxed">Annual dues keep your membership active.</p>
                   </div>
-                  <button onClick={()=>setDuesModalOpen(true)} className="mt-5 w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-xs tracking-widest uppercase py-3 transition-colors">
-                    Pay Dues Now
-                  </button>
+                  {duesPaid ? (
+                    <div className="mt-5 w-full bg-green-500/20 border border-green-500/40 text-green-400 font-black text-xs tracking-widest uppercase py-3 text-center">
+                      Dues Paid
+                    </div>
+                  ) : (
+                    <button onClick={()=>setDuesModalOpen(true)} className="mt-5 w-full bg-jc-red hover:bg-jc-red-dark text-white font-black text-xs tracking-widest uppercase py-3 transition-colors">
+                      Pay Dues Now
+                    </button>
+                  )}
                 </div>
 
               </div>
@@ -1110,6 +1147,46 @@ export default function PortalPage() {
         {/* ── RESOURCES ─────────────────────────────────────────────────────── */}
         {activeTab==='resources' && (
           <div className="space-y-8">
+
+            {/* Admin Dues Panel */}
+            {isAdmin && (
+              <div className="bg-white border border-jc-gray-mid">
+                <div className="px-6 py-4 border-b border-jc-gray-mid flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="w-6 h-0.5 bg-jc-red" aria-hidden="true"/>
+                      <span className="text-jc-red text-xs font-bold tracking-widest uppercase">Admin</span>
+                    </div>
+                    <h3 className="text-jc-black font-black text-xl">Dues Tracker</h3>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-jc-red font-black text-2xl">{allMembers.filter(m=>m.dues_paid).length}/{allMembers.length}</div>
+                    <div className="text-jc-gray-dark text-xs uppercase tracking-widest">Paid</div>
+                  </div>
+                </div>
+                <div className="divide-y divide-jc-gray-mid">
+                  {allMembers.map(member => (
+                    <div key={member.id} className="flex items-center justify-between px-6 py-4">
+                      <div>
+                        <div className="text-jc-black font-bold text-sm">{member.full_name || member.email}</div>
+                        <div className="text-jc-gray-dark text-xs">{member.email}</div>
+                      </div>
+                      <button
+                        onClick={() => toggleDues(member.id, member.dues_paid)}
+                        disabled={duesToggling === member.id}
+                        className={`text-xs font-black uppercase tracking-widest px-4 py-2 transition-colors disabled:opacity-50 ${
+                          member.dues_paid
+                            ? 'bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-600'
+                            : 'bg-jc-gray text-jc-gray-dark hover:bg-jc-red hover:text-white'
+                        }`}
+                      >
+                        {duesToggling === member.id ? '...' : member.dues_paid ? 'Paid' : 'Mark Paid'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div>
               <div className="flex items-center gap-3 mb-2">
