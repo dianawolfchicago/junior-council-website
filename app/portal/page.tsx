@@ -1519,18 +1519,24 @@ export default function PortalPage() {
             <div className="bg-jc-gray p-4 mb-6 border-l-4 border-jc-red">
               <div className="flex items-center justify-between">
                 <span className="text-jc-black font-bold text-sm">2026–2027 Annual Dues</span>
-                <span className="text-jc-red font-black text-xl">$[Amount]</span>
+                <span className="text-jc-red font-black text-xl">$100</span>
               </div>
-              <p className="text-jc-gray-dark text-xs mt-2">Tax-deductible to the extent permitted by law.</p>
+              <p className="text-jc-gray-dark text-xs mt-2">Please include your full name in the payment note.</p>
             </div>
-            <div className="bg-jc-gray/50 border border-jc-gray-mid p-6 text-center">
-              <svg className="w-8 h-8 text-jc-gray-mid mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-              </svg>
-              <p className="text-jc-gray-dark text-sm font-medium mb-1">Payment processor coming soon</p>
-              <p className="text-jc-gray-dark text-xs">
-                Contact <a href="mailto:president@juniorcouncil.org" className="text-jc-red font-bold hover:underline">president@juniorcouncil.org</a> to arrange payment.
-              </p>
+            <div className="space-y-3 mb-2">
+              <a
+                href="https://venmo.com/u/juniorcouncil?txn=pay&amount=100&note=2026-2027+JC+Dues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between w-full bg-[#008CFF] hover:bg-[#0070CC] text-white font-black text-sm tracking-wide px-5 py-4 transition-colors"
+              >
+                <span>Pay with Venmo</span>
+                <span className="text-white/80 text-xs font-bold">@juniorcouncil</span>
+              </a>
+              <div className="flex items-center justify-between w-full bg-jc-gray border border-jc-gray-mid px-5 py-4">
+                <span className="text-jc-gray-dark font-black text-sm">Zelle</span>
+                <span className="text-jc-gray-dark text-xs font-bold italic">Coming Soon</span>
+              </div>
             </div>
             <button onClick={()=>setDuesModalOpen(false)} className="w-full mt-4 border-2 border-jc-gray-mid hover:border-jc-red text-jc-black hover:text-jc-red font-black text-xs tracking-widest uppercase py-3 transition-colors">
               Close
