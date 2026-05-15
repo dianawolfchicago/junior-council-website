@@ -434,9 +434,6 @@ export default function HomePage() {
             {/* Event graphic */}
             <div className="relative">
               <div className="bg-jc-charcoal p-12 text-center border border-white/10">
-                <div className="text-jc-red/15 font-black text-[7rem] leading-none absolute inset-0 flex items-center justify-center select-none" aria-hidden="true">
-                  ❄
-                </div>
                 <div className="relative z-10">
                   <div className="text-white/40 text-xs tracking-widest uppercase mb-2">
                     Annual Event
