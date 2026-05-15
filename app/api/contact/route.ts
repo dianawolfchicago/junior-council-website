@@ -55,7 +55,7 @@ export async function POST(req: Request) {
   const reasonLabel = reasonLabels[reason] ?? reason
 
   const { error } = await resend.emails.send({
-    from: 'Junior Council Website <onboarding@resend.dev>',
+    from: 'Junior Council Website <noreply@juniorcouncil.org>',
     to: toEmails,
     replyTo: email,
     subject: `[JC Contact] ${reasonLabel} — ${firstName} ${lastName}`,

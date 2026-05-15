@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   if (!route) return NextResponse.json({ error: 'Unknown donation type' }, { status: 400 })
 
   const { error } = await resend.emails.send({
-    from: 'Junior Council Portal <onboarding@resend.dev>',
+    from: 'Junior Council Portal <noreply@juniorcouncil.org>',
     to: route.emails,
     replyTo: user.email ?? undefined,
     subject: `[JC Win] ${route.label} — ${donorName}`,
