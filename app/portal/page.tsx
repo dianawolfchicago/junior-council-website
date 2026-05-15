@@ -1628,17 +1628,17 @@ export default function PortalPage() {
             </div>
             <div className="space-y-3 mb-2">
               <a
-                href="https://venmo.com/u/juniorcouncil?txn=pay&amount=100&note=2026-2027+JC+Dues"
+                href="https://venmo.com/u/juniorcounciltreasurer?txn=pay&amount=100&note=2026-2027+JC+Dues"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between w-full bg-[#008CFF] hover:bg-[#0070CC] text-white font-black text-sm tracking-wide px-5 py-4 transition-colors"
               >
                 <span>Pay with Venmo</span>
-                <span className="text-white/80 text-xs font-bold">@juniorcouncil</span>
+                <span className="text-white/80 text-xs font-bold">@juniorcounciltreasurer</span>
               </a>
-              <div className="flex items-center justify-between w-full bg-jc-gray border border-jc-gray-mid px-5 py-4">
-                <span className="text-jc-gray-dark font-black text-sm">Zelle</span>
-                <span className="text-jc-gray-dark text-xs font-bold italic">Coming Soon</span>
+              <div className="flex items-center justify-between w-full bg-[#6B2D8B] hover:bg-[#5a2576] px-5 py-4 transition-colors">
+                <span className="text-white font-black text-sm">Pay with Zelle</span>
+                <span className="text-white/80 text-xs font-bold">treasurer@juniorcouncil.org</span>
               </div>
             </div>
             <button onClick={()=>setDuesModalOpen(false)} className="w-full mt-4 border-2 border-jc-gray-mid hover:border-jc-red text-jc-black hover:text-jc-red font-black text-xs tracking-widest uppercase py-3 transition-colors">
