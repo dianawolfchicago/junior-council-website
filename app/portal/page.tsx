@@ -142,6 +142,7 @@ export default function PortalPage() {
 
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
   const [duesModalOpen, setDuesModalOpen] = useState(false)
+  const [zelleCopied, setZelleCopied] = useState(false)
   const [duesPaid, setDuesPaid] = useState(false)
   const [boardTitle, setBoardTitle] = useState('')
   const [allMembers, setAllMembers] = useState<{id:string; full_name:string; email:string; dues_paid:boolean}[]>([])
@@ -1636,10 +1637,13 @@ export default function PortalPage() {
                 <span>Pay with Venmo</span>
                 <span className="text-white/80 text-xs font-bold">@juniorcounciltreasurer</span>
               </a>
-              <div className="flex items-center justify-between w-full bg-[#6B2D8B] hover:bg-[#5a2576] px-5 py-4 transition-colors">
-                <span className="text-white font-black text-sm">Pay with Zelle</span>
-                <span className="text-white/80 text-xs font-bold">treasurer@juniorcouncil.org</span>
-              </div>
+              <button
+                onClick={() => { navigator.clipboard.writeText('treasurer@juniorcouncil.org'); setZelleCopied(true); setTimeout(() => setZelleCopied(false), 2000) }}
+                className="flex items-center justify-between w-full bg-[#6B2D8B] hover:bg-[#5a2576] text-white font-black text-sm tracking-wide px-5 py-4 transition-colors"
+              >
+                <span>{zelleCopied ? 'Copied!' : 'Pay with Zelle'}</span>
+                <span className="text-white/80 text-xs font-bold">{zelleCopied ? 'Paste into your Zelle app' : 'treasurer@juniorcouncil.org'}</span>
+              </button>
             </div>
             <button onClick={()=>setDuesModalOpen(false)} className="w-full mt-4 border-2 border-jc-gray-mid hover:border-jc-red text-jc-black hover:text-jc-red font-black text-xs tracking-widest uppercase py-3 transition-colors">
               Close
